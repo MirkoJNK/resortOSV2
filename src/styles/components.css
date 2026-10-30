@@ -1,0 +1,80 @@
+/* resortOS Step 2.4 | Cards, icons and controls
+   Purpose: consistent geometry and accessible interaction states
+   Deliberately NO entrance/keyframe motion — animations are the next milestone
+*/
+:root {
+  --ros-control-border: #dfe6dd;
+  --ros-control-hover: #edf6de;
+  --ros-control-focus: #679a37;
+  --ros-control-radius: 10px;
+  --ros-icon-tile-size: 34px;
+  --ros-action-size: 32px;
+  --ros-panel-outline: #e3e9e2;
+  --ros-panel-shadow: 0 2px 14px rgba(23,29,26,.026);
+}
+/* Cards are surfaces, not fake buttons — NO card lift or pointer cursor */
+.panel { border-color:var(--ros-panel-outline); box-shadow:var(--ros-panel-shadow); }
+.ticket-panel { border-color:#e9f1cb; }
+.panel-head { gap:11px; min-height:34px; }
+.panel-head h2 { min-width:0; }
+.stat-icon { width:var(--ros-icon-tile-size); height:var(--ros-icon-tile-size); border-radius:var(--ros-control-radius); }
+.stat-icon svg { flex:none; }
+/* A single quiet circular action, with a larger actual click target than the icon */
+.circle-action { width:var(--ros-action-size); height:var(--ros-action-size); border-color:var(--ros-control-border); background:#fff; transition:background-color .14s ease,border-color .14s ease; }
+.circle-action:hover { background:var(--ros-control-hover); border-color:#bfd69d; transform:none; }
+.circle-action:active { background:var(--ros-lime); }
+.systems-head .circle-action { background:#2c3831; border-color:#4d5b51; }
+.systems-head .circle-action:hover { background:#435346; border-color:#8eaa91; }
+/* All actionable controls use the same hover contrast and visible keyboard focus */
+.side-link, .global-search, .header-circle, .user-select,
+.small-button, .system-actions button, .circle-action, .mobile-toggle {
+  -webkit-tap-highlight-color:transparent;
+}
+.side-link:focus-visible, .global-search:focus-visible,
+.header-circle:focus-visible, .user-select:focus-visible,
+.small-button:focus-visible, .system-actions button:focus-visible,
+.circle-action:focus-visible, .mobile-toggle:focus-visible {
+  outline:2px solid var(--ros-control-focus);
+  outline-offset:3px;
+  position:relative;
+  z-index:3;
+}
+.side-link.active:focus-visible { outline-color:var(--ros-lime); outline-offset:3px; }
+.global-search:hover { background:#eaf0e9; border-color:#d4ddd3; color:#4e5b50; }
+.header-circle:hover, .user-select:hover { background:#f1f6eb; border-color:#d4dfd1; }
+.header-circle:active, .global-search:active { background:#e8f3dd; }
+.small-button { min-height:33px; padding:7px 11px; border-color:var(--ros-control-border); border-radius:var(--ros-control-radius); }
+.small-button:hover { background:var(--ros-control-hover); border-color:#c4d7b3; }
+.small-button:active { background:var(--ros-lime); }
+/* Consistent icon treatment inside approvals and dark quick-action panel */
+.mini-activity { border-radius:9px; }
+.systems-icon { border-radius:var(--ros-control-radius); }
+.system-actions button { border-radius:var(--ros-control-radius); border-color:#e3e9e4; min-height:80px; transition:background-color .14s ease,border-color .14s ease; }
+.system-actions button:hover, .system-actions button:focus-visible { background:var(--ros-lime); border-color:#c5e971; }
+.system-actions button:active, .system-actions button.is-pressed { background:#bee94d; border-color:#a4d82d; transform:scale(.975); }
+/* These are navigation shortcuts: no item has a permanent selected state */
+.category-pill { border-radius:6px; }
+/* Do not add status lights or new copy to the approved empty footer */
+.systems-footer-space { min-height:40px; }
+@media (max-width:700px) {
+  .circle-action { width:34px;height:34px; }
+  .system-actions button { min-height:78px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .circle-action, .system-actions button { transition:none; }
+}
+
+/* Dashboard quality states - no extra decorative badges or signals */
+.dashboard-empty-message { color:var(--ros-muted); font-size:12px; line-height:1.5; padding:15px 2px; }
+.chart-empty-state { min-height:98px; margin-top:auto; display:flex; align-items:center; justify-content:center; gap:9px; color:#62746a; font-size:11px; background:linear-gradient(180deg,transparent,#f7faf1); border-radius:12px; }
+.chart-empty-state svg { color:#598f58; flex:none; }
+.ticket-panel .chart-empty-state { background:rgba(255,255,255,.32); }
+.stat-main > b,.access-metric > b { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+.payments-total > b { font-size:clamp(22px,2vw,34px); }
+.approval-row > div { flex:1; min-width:0; }
+.approval-row strong,.approval-row small { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.audit-line strong,.audit-action { min-width:0; }
+.header-circle:disabled { cursor:default; opacity:.72; }
+.header-circle:disabled:hover { background:#f8f9f6; border-color:var(--ros-border); }
+.user-select { cursor:default; }
+.user-select:hover { background:white; border-color:var(--ros-border); }

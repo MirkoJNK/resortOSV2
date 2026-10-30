@@ -1,0 +1,76 @@
+/* resortOS v0.5.5 · Support-specific motion polish
+   Uses the approved Design Foundation v1.1 timing tokens in motion.css.
+   No geometry, colors, layout, artwork, or functional data are modified here.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  /* The Support page is mounted when navigated to. Ordinary ticket updates do
+     not re-create these elements, so the reveal does not replay on data edits. */
+  .support-page .support-hero-title,
+  .support-page .support-overview-card,
+  .support-page .support-inbox,
+  .support-page .support-ticket-detail {
+    animation:ros-enter var(--ros-motion-reveal,360ms) var(--ros-motion-ease,ease-out) both;
+  }
+  .support-page .support-hero-title {animation-delay:0ms}
+  .support-page .support-overview-card:nth-child(1){animation-delay:55ms}
+  .support-page .support-overview-card:nth-child(2){animation-delay:110ms}
+  .support-page .support-overview-card:nth-child(3){animation-delay:165ms}
+  .support-page .support-inbox{animation-delay:220ms}
+  .support-page .support-ticket-detail{animation-delay:275ms}
+
+  /* Selection and tab changes only tint/focus the existing controls; no new
+     panel slide or full content re-animation during rapid ticket changes. */
+  .support-page .support-ticket-row{
+    transition:background-color var(--ros-motion-fast,170ms) ease,
+               border-bottom-color var(--ros-motion-fast,170ms) ease,
+               box-shadow var(--ros-motion-fast,170ms) ease;
+  }
+  .support-page .support-detail-tabs button{
+    transition:color var(--ros-motion-fast,170ms) ease,
+               border-bottom-color var(--ros-motion-fast,170ms) ease;
+  }
+  .support-page .support-filter-tabs button{
+    transition:background-color var(--ros-motion-fast,170ms) ease,
+               color var(--ros-motion-fast,170ms) ease;
+  }
+  .support-page .support-picker-trigger{
+    transition:background-color var(--ros-motion-fast,170ms) ease,
+               border-color var(--ros-motion-fast,170ms) ease;
+  }
+  .support-page .support-picker-chevron{
+    transition:transform var(--ros-motion-fast,170ms) var(--ros-motion-ease,ease-out);
+  }
+  .support-page .support-picker-menu{
+    animation:ros-support-menu-enter var(--ros-motion-fast,170ms) var(--ros-motion-ease,ease-out) both;
+  }
+  @keyframes ros-support-menu-enter{
+    from{opacity:0;transform:translateY(-4px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  /* Only new actions receive these classes from React. Existing messages and
+     timeline items stay stationary when selecting tickets or opening tabs. */
+  .support-page .support-message-new{
+    animation:ros-support-record-enter 220ms var(--ros-motion-ease,ease-out) both;
+  }
+  .support-page .support-activity-new{
+    animation:ros-support-record-enter 240ms var(--ros-motion-ease,ease-out) both;
+  }
+  @keyframes ros-support-record-enter{
+    from{opacity:0;transform:translateY(5px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+}
+
+/* Respect OS-level accessibility preferences. Never animate status information
+   or require motion to understand ticket changes. */
+@media (prefers-reduced-motion: reduce) {
+  .support-page,
+  .support-page *,
+  .support-page *::before,
+  .support-page *::after{
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+}

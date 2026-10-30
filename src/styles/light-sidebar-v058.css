@@ -1,0 +1,117 @@
+/* v0.6.0 — Approved light sidebar, responsive-height composition.
+   The original logo, navigation icons and coastal image are unchanged. */
+:root { --ros-sidebar-width: clamp(232px, 17.2vw, 260px); }
+.sidebar.ros-light-sidebar {
+ background:#f3f9f0;
+ color:#283d42;
+ border-right:1px solid #c7d5cc;
+ box-shadow:3px 0 12px rgba(38,55,43,.045);
+ width:var(--ros-sidebar-width);
+ height:100dvh;
+ min-height:0;
+ padding:12px 12px 0;
+ gap:0;
+ display:flex;
+ flex-direction:column;
+ overflow:hidden;
+}
+.ros-light-sidebar .brand.ros-light-brand {
+ display:flex;
+ flex:none;
+ align-items:center;
+ min-height:58px;
+ height:58px;
+ padding:0 8px;
+ margin:0 0 7px;
+ white-space:nowrap;
+}
+.ros-light-sidebar .ros-full-brandmark {
+ display:block;
+ flex:none;
+ width:170px;
+ max-width:100%;
+ height:auto;
+ object-fit:contain;
+}
+.ros-light-sidebar .nav-stack {
+ display:flex;
+ flex:0 0 auto;
+ flex-direction:column;
+ gap:5px;
+ margin-top:4px;
+ position:relative;
+ z-index:1;
+}
+.ros-light-sidebar .side-link {
+ flex:none;
+ width:100%;
+ min-height:48px;
+ padding:0 15px;
+ border-radius:12px;
+ border:0;
+ background:transparent;
+ color:#3c5159;
+ font-size:13px;
+ font-weight:500;
+ gap:16px;
+ text-align:left;
+ line-height:1.25;
+ white-space:nowrap;
+ transition:background-color 170ms ease,color 170ms ease;
+}
+.ros-light-sidebar .side-link .ros-sidebar-nav-icon {width:28px;height:28px;object-fit:contain;flex-shrink:0}
+.ros-light-sidebar .side-link:hover {background:#e8f0e5;color:#17212b}
+.ros-light-sidebar .side-link.active {background:#dafa69;color:#111924;font-weight:800}
+.ros-light-sidebar .side-link.active .ros-sidebar-nav-icon {opacity:1}
+.ros-light-sidebar .side-link.active:hover {background:#cdf25c}
+.ros-light-sidebar .side-link:focus-visible {outline:3px solid #658f2d;outline-offset:2px}
+/* The image flexes into only the height left after the logo and navigation.
+   Both endpoints remain in view. Unlike object-fit:cover, the scene is never cropped.
+   At constrained heights it is vertically condensed rather than hidden or scrolled. */
+.ros-light-sidebar .side-bottom.ros-coastal-bottom {
+ position:relative;
+ isolation:isolate;
+ flex:0 1 auto;
+ min-height:0;
+ margin:auto -12px 0;
+ padding:0;
+ width:calc(100% + 24px);
+ height:auto;
+ aspect-ratio:459 / 892;
+ display:block;
+ overflow:hidden;
+ pointer-events:none;
+ background:#f3f9f0;
+}
+.ros-light-sidebar .ros-coastal-bottom img {
+ position:absolute;
+ inset:0;
+ width:100%;
+ height:100%;
+ max-width:none;
+ display:block;
+ object-fit:fill;
+ object-position:center;
+ mask-image:none;
+ -webkit-mask-image:none;
+}
+@media (max-width:1240px) {
+ :root {--ros-sidebar-width:232px}
+ .sidebar.ros-light-sidebar {padding-left:10px;padding-right:10px}
+ .ros-light-sidebar .brand.ros-light-brand {padding-left:7px}
+ .ros-light-sidebar .side-link {padding-left:12px;gap:13px;font-size:12px}
+ .ros-light-sidebar .side-bottom.ros-coastal-bottom {margin-left:-10px;margin-right:-10px;width:calc(100% + 20px)}
+}
+@media (max-width:900px) {
+ :root {--ros-sidebar-width:252px}
+ .sidebar.ros-light-sidebar {min-height:0}
+}
+@media (max-height:650px) {
+ .sidebar.ros-light-sidebar {padding-top:8px}
+ .ros-light-sidebar .brand.ros-light-brand {height:52px;min-height:52px;margin-bottom:4px}
+ .ros-light-sidebar .ros-full-brandmark {width:160px}
+ .ros-light-sidebar .nav-stack {gap:3px;margin-top:3px}
+}
+@media (prefers-reduced-motion:reduce){
+ .ros-light-sidebar .side-link {transition:none}
+}

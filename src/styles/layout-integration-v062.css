@@ -1,0 +1,7 @@
+/* v0.6.2 Option A — shared Admin shell gutters, applied after the established responsive and sidebar layers. */
+@media (min-width:1241px) {
+  .topbar,.main-content { padding-left:24px; padding-right:24px; }
+}
+@media (min-width:901px) and (max-width:1240px) {
+  .topbar,.main-content { padding-left:20px; padding-right:20px; }
+}

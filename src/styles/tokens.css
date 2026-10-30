@@ -1,0 +1,61 @@
+/* resortOS 2.0 · Foundation v1.1 | Approved tropical / boutique operating system */
+:root {
+  /* Brand neutrals */
+  --ros-ink: #171d1a;
+  --ros-ink-2: #27352e;
+  --ros-sidebar: #171d1a;
+  --ros-canvas: #f6f7f2;
+  --ros-surface: #ffffff;
+  --ros-surface-subtle: #fbfcf8;
+  --ros-border: #e6eae3;
+  --ros-text: #181c1a;
+  --ros-body: #3f4944;
+  --ros-muted: #778079;
+  --ros-muted-2: #99a29a;
+  /* Signature accents */
+  --ros-lime: #d7f36a;
+  --ros-lime-hover: #c6ec4f;
+  --ros-lime-soft: #f1f9da;
+  --ros-palm: #376046;
+  --ros-mint: #e8f5e9;
+  --ros-sand: #faf1e2;
+  --ros-blue: #e9f0fe;
+  --ros-blue-ink: #3863b5;
+  --ros-coral: #ffe7e1;
+  --ros-error: #c24f4c;
+  --ros-warning: #b77726;
+  --ros-success: #237b58;
+  --ros-font: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', sans-serif;
+  /* Approved UI typography rhythm · v0.2.3 */
+  --ros-type-page: clamp(27px, 2.48vw, 36px);
+  --ros-type-metric: 35px;
+  --ros-type-panel-title: 13px;
+  --ros-type-ui: 12px;
+  --ros-type-detail: 11px;
+  --ros-type-caption: 10px;
+  --ros-track-page: -.041em;
+  --ros-track-metric: -.055em;
+  --ros-leading-ui: 1.45;
+  --ros-r-xxs: 6px;
+  --ros-r-xs: 8px;
+  --ros-r-sm: 12px;
+  --ros-r-md: 16px;
+  --ros-r-card: 20px;
+  --ros-r-feature: 24px;
+  --ros-shadow-card: 0 3px 18px rgba(23, 29, 26, .025);
+  --ros-shadow-popover: 0 16px 46px rgba(23, 29, 26, .14);
+  --ros-sidebar-width: 232px;
+  --ros-content-max: 1440px;
+  --ros-gap: 16px;
+}
+/* Consistent 4px spacing base: 4, 8, 12, 16, 20, 24, 32, 40, 48 */
+
+/* Chart-specific tokens: one consistent visual grammar across resortOS */
+:root {
+  --ros-chart-lime: #b7e434;
+  --ros-chart-lime-strong: #a8d916;
+  --ros-chart-muted: #cbd5c2;
+  --ros-chart-grid: #e9efe5;
+  --ros-chart-fill: rgba(189, 235, 77, .19);
+  --ros-chart-stroke: #8ac300;
+}
