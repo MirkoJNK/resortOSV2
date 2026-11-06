@@ -1,13 +1,14 @@
 /* resortOS 2.0 · Stage 03 Motion language
    Gentle, one-time reveals and restrained control feedback
-   Motion lives in a dedicated CSS layer so the approved visual geometry remains unchanged
-*/
+   Motion lives in a dedicated CSS layer so the approved visual geometry remains unchanged */
+
 :root {
   --ros-motion-ease: cubic-bezier(.22,1,.36,1);
   --ros-motion-fast: 170ms;
   --ros-motion-reveal: 360ms;
   --ros-motion-stagger: 55ms;
 }
+
 @media (prefers-reduced-motion: no-preference) {
   /* Entrance is applied only to the dashboard, once per mounted screen
      CSS animations do not rerun for ordinary React store updates */
@@ -15,123 +16,174 @@
     animation: ros-enter var(--ros-motion-reveal) var(--ros-motion-ease) both;
     animation-delay: calc(var(--motion-order, 0) * var(--ros-motion-stagger));
   }
-  .motion-order-0 { --motion-order:0; }
-  .motion-order-1 { --motion-order:1; }
-  .motion-order-2 { --motion-order:2; }
-  .motion-order-3 { --motion-order:3; }
-  .motion-order-4 { --motion-order:4; }
-  .motion-order-5 { --motion-order:5; }
-  .motion-order-6 { --motion-order:6; }
-  .motion-order-7 { --motion-order:7; }
-  .motion-order-8 { --motion-order:8; }
-  @keyframes ros-enter {
-    from { opacity:0; transform:translateY(7px); }
-    to { opacity:1; transform:translateY(0); }
+  .motion-order-0 {
+    --motion-order: 0;
   }
-
+  .motion-order-1 {
+    --motion-order: 1;
+  }
+  .motion-order-2 {
+    --motion-order: 2;
+  }
+  .motion-order-3 {
+    --motion-order: 3;
+  }
+  .motion-order-4 {
+    --motion-order: 4;
+  }
+  .motion-order-5 {
+    --motion-order: 5;
+  }
+  .motion-order-6 {
+    --motion-order: 6;
+  }
+  .motion-order-7 {
+    --motion-order: 7;
+  }
+  .motion-order-8 {
+    --motion-order: 8;
+  }
+  @keyframes ros-enter {
+    from {
+      opacity: 0;
+      transform: translateY(7px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
   /* Chart animation does not change actual dimensions or data values */
   .dashboard-motion .chart-bar {
-    transform-origin:bottom center;
+    transform-origin: bottom center;
     animation: ros-bar-grow 550ms var(--ros-motion-ease) both;
-    animation-delay:440ms;
+    animation-delay: 440ms;
   }
-  .dashboard-motion .bar-day:nth-child(2) .chart-bar { animation-delay:470ms; }
-  .dashboard-motion .bar-day:nth-child(3) .chart-bar { animation-delay:500ms; }
-  .dashboard-motion .bar-day:nth-child(4) .chart-bar { animation-delay:530ms; }
-  .dashboard-motion .bar-day:nth-child(5) .chart-bar { animation-delay:560ms; }
-  .dashboard-motion .bar-day:nth-child(6) .chart-bar { animation-delay:590ms; }
+  .dashboard-motion .bar-day:nth-child(2) .chart-bar {
+    animation-delay: 470ms;
+  }
+  .dashboard-motion .bar-day:nth-child(3) .chart-bar {
+    animation-delay: 500ms;
+  }
+  .dashboard-motion .bar-day:nth-child(4) .chart-bar {
+    animation-delay: 530ms;
+  }
+  .dashboard-motion .bar-day:nth-child(5) .chart-bar {
+    animation-delay: 560ms;
+  }
+  .dashboard-motion .bar-day:nth-child(6) .chart-bar {
+    animation-delay: 590ms;
+  }
   @keyframes ros-bar-grow {
-    from { transform:scaleY(.02); opacity:.5; }
-    to { transform:scaleY(1); opacity:1; }
+    from {
+      transform: scaleY(.02);
+      opacity: .5;
+    }
+    to {
+      transform: scaleY(1);
+      opacity: 1;
+    }
   }
   .dashboard-motion .payment-stroke {
-    stroke-dasharray:1;
-    stroke-dashoffset:1;
-    animation:ros-line-draw 850ms var(--ros-motion-ease) 460ms both;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: ros-line-draw 850ms var(--ros-motion-ease) 460ms both;
   }
   @keyframes ros-line-draw {
-    to { stroke-dashoffset:0; }
+    to {
+      stroke-dashoffset: 0;
+    }
   }
   .dashboard-motion .payment-area {
-    animation:ros-chart-fill 420ms ease-out 760ms both;
+    animation: ros-chart-fill 420ms ease-out 760ms both;
   }
-  .dashboard-motion .payment-end,
-  .dashboard-motion .payment-end-halo {
-    animation:ros-chart-fill 180ms ease-out 1020ms both;
+  .dashboard-motion .payment-end, .dashboard-motion .payment-end-halo {
+    animation: ros-chart-fill 180ms ease-out 1020ms both;
   }
   @keyframes ros-chart-fill {
-    from {opacity:0}
-    to {opacity:1}
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
   /* Small data bars reveal from the left without changing their measured widths */
-  .dashboard-motion .dept-fill,
-  .dashboard-motion .access-track > span {
-    transform-origin:left center;
-    animation:ros-progress-open 440ms var(--ros-motion-ease) 560ms both;
+  .dashboard-motion .dept-fill, .dashboard-motion .access-track > span {
+    transform-origin: left center;
+    animation: ros-progress-open 440ms var(--ros-motion-ease) 560ms both;
   }
   @keyframes ros-progress-open {
-    from {transform:scaleX(0)}
-    to {transform:scaleX(1)}
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
   }
-
   /* Controls respond to real interaction, never loop or bounce */
-  .circle-action, .small-button, .side-link,
-  .global-search, .header-circle, .user-select,
-  .system-actions button, .primary-button, .mobile-toggle,
-  .search-results button {
-    transition:background-color var(--ros-motion-fast) ease,
+  .circle-action, .small-button, .side-link, .global-search, .header-circle, .user-select, .system-actions button, .primary-button, .mobile-toggle, .search-results button {
+    transition: background-color var(--ros-motion-fast) ease,
                border-color var(--ros-motion-fast) ease,
                color var(--ros-motion-fast) ease;
   }
-  .system-actions button { transition:background-color 170ms ease,border-color 170ms ease,transform 110ms ease; }
-  .circle-action svg, .small-button svg {
-    transition:transform var(--ros-motion-fast) var(--ros-motion-ease);
+  .system-actions button {
+    transition: background-color 170ms ease,border-color 170ms ease,transform 110ms ease;
   }
-  .circle-action:hover svg, .small-button:hover svg { transform:translateX(2px); }
-  .side-link svg { transition:color var(--ros-motion-fast) ease; }
+  .circle-action svg, .small-button svg {
+    transition: transform var(--ros-motion-fast) var(--ros-motion-ease);
+  }
+  .circle-action:hover svg, .small-button:hover svg {
+    transform: translateX(2px);
+  }
+  .side-link svg {
+    transition: color var(--ros-motion-fast) ease;
+  }
 }
+
 /* CSS transitions work in both directions because the search dialog remains mounted
    Inert and aria-hidden prevent keyboard and screen-reader access while closed */
+
 .dialog-shade {
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transition:opacity 180ms ease, visibility 0s linear 180ms;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 180ms ease, visibility 0s linear 180ms;
 }
+
 .dialog-shade.is-open {
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
-  transition:opacity 180ms ease, visibility 0s;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 180ms ease, visibility 0s;
 }
+
 .search-dialog {
-  opacity:0;
-  transform:translateY(6px) scale(.987);
-  transition:transform 190ms var(--ros-motion-ease),opacity 160ms ease;
+  opacity: 0;
+  transform: translateY(6px) scale(.987);
+  transition: transform 190ms var(--ros-motion-ease),opacity 160ms ease;
 }
-.dialog-shade.is-open .search-dialog {opacity:1;transform:none;}
+
+.dialog-shade.is-open .search-dialog {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html {scroll-behavior:auto!important}
-  .dashboard-motion .motion-reveal,
-  .dashboard-motion .chart-bar,
-  .dashboard-motion .payment-stroke,
-  .dashboard-motion .payment-area,
-  .dashboard-motion .payment-end,
-  .dashboard-motion .payment-end-halo,
-  .dashboard-motion .dept-fill,
-  .dashboard-motion .access-track>span {
-    animation:none!important;
-    opacity:1!important;
-    transform:none!important;
-    stroke-dasharray:none!important;
-    stroke-dashoffset:0!important;
+  html {
+    scroll-behavior: auto !important;
   }
-  .system-actions button.is-pressed { transform:none!important; }
-  .dialog-shade,.search-dialog,
-  .circle-action,.small-button,.side-link,
-  .global-search,.header-circle,.user-select,.system-actions button,
-  .primary-button,.mobile-toggle,.search-results button,
-  .circle-action svg,.small-button svg,.side-link svg {
-    transition:none!important;
+  .dashboard-motion .motion-reveal, .dashboard-motion .chart-bar, .dashboard-motion .payment-stroke, .dashboard-motion .payment-area, .dashboard-motion .payment-end, .dashboard-motion .payment-end-halo, .dashboard-motion .dept-fill, .dashboard-motion .access-track>span {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+  .system-actions button.is-pressed {
+    transform: none !important;
+  }
+  .dialog-shade,.search-dialog, .circle-action,.small-button,.side-link, .global-search,.header-circle,.user-select,.system-actions button, .primary-button,.mobile-toggle,.search-results button, .circle-action svg,.small-button svg,.side-link svg {
+    transition: none !important;
   }
 }

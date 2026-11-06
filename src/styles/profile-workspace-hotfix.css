@@ -1,0 +1,165 @@
+/* Global identity and dedicated workspace navigation — approved narrow hotfix. */
+
+.ros-profile-identity {
+  height: 38px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 10px 0 5px;
+  border: 1px solid var(--ros-border);
+  border-radius: 12px;
+  background: #fff;
+  color: #121714;
+  white-space: nowrap;
+  font: 700 11px var(--ros-font);
+}
+
+.ros-profile-avatar {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #eaf3dd;
+  color: #3b5e35;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: -.015em;
+}
+
+.ros-profile-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ros-light-sidebar .ros-workspace {
+  position: relative;
+  z-index: 5;
+  flex: none;
+  margin: 0 2px 8px;
+}
+
+.ros-light-sidebar .ros-workspace-trigger {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 42px;
+  padding: 4px 9px;
+  background: #fff;
+  border: 1px solid #d8e3d6;
+  border-radius: 11px;
+  color: #263d31;
+  text-align: left;
+  font: 700 12px var(--ros-font);
+  cursor: pointer;
+  transition: border-color 170ms ease, background 170ms ease;
+}
+
+.ros-light-sidebar .ros-workspace-trigger:hover {
+  background: #f9fcf6;
+  border-color: #b4cbb2;
+}
+
+.ros-light-sidebar .ros-workspace-trigger:focus-visible, .ros-light-sidebar .ros-workspace-menu button:focus-visible {
+  outline: 2px solid #799e45;
+  outline-offset: 2px;
+}
+
+.ros-workspace-icon {
+  width: 27px;
+  height: 27px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #f1f6e9;
+  color: #4c6851;
+}
+
+.ros-workspace-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ros-workspace-chevron {
+  flex: none;
+  color: #6f8073;
+  transition: transform 170ms ease;
+}
+
+.ros-workspace-chevron.open {
+  transform: rotate(180deg);
+}
+
+.ros-workspace-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  z-index: 55;
+  padding: 5px;
+  border: 1px solid #dce5da;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: var(--ros-shadow-popover);
+}
+
+.ros-workspace-menu button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 40px;
+  padding: 7px 9px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #314637;
+  text-align: left;
+  font: 600 11px var(--ros-font);
+  cursor: pointer;
+}
+
+.ros-workspace-menu button span {
+  flex: 1;
+}
+
+.ros-workspace-menu button:hover, .ros-workspace-menu button[aria-checked="true"] {
+  background: #f0f6e5;
+}
+
+/* The approved sidebar art flexes into remaining height, without cropping or moving. */
+
+@media (max-height: 650px) {
+  .ros-light-sidebar .ros-workspace {
+    margin-bottom: 4px;
+  }
+  .ros-light-sidebar .ros-workspace-trigger {
+    min-height: 37px;
+  }
+}
+
+@media (max-width: 900px) {
+  .ros-profile-identity {
+    height: 44px;
+    padding: 0 5px;
+  }
+  .ros-profile-avatar {
+    width: 32px;
+    height: 32px;
+  }
+  .ros-profile-name {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ros-workspace-chevron, .ros-light-sidebar .ros-workspace-trigger {
+    transition: none;
+  }
+}

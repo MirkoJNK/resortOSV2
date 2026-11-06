@@ -1,0 +1,268 @@
+{
+  "baseline": "resortOS_RoomsManager_ConceptB_Integrated_Candidate.zip",
+  "approval": "User-authorized Service Catalog Concept B integration with five UI overrides",
+  "baseline_file_count": 426,
+  "final_file_count": 465,
+  "modified_existing_files": [
+    {
+      "path": "scripts/qa-rooms-manager-live.mjs",
+      "before_sha256": "efdcc9f783fae20188cdde55994398d28649b6c2c3defd076d2d78736ff6a8df",
+      "after_sha256": "f11b860255d9998b129bf6180f3bd8053ee1bd5ada25a595142fc3fa1960a163"
+    },
+    {
+      "path": "scripts/qa-system-management-live.mjs",
+      "before_sha256": "541a7e69c763b8e90f65188691b782edbfec1359db9573dec231a8b9294a71a7",
+      "after_sha256": "daede415e732e88c1a11c234b10245397d000c5726df2daf987d2549fd5cf2fb"
+    },
+    {
+      "path": "scripts/qa-tables-manager-live.mjs",
+      "before_sha256": "d58546ee445c77cc2ed1c1f1ffb21ea7423cd85d4fdf50117d3c152bcd52b33d",
+      "after_sha256": "71274e9054222d6ab944c41ee8f784fbcd1a7e244b31a300e00290e90aa1d951"
+    },
+    {
+      "path": "scripts/verify-approved-baseline.cjs",
+      "before_sha256": "2d316b9f5d284f938c9886a9b99c5b8b07cbd0d30fbdb99dafc82534ae12b33f",
+      "after_sha256": "5c183c9091c29ef18f635255dd86990203c44ce7d76e7e707bef32100a344d2d"
+    },
+    {
+      "path": "scripts/verify-shell-extraction.cjs",
+      "before_sha256": "4e88d46fd0e9563c015dfcb869d53cb2c62204f68b406be41898e3be6d377242",
+      "after_sha256": "6a11bdfd8578b0ccfc4aa4d5f3163bf68fa35b7748d460ff861eaa0fb5348fc9"
+    },
+    {
+      "path": "scripts/verify-system-management-entrypoint.cjs",
+      "before_sha256": "313d0c62546f822a8f63778341f7fee82f45e6a159ef55ed5414f557dce8aeaf",
+      "after_sha256": "0d2346f73522cd5608e0317b8ddc0d5e094a2a335a3ff2c4d00a88b1df35f0d3"
+    },
+    {
+      "path": "src/App.tsx",
+      "before_sha256": "5f46fb5bcd023dc14227d99c13a6af64b1380013f1c0b6d2036a08e1c138cc77",
+      "after_sha256": "37b0698db5bce2abd9cfa67cc1525610d065535edf62aabd6abbc74d4cb8de4c"
+    },
+    {
+      "path": "src/domain/types.ts",
+      "before_sha256": "a366de5fa3e91b9a5a2cbc8dc08a88edbbea4d3ffc5248eead4566e63745f569",
+      "after_sha256": "d2f849b10b3dbe865aadae77343cef5384f5955d4702e26e1e960947ef59b0d2"
+    },
+    {
+      "path": "src/features/system-management/SystemManagement.tsx",
+      "before_sha256": "88e38a2676fba4b0921183da37832e3d5b3a530c1f4e02ee5d1169ba7a300b58",
+      "after_sha256": "424eafeabd97aad42a79969d0787a82b5d1748ccb9c9aa97d9cce006c707120e"
+    },
+    {
+      "path": "src/main.tsx",
+      "before_sha256": "8c78f26dc7c7cfd74f58569152c50058a23915d0b90f0baf4771d2a7d62f0d4d",
+      "after_sha256": "7f907e040b7fc60df8954ee67fefa4ae2ec158b17f2d4aab987ac189aca9786c"
+    },
+    {
+      "path": "src/shell/navigation.ts",
+      "before_sha256": "e0402678e2b790381e6604548b229cba0a211e7ee85acac76fe1cc3439997fce",
+      "after_sha256": "f8ad710b962a00870ae1c53d1d5cab9898ad850c3a0052bc5a47b47b6fdfb584"
+    },
+    {
+      "path": "tests/dashboard-extraction-v066.test.mjs",
+      "before_sha256": "5e8096483fc4252939cc9a33c109a66430f7ad22727c060855ae7e95e189e338",
+      "after_sha256": "b49909595332e2374638bef38b64522040719e759ec6d43211625e5b504c905d"
+    },
+    {
+      "path": "tests/helpers/source-for-legacy-checks.mjs",
+      "before_sha256": "79ade0b95621adfe5145a5976eea5e5aee9c58b9c9eecbd3f7d97dfc024cd28d",
+      "after_sha256": "1f5de58c324c2ffdb5bacb9e90d92e4c62e160cb8e59978e64beb5cec2bbc0ad"
+    },
+    {
+      "path": "tests/system-management-integration.test.mjs",
+      "before_sha256": "a6e3206efab9b12df3a72eb77b96d98d933c1ea8b02fe69559a847cb46fc36de",
+      "after_sha256": "bb7673a258627de067ac66cb8446bf8fc323e40c3ce4029a55b0c70e1e1094d8"
+    },
+    {
+      "path": "tests/tables-manager-domain.test.mjs",
+      "before_sha256": "c5f7e9276a303b02aa24253308f560b97664afc088bf4917fa0388bc95674f98",
+      "after_sha256": "db12eee5792d6566982c8fe7b32d0a61c21a17fc25470e7027680b8279fea536"
+    },
+    {
+      "path": "tests/typescript-readability-v064.test.mjs",
+      "before_sha256": "f970f0ea8abaf2e3929cbb2d3d9630d012a704b7688310e110fc792db04c9e8c",
+      "after_sha256": "e7cb880f5f242e8c850fdd483952b5e9433f578c5c6d77fe2cd82a65b0c7cd05"
+    }
+  ],
+  "new_files": [
+    {
+      "path": "QA_Reports/ServiceCatalog/Approved_ConceptB_Reference/Concept_B_Default_1440x900_FullPage.png",
+      "sha256": "ff271394cde572437aef6bed65b6958e6abe2a789b0bf42be0b3f53558aca65c"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/BASELINE_SOURCE.txt",
+      "sha256": "513bd869c566be69b8992fbc9bc8ea04224e457fbbdb09d9bca8923f8762a09a"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/BUILD_BLOCKED.txt",
+      "sha256": "c5f06e02e4dc7c9c9363c04a2427dc7fdec316f2e51ea3ee6e57e94f3cb09581"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/CHROMIUM_PREFLIGHT_CAPTURE.txt",
+      "sha256": "4d30809ff06c5fa7664ddd0953f7fd363f1970c98a5db4103033da8aa86fb04f"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/CSS_FORMAT_CHECK.txt",
+      "sha256": "beaf77cc1537958a49c7b8239a003586e7442607b55c436e2f4ef804b9385601"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/FINAL_CHECK_SOURCE_335_PASS.txt",
+      "sha256": "7e7fdfcc406fb2498f5e3fc3082580dd3a36757829b2fb7dfe8dbf8c53490d42"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/INDEPENDENT_TS_PREFLIGHT.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/LINT_BLOCKED.txt",
+      "sha256": "ba8ace411ab0622596e6692f8be9da90a65008057f6ff662d1c97ace7cb10410"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/PRETTIER_BLOCKED.txt",
+      "sha256": "c866d23f662ab9befa272a2fa48a3f49d255c1a743c7da65b1cbfcac3a70ab28"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/QUALITY_BASELINE.txt",
+      "sha256": "24a7105485a5a179e34eead3a1d6b17f66b005f2b1e28c724c273a9595f41ce2"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/STATIC_PREFLIGHT_RESULTS.json",
+      "sha256": "c9c500f653d8d19356bf3ba30f869083a0c6f732cb5435c2ba2b998fa9d134ff"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Service_Add.html",
+      "sha256": "8a41821bbfbc06f4005c842ce7e99fa3c4fe839f2ea40bb36a4ec3689a3c353d"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Service_Deactivation.html",
+      "sha256": "c660ce643da7e54612436334cb20ed090601519c2769f90248333a8034c14495"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Service_Default.html",
+      "sha256": "7b80907bf7522dca26dc0e385a85c28cf81faa47764a9f84f87607484d5e6fba"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Service_Edit.html",
+      "sha256": "1e72d55681da65341fa3a9fe5e4ce91e11d291c0e1a2980d919f9394e783f07c"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Service_Preview_Fixed.html",
+      "sha256": "5288aa09409efc5d728a83ae99adf445711d9b916753005a5f12f60cf47d5d1a"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Service_Preview_Quantity.html",
+      "sha256": "c227baa8629c5884150399c9b75b2d2cf4b769caee454180ab8bf954092bbd95"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Source_Service_Add_1440x900.png",
+      "sha256": "7d97aa4b3b4168554124c25344eb5aaf24fd5eb23ba07750c2f58516bd134668"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Source_Service_Add_390x844.png",
+      "sha256": "78bee01156e340242162c1c67803d1181cb0b5d14f01e9c0368246e5fe3c517e"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Source_Service_Deactivation_1440x900.png",
+      "sha256": "3a6b3fc2689694da9955c7dfd9fa3f504aab74e94850f50f1c60fee974248215"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Source_Service_Default_1024x768.png",
+      "sha256": "eece5019ac67d86a1d46d3421513856ce841d74f09bd0629230e0e6bef1e08a2"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Source_Service_Default_1440x900.png",
+      "sha256": "bc903d8543facbdee31dd036598821ae502bb2e3fedb0f756359b8ce24ecf8d4"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Source_Service_Default_1858x900.png",
+      "sha256": "c7d9b49a7e61290b61b9b2cf76d6ee53185e66d52c6be3d893cf98c8fb063cf4"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Source_Service_Default_390x844.png",
+      "sha256": "4d14e9743817a3bc92ce75eee7666436ca02e2e5a56caf2e038d4b1462915a13"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Source_Service_Edit_1440x900.png",
+      "sha256": "18a5e0d10f2c47af96ba04c848c3e2ee6ab5f51bd29d9520bf75e098b0625f9c"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Source_Service_Edit_390x844.png",
+      "sha256": "6171e46cac840b55d0f080c661c47ed5cdad67d2e9616b31f8b8bd5ff09a1f99"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Source_Service_Preview_Fixed_1440x900.png",
+      "sha256": "8c0a21920f486f2a0289615b3cf36f0ca6124cf9ecf2fcfac5682a81edcdfdbe"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/Source_Preflight_Screenshots/Source_Service_Preview_Quantity_1440x900.png",
+      "sha256": "8442233abe46d635bcce92692bc9ab5ed3b1516918e4a89e2d5a10e638058ee4"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/TYPECHECK_BLOCKED.txt",
+      "sha256": "ef0f23ae3f0e16f299195578fe7260ed55f3b221dcfeef724a9235dc825a34b0"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/TYPESCRIPT_SYNTAX_CHECK.txt",
+      "sha256": "c1f0c625133396f9aa9c21917393a732de888c0a6307105134cfb8bc8c473a23"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/render-chromium-preflight.mjs",
+      "sha256": "7b688b5779a9c50010a529e6c865501880ac6a91d3a8ae7ad34363efbf68ea6f"
+    },
+    {
+      "path": "QA_Reports/ServiceCatalog/render-source-preflight.cjs",
+      "sha256": "708479a88386e7a836e19259e82f46c1cc7ed6682c28b07b69aa3d67d906d6de"
+    },
+    {
+      "path": "SERVICE_CATALOG_APPROVED.json",
+      "sha256": "0f4e85df09a8532a2a65799e72112cfa54354e4ad1d10be705dfc17d0751ff80"
+    },
+    {
+      "path": "scripts/qa-service-catalog-live.mjs",
+      "sha256": "69021557f70b5eeface60d012906f97cbcfbf53efff8c9154528ebd38dc5f79a"
+    },
+    {
+      "path": "src/features/service-catalog/ServiceCatalog.tsx",
+      "sha256": "956827a54ad040f2fd0fbc5e423126dc38261eb5222961cd5fb99d98e4e88cfe"
+    },
+    {
+      "path": "src/features/service-catalog/model.ts",
+      "sha256": "55f6d30f091d335fc042fb688d96dfe48da7b32bf0fdf498767c706e520fa533"
+    },
+    {
+      "path": "src/features/service-catalog/service-catalog.css",
+      "sha256": "dd15a7008260bdf2829defb2493cc8014b88c995d1bda64e39db26b63b284962"
+    },
+    {
+      "path": "tests/service-catalog-domain.test.mjs",
+      "sha256": "d89e1ff51060824d90b5bfaa69b50e1f307bc9f7e5f3d839e542ea4a7b76289a"
+    },
+    {
+      "path": "tests/service-catalog-react-interactions.test.mjs",
+      "sha256": "d6aacd068e3720dbe0770c2648d96874f833d31b9817fb988bcde98ec79ef6c6"
+    }
+  ],
+  "removed_existing_files": [],
+  "protected_directory_file_counts": {
+    "src/features/dashboard/": 1,
+    "src/features/support/": 0,
+    "src/features/audit/": 0,
+    "src/features/rooms-manager/": 3,
+    "src/features/tables-manager/": 3,
+    "src/styles/": 13,
+    "public/": 13
+  },
+  "protected_directory_unexpected_changes": {
+    "src/features/dashboard/": [],
+    "src/features/support/": [],
+    "src/features/audit/": [],
+    "src/features/rooms-manager/": [],
+    "src/features/tables-manager/": [],
+    "src/styles/": [],
+    "public/": []
+  },
+  "existing_app_version_unchanged": true,
+  "generated_tsbuildinfo_excluded": true,
+  "note": "QA reports and their source preflight artifacts are newly generated documentation. Source hashes for protected unrelated features are not regenerated."
+}

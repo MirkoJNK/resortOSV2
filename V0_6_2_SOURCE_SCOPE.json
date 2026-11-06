@@ -1,0 +1,14 @@
+{
+  "baseline": "v0.6.0",
+  "version": "v0.6.2",
+  "app_source_changed": [
+    "src/main.tsx",
+    "src/styles/layout-integration-v062.css",
+    "src/styles/support.css",
+    "src/styles/light-sidebar-v058.css"
+  ],
+  "assets_unchanged": true,
+  "tests_passed": 161,
+  "static_visual_match_exact_pixels": 0.999845669,
+  "build": "not verified; vite/client missing locally"
+}

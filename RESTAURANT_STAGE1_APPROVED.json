@@ -1,0 +1,12 @@
+{
+  "release": "Restaurant Stage 1 — authorized Dashboard and demo department switching",
+  "created": "2026-11-06",
+  "boundary": "Admin Dashboard, business components and existing CSS/artwork preserved",
+  "appHash": "ac7a0a3a8cf5756073cc0d962300455d7270dca0b79c558ca2a5e921ac7a25fd",
+  "navigationHash": "652a191a4e971466ba8538597ca1cd970796040b47a9ae887bf56c867072a9dd",
+  "sidebarHash": "91b9e39f8286cd265166e5ba575f90575df98271c440e933fccff6a1ca34c4e4",
+  "topbarHash": "1e0636f9fede94ae220a9e5a484327014c8454f89f4cfed894836bec6de71571",
+  "globalSearchHash": "9865aadbbcb4fcf06f5e3bcb043fab47c8a19712b47969aa3be823d5f1addf11",
+  "restaurantDashboardHash": "c99a841082ccf61c08df7a3df6162391f69822d73d31f79b7d2cc20c089ddee4",
+  "restaurantStylesHash": "4705e93327bb1cf1f5d37a380c023fafa58e15f5f633ae34a2f316db547f7ee4"
+}

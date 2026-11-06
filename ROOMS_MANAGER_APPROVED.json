@@ -1,0 +1,11 @@
+{
+  "release": "Rooms Manager Concept B integration, approved changes only",
+  "baseline": "resortOS_TablesManager_SmoothDragging_Hotfix_Candidate.zip",
+  "appHash": "a718a619783ef9aad3af02bf389743fe84fab50504204fa00fd0fb5cbacd9b1e",
+  "navigationHash": "75757c0a26c755d6dace61b48e2386578ec5f8fd589e3f46352e9d5dd7b4dd61",
+  "systemManagementHash": "e0f9e755f0830b5f17eb7435c463c1a5a47bc6b234f894230da70004bfdea445",
+  "domainTypesHash": "18a79477c708979beba84daa54a8862841d4508c4053ab34ff3c273823f9c53a",
+  "roomsManagerHash": "e9937dfa37f25366a77c54d35e2b30968523091356af25f77d8a4e9ed9796733",
+  "roomsModelHash": "11521144c70d846f5c53d1e3fb683a01fa7aa38ecc47b0638262343af88c1432",
+  "roomsStylesHash": "a7eac3e32a0f0e3163da0b5836a9f71cb15cb5551381b596c04048ae0d75be61"
+}

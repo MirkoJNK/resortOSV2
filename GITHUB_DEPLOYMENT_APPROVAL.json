@@ -1,0 +1,16 @@
+{
+  "purpose": "GitHub Pages project-site asset compatibility only",
+  "source_archive": "resortOS_Global_Profile_Workspace_Hotfix_Candidate.zip",
+  "original_sidebar_sha256": "d7711631eb657476fc6ce30fcbae415b46b932be9a5d42c7fac3f1aa91f14a46",
+  "updated_sidebar_sha256": "b2aca93e94fd47750540ba165d466c19048c30d6f99aa13130aebc84d865b5df",
+  "changed_application_files": [
+    "src/shell/Sidebar.tsx",
+    "vite.config.ts"
+  ],
+  "related_approval_file": "GLOBAL_UI_HOTFIX_APPROVED.json",
+  "historical_test_only_file": "tests/v0661-banner-release.test.mjs",
+  "historical_fixture_path": "tests/fixtures/v066-historical-source",
+  "css_asset_note": "Vite transforms CSS url() based on configured base; original CSS untouched",
+  "no_other_application_source_modified": true,
+  "updated_vite_sha256": "a9af5874096e22996b478f234aa6ea7c40dce969f499fd12ebb36056867423bf"
+}

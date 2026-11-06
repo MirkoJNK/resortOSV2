@@ -1,11 +1,12 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import fs from 'node:fs'
+import fs from './helpers/source-for-legacy-checks.mjs'
 import {execFileSync} from 'node:child_process'
 import {createHash} from 'node:crypto'
 
 const app=fs.readFileSync('src/App.tsx','utf8')
-const css=fs.readFileSync('src/styles/light-sidebar-v058.css','utf8')
+const css=cssForLegacyAssertions('src/styles/light-sidebar-v058.css')
 const bootstrap=fs.readFileSync('src/main.tsx','utf8')
 const thumb=fs.readFileSync('public/assets/sidebar-coastal-approved-v058.png')
 const logo=fs.readFileSync('public/assets/sidebar-brand-approved-v058.png')

@@ -1,11 +1,12 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {readFileSync} from 'node:fs'
+import {readFileSync} from './helpers/source-for-legacy-checks.mjs'
 const read = (name) => readFileSync(new URL(name, import.meta.url), 'utf8')
 const charts = read('../src/components/Charts.tsx')
 const app = read('../src/App.tsx')
-const css = read('../src/styles/app.css')
-const tokens = read('../src/styles/tokens.css')
+const css = cssForLegacyAssertions(new URL('../src/styles/app.css',import.meta.url))
+const tokens = cssForLegacyAssertions(new URL('../src/styles/tokens.css',import.meta.url))
 
 test('approved Dashboard bars stay intact while live ticket counts use shared state', () => {
   assert.match(charts, /labels\.map\(\(label,day\)=>/)
@@ -34,7 +35,7 @@ test('roles distribution is derived from role counts and uses squared swatches',
 })
 test('approved tropical art and typography remain while motion is deferred', () => {
   assert.match(css, /\.art-copy\{[^}]*Georgia/)
-  assert.match(read('../src/styles/typography.css'), /\.welcome h1/)
+  assert.match(cssForLegacyAssertions(new URL('../src/styles/typography.css',import.meta.url)), /\.welcome h1/)
   assert.match(app,/Your resort is running smoothly'/)
   assert.doesNotMatch(css, /@keyframes (?:bar|chart|line)/)
 })

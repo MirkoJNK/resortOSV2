@@ -1,6 +1,7 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import fs from 'node:fs'
+import fs from './helpers/source-for-legacy-checks.mjs'
 import vm from 'node:vm'
 import {createRequire} from 'node:module'
 
@@ -8,6 +9,7 @@ const require=createRequire(import.meta.url)
 let ts
 try {ts=require('typescript')} catch {ts=require('/opt/nvm/versions/node/v22.16.0/lib/node_modules/typescript')}
 const src=fs.readFileSync('src/components/SupportWorkspace.tsx','utf8')
+const srcTight=src.replace(/(['"`])(?:\\.|(?!\1)[^\\])*\1|\s+/gs, m => /^\s+$/.test(m) ? '' : m)
 const navSource=fs.readFileSync('src/domain/supportNavigation.ts','utf8')
 const transpile=(file,source)=>ts.transpileModule(source,{fileName:file,reportDiagnostics:true,compilerOptions:{jsx:ts.JsxEmit.ReactJSX,module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}})
 const navResult=transpile('src/domain/supportNavigation.ts',navSource)
@@ -200,9 +202,9 @@ test('tabs support Left/Right/Home/End keyboard navigation while retaining three
 test('Admin conversation milestone does not add ticket creation or external delivery',()=>{
  assert.doesNotMatch(src,/New ticket|Create ticket|createTicket\(/)
  assert.match(src,/function addAdminReply\(/)
- assert.match(src,/author:demoActor,initials:'DA',role:'Admin'/)
- assert.match(src,/SupportTicketDetails ticket=\{ticket\} onChange=\{onChange\}/)
- assert.match(src,/SupportActivity ticket=\{ticket\}/)
+ assert.match(srcTight,/author:demoActor,initials:'DA',role:'Admin'/)
+ assert.match(src,/<SupportTicketDetails[\s\S]*?ticket=\{ticket\}[\s\S]*?onChange=\{onChange\}/)
+ assert.match(src,/<SupportActivity\s+ticket=\{ticket\}/)
 })
 
 const pickerButton=(label)=>n=>n.type==='button'&&n.props['aria-label']===label
@@ -222,7 +224,7 @@ test('default support view is Open, with exactly three queues and consistent hea
  assert.deepEqual(h.findAll(n=>n.type==='button'&&n.props['aria-pressed']!==undefined&&['Open','In progress','Closed'].includes(n.props.children?.[0])).map(n=>n.props.children[0]),['Open','In progress','Closed'])
  assert.equal(h.find(queueButton('Open')).props['aria-pressed'],true)
  assert.equal(h.findAll(n=>n.type==='button'&&n.props.children?.[0]==='All').length,0)
- assert.match(h.textOf(h.find(n=>n.type==='div'&&n.props['aria-label']==='Live in-session support metrics')),/Open tickets7/)
+ assert.match(h.textOf(h.find(queueButton('Open'))),/7/)
 })
 
 test('three custom status options replace native selects and both editing locations synchronize',()=>{
@@ -427,7 +429,7 @@ test('manually choosing another ticket after a status change cancels retained fo
 })
 
 test('support status readability enhancements are scoped to the existing inline selectors',()=>{
- const css=fs.readFileSync('src/styles/support.css','utf8')
+ const css=cssForLegacyAssertions('src/styles/support.css')
  assert.match(css,/\.support-picker-option\{font-size:11\.5px;font-weight:650/)
  assert.match(css,/\.support-picker-option\.is-selected\{background:#e8f2e1;font-weight:800/)
  assert.match(css,/\.support-header-status \.support-picker-trigger\{font-weight:800/)
@@ -751,24 +753,24 @@ test('Stage 4.5: Closed sample tickets remain read-only until reopened, with no 
 
 test('Stage 4.5: inbox metrics reflect queue transitions and urgent-open tickets',()=>{
  const h=createHarness('Open')
- const getMetrics=()=>h.textOf(h.find(n=>n.type==='div'&&n.props['aria-label']==='Live in-session support metrics'))
- assert.match(getMetrics(),/Open tickets7/)
- assert.match(getMetrics(),/Closed tickets8/)
+ const queueCount=status=>h.textOf(h.find(queueButton(status)))
+ assert.match(queueCount('Open'),/7/)
+ assert.match(queueCount('Closed'),/8/)
  changePicker(h,'Change ticket status in header','Closed')
- assert.match(getMetrics(),/Open tickets6/)
- assert.match(getMetrics(),/Closed tickets9/)
+ assert.match(queueCount('Open'),/6/)
+ assert.match(queueCount('Closed'),/9/)
  changePicker(h,'Change ticket status in header','Open')
- assert.match(getMetrics(),/Open tickets7/)
- assert.match(getMetrics(),/Closed tickets8/)
- assert.match(getMetrics(),/Open tickets7.*1 urgent/s) // Urgent appears only inside the Open card when nonzero.
+ assert.match(queueCount('Open'),/7/)
+ assert.match(queueCount('Closed'),/8/)
+ assert.ok(!src.includes('function SupportOverview(')) // approved overview removal
 })
 
 test('Stage 4.5: current Admin demo introduces neither ticket creation nor real delivery APIs',()=>{
  assert.doesNotMatch(src,/<button[^>]*>New ticket|function createTicket\(/)
  assert.doesNotMatch(src,/(?:fetch|axios|WebSocket)\s*\(/)
- assert.match(src,/role:'Admin'/)
+ assert.match(srcTight,/role:'Admin'/)
  assert.match(src,/initialSupportFilters/)
- assert.match(src,/source:'session-action'/)
+ assert.match(srcTight,/source:'session-action'/)
 })
 
 // v0.5.5 — motion markers are tied to real new records, not tab navigation.

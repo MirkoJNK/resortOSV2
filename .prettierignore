@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+visual-reference.html
+qa-*.html
+public/assets/
+*.png
+*.jpg
+*.jpeg
+*.zip
+*.tar.gz

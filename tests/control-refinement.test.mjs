@@ -1,8 +1,9 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {readFileSync} from 'node:fs'
+import {readFileSync} from './helpers/source-for-legacy-checks.mjs'
 const read = f => readFileSync(new URL(f,import.meta.url),'utf8')
-const app=read('../src/App.tsx'),ui=read('../src/components/Ui.tsx'),css=read('../src/styles/components.css'),main=read('../src/main.tsx')
+const app=read('../src/App.tsx'),ui=read('../src/components/Ui.tsx'),css=cssForLegacyAssertions(new URL('../src/styles/components.css',import.meta.url)),main=read('../src/main.tsx')
 const dashboard=app.slice(app.indexOf('function Dashboard('),app.indexOf('function SectionHeader('))
 
 test('dashboard card headings share one reusable component',()=>{
@@ -33,6 +34,6 @@ test('buttons have keyboard focus and visual states without card bounce',()=>{
 test('approved design and empty system footer stay intact',()=>{
  assert.match(app,/systems-footer-space/)
  assert.match(app,/Your resort is running smoothly'/)
- assert.match(read('../src/styles/app.css'),/\.art-copy\{[^}]*Georgia/)
- assert.match(read('../src/styles/tokens.css'),/--ros-lime: #d7f36a;/)
+ assert.match(cssForLegacyAssertions(new URL('../src/styles/app.css',import.meta.url)),/\.art-copy\{[^}]*Georgia/)
+ assert.match(cssForLegacyAssertions(new URL('../src/styles/tokens.css',import.meta.url)),/--ros-lime: #d7f36a;/)
 })

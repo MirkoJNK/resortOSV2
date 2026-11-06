@@ -1,0 +1,60 @@
+{
+  "baseline": "resortOS_SystemManagement_v2_Integrated_Review.zip",
+  "changes": [
+    {
+      "path": "START_HERE_SEARCH_FIX.md",
+      "status": "added",
+      "sha256": "143d8dcc2fbdd7b2e7af6ade478626153314c377872497270e02f08adb6d311d"
+    },
+    {
+      "path": "SYSTEM_MANAGEMENT_SEARCH_FIX_CHECK_SOURCE_LOG.txt",
+      "status": "added",
+      "sha256": "f589dd3bbdf5b98b6f63349ada5d69f776f6418a456be366fa2b55fa80f75244"
+    },
+    {
+      "path": "SYSTEM_MANAGEMENT_SEARCH_FIX_RELEASE.md",
+      "status": "added",
+      "sha256": "cab63663908a37917807bc0c81800b3b5d318ff7e61d5842200718963fd77245"
+    },
+    {
+      "path": "SYSTEM_MANAGEMENT_SEARCH_FIX_SQA.md",
+      "status": "added",
+      "sha256": "4b7f1ba5b8e17fa4af77b2543d22db517f84f87ef8ff6b9a9c52699141119886"
+    },
+    {
+      "path": "SYSTEM_MANAGEMENT_SEARCH_FIX_TEST_LOG.txt",
+      "status": "added",
+      "sha256": "b45f11eb9d70fb5ec525d4a40775a5dba053028e1c00edd9d28fd8b6f5c5caac"
+    },
+    {
+      "path": "SYSTEM_MANAGEMENT_V2_APPROVED.json",
+      "status": "modified",
+      "sha256": "6274fed2aacd8c69c9c03382c4d3738f34ea7c3c404190d0445e6705a21f46e8"
+    },
+    {
+      "path": "scripts/qa-system-management-live.mjs",
+      "status": "added",
+      "sha256": "ae3e2abc57729f4eb04bb16d148c4b34c1babd81266956d18f9c5cad9d9d9423"
+    },
+    {
+      "path": "scripts/verify-shell-extraction.cjs",
+      "status": "modified",
+      "sha256": "a067f1847b873e2e3a6e0b05afb5c439b5a62ae743efcc215cf5023c7e31ee0d"
+    },
+    {
+      "path": "src/App.tsx",
+      "status": "modified",
+      "sha256": "0214f2437198f4e39d4dfa53b73f15c1991b45e1b24f93df51aafcfef592fb9f"
+    },
+    {
+      "path": "src/features/system-management/SystemManagement.tsx",
+      "status": "modified",
+      "sha256": "9def89bf3957f7f61ba1b9f147a53fe9e730404d7a7f76c19307243f5069c442"
+    },
+    {
+      "path": "tests/system-management-integration.test.mjs",
+      "status": "modified",
+      "sha256": "b02c69fdd7f02b0659a2736bc1135bca10dfe02a51c45cb31b53940ec2acb171"
+    }
+  ]
+}

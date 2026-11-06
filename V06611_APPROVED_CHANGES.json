@@ -1,0 +1,11 @@
+{
+  "version": "Stage 2 current approved Support layout (historic v0.6.6.1 evidence preserved)",
+  "scope": "Stage 2 approved Support standard Administration header, removal of Support-only banner/weather, Variant B adaptive workspace; original Dashboard weather/logo/other modules unchanged",
+  "files": {
+    "src/components/SupportWorkspace.tsx": "6c09dee1fc2672dc7906e8ffffe2c150863f2a7fe2c066deb4025ec66bcfaa70",
+    "src/styles/support.css": "a5250627554b7b7187db8322eca8f5ea9504e8183a05c18f79aa51cee6f6a060",
+    "src/styles/support-motion.css": "5d8f8700201d1a38e2129ada0deb5567a0649e5a01d5e8ecf477f39d26ccb27e",
+    "public/assets/support-coastal-panorama-v0661.png": "3033b43d83b638a38b24819f96143bbe886768fa9edbe538d8d670d71ea759d8"
+  },
+  "npmPackageVersion": "0.6.6-hotfix.1"
+}

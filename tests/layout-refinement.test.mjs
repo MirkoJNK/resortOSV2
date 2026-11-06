@@ -1,8 +1,9 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {readFileSync} from 'node:fs'
-const css=readFileSync(new URL('../src/styles/app.css',import.meta.url),'utf8')
-const tokens=readFileSync(new URL('../src/styles/tokens.css',import.meta.url),'utf8')
+import {readFileSync} from './helpers/source-for-legacy-checks.mjs'
+const css=cssForLegacyAssertions(new URL('../src/styles/app.css',import.meta.url))
+const tokens=cssForLegacyAssertions(new URL('../src/styles/tokens.css',import.meta.url))
 test('desktop grid follows approved rhythm and tighter vertical spacing',()=>{
  assert.match(tokens,/--ros-gap: 16px;/)
  assert.match(css,/\.welcome\{min-height:100px/)

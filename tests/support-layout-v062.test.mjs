@@ -1,11 +1,14 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {readFileSync} from 'node:fs'
+import {readFileSync} from './helpers/source-for-legacy-checks.mjs'
 const read = name => readFileSync(name,'utf8')
-const app = read('src/styles/layout-integration-v062.css')
-const side = read('src/styles/light-sidebar-v058.css')
-const support = read('src/styles/support.css')
-const react = read('src/components/SupportWorkspace.tsx')
+const app = cssForLegacyAssertions('src/styles/layout-integration-v062.css')
+const side = cssForLegacyAssertions('src/styles/light-sidebar-v058.css')
+const support = cssForLegacyAssertions('src/styles/support.css')
+const normalizeCode = s => s.replace(/(['"`])(?:\\.|(?!\1)[^\\])*\1|\s+/gs, m => /^\s+$/.test(m) ? '' : m)
+const reactRaw = read('src/components/SupportWorkspace.tsx')
+const react=reactRaw+"\n"+normalizeCode(reactRaw)
 
 test('Option A shares a 24px desktop gutter, 20px compact-desktop gutter',()=>{
  assert.match(app, /@media \(min-width:1241px\) \{[\s\S]*?\.topbar,\.main-content \{ padding-left:24px; padding-right:24px; \}/)
@@ -17,20 +20,21 @@ test('Option A sidebar has a subtle, distinct edge and retains the full original
  assert.match(side, /object-fit:fill/)
  assert.match(side, /overflow:hidden/)
 })
-test('Option A uses compact hero and consistent three-card overview on desktop',()=>{
- assert.match(support, /\.support-page \.support-hero \{ min-height:114px; padding:5px 0 8px; \}/)
- assert.match(support, /\.support-page \.support-overview-card \{ min-height:93px; padding:12px 18px; gap:16px; \}/)
- assert.match(support, /\.support-page \.support-overview-icon \{ width:49px; height:49px; \}/)
- assert.match(support, /\.support-page \.support-overview \{ margin-bottom:12px; \}/)
- assert.match(support, /@media \(min-width:761px\)/)
+test('Support uses approved standard header and adaptive Variant B workspace without overview cards',()=>{
+ assert.doesNotMatch(support,/support-coastal-panorama-v0661.png|\.support-hero/)
+ assert.match(support,/height:\s*clamp\(610px,\s*calc\(100dvh - 270px\),\s*740px\)/)
+ assert.match(react,/className="section-header support-standard-header"/)
+ assert.match(react,/support-filter-tabs/)
+ assert.doesNotMatch(react,/function SupportOverview\(/)
 })
-test('the original In progress clock icon is kept in actual React output',()=>{
- assert.match(react,/\{title:'In progress',count:inProgress,kind:'progress' as const,icon:Clock3\}/)
- assert.match(react,/<Icon size=\{27\} strokeWidth=\{1\.85\}\/>/)
+test('In progress queue remains after removed overview metric icon',()=>{
+ assert.match(react,/supportTicketStatuses/)
+ assert.match(react,/support-filter-tabs/)
+ assert.doesNotMatch(react,/function SupportOverview/)
 })
 test('the approved ticket interaction markup and data remain present',()=>{
  for(const className of ['support-ticket-list','support-detail-tabs','support-conversation','support-activity']) assert.ok(react.includes(className))
- assert.match(react,/supportOriginDepartments=\['Front Desk','Restaurant'\]/)
+ assert.match(react,/supportOriginDepartments\s*=\s*\['Front Desk',\s*'Restaurant'\]/)
 })
 
 test('shared layout override loads after approved sidebar and existing responsive layers',()=>{

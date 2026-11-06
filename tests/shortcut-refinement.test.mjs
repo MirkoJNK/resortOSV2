@@ -1,8 +1,9 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {readFileSync} from 'node:fs'
+import {readFileSync} from './helpers/source-for-legacy-checks.mjs'
 const read=p=>readFileSync(new URL(p,import.meta.url),'utf8')
-const app=read('../src/App.tsx'), css=read('../src/styles/components.css'), motion=read('../src/styles/motion.css')
+const app=read('../src/App.tsx'), css=cssForLegacyAssertions(new URL('../src/styles/components.css',import.meta.url)), motion=cssForLegacyAssertions(new URL('../src/styles/motion.css',import.meta.url))
 test('shortcut title and neutral default are correct',()=>{
  assert.match(app,/>Administration shortcuts<\/h2>/)
  assert.match(app,/className=\{pressed===area\?'is-pressed':''\}/)

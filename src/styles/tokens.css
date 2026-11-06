@@ -1,4 +1,5 @@
 /* resortOS 2.0 · Foundation v1.1 | Approved tropical / boutique operating system */
+
 :root {
   /* Brand neutrals */
   --ros-ink: #171d1a;
@@ -48,9 +49,11 @@
   --ros-content-max: 1440px;
   --ros-gap: 16px;
 }
+
 /* Consistent 4px spacing base: 4, 8, 12, 16, 20, 24, 32, 40, 48 */
 
 /* Chart-specific tokens: one consistent visual grammar across resortOS */
+
 :root {
   --ros-chart-lime: #b7e434;
   --ros-chart-lime-strong: #a8d916;

@@ -1,0 +1,104 @@
+{
+  "baseline_archive": "resortOS_TablesManager_Production_Candidate.zip",
+  "baseline_archive_sha256": "4461d3919dfe03497e4da086df05a0b82022c5726b207cd2b5c446b65dca305b",
+  "changes": [
+    {
+      "file": "TABLES_MANAGER_APPROVED.json",
+      "kind": "modified"
+    },
+    {
+      "file": "TABLES_MANAGER_DRAG_HOTFIX_CHANGELOG.md",
+      "kind": "added"
+    },
+    {
+      "file": "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/baseline-test.log",
+      "kind": "added"
+    },
+    {
+      "file": "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/build.log",
+      "kind": "added"
+    },
+    {
+      "file": "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/final-test.log",
+      "kind": "added"
+    },
+    {
+      "file": "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/format-css-check.log",
+      "kind": "added"
+    },
+    {
+      "file": "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/format-typescript-check.log",
+      "kind": "added"
+    },
+    {
+      "file": "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/lint.log",
+      "kind": "added"
+    },
+    {
+      "file": "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/typecheck.log",
+      "kind": "added"
+    },
+    {
+      "file": "TABLES_MANAGER_DRAG_HOTFIX_SOURCE_DIFF.json",
+      "kind": "added"
+    },
+    {
+      "file": "TABLES_MANAGER_DRAG_HOTFIX_SQA.md",
+      "kind": "added"
+    },
+    {
+      "file": "TABLES_MANAGER_DRAG_HOTFIX_START_HERE.md",
+      "kind": "added"
+    },
+    {
+      "file": "scripts/qa-tables-drag-live.mjs",
+      "kind": "added"
+    },
+    {
+      "file": "src/features/tables-manager/TablesManager.tsx",
+      "kind": "modified"
+    },
+    {
+      "file": "src/features/tables-manager/model.ts",
+      "kind": "modified"
+    },
+    {
+      "file": "tests/tables-manager-drag-hotfix.test.mjs",
+      "kind": "added"
+    }
+  ],
+  "protected_hashes": {
+    "TablesManager.tsx": {
+      "before": "4f3462fb1c13c633ca4a0a26b6377970f636c8db84a3ddd6959d8a6ef9bf5891",
+      "after": "4f37eddeda4faee6cb7397046ecfe3274c1c3be8080a3768571dd2f23f83be85"
+    },
+    "model.ts": {
+      "before": "850eb8376a09053227deebef64ee51266705c61163c4367f60db2743f6664dab",
+      "after": "a94d44891dcd8b1e7aeefa046d1d6633325386f8d7e0d4ad3f9c771324cefbaf"
+    },
+    "tables-manager.css": {
+      "before": "e90a0b0a607c75e27e40e5dbd3a671df25bd1401c08c28f29a6b679cf5929547",
+      "after": "e90a0b0a607c75e27e40e5dbd3a671df25bd1401c08c28f29a6b679cf5929547",
+      "unchanged": true
+    }
+  },
+  "qa": {
+    "baseline_tests": {
+      "pass": 227,
+      "fail": 0
+    },
+    "hotfix_tests": {
+      "pass": 237,
+      "fail": 0
+    },
+    "new_drag_tests": 10,
+    "source_integrity": "37 comparisons passed",
+    "ts_syntax": "19 files, zero parse errors",
+    "css_format": "13 stylesheets verified",
+    "full_typecheck": "blocked: missing vite/client types",
+    "lint": "blocked: eslint not installed",
+    "typescript_format": "blocked: prettier not installed",
+    "vite_build": "blocked: missing vite/client types",
+    "live_vite_chromium": "not executed: npm dependencies unavailable (npm registry EAI_AGAIN)"
+  }
+}

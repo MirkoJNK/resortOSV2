@@ -1,0 +1,58 @@
+{
+  "baseline_sha256": "2c87e7c860e96257e0d37c8a29e738fef93ae4c125fcd1435cb4c66ff56df1f8",
+  "application_version_unchanged": "0.6.6-hotfix.1",
+  "changes": [
+    {
+      "file": "SYSTEM_MANAGEMENT_V2_APPROVED.json",
+      "action": "changed"
+    },
+    {
+      "file": "V06611_APPROVED_CHANGES.json",
+      "action": "changed"
+    },
+    {
+      "file": "scripts/qa-stage2-live.mjs",
+      "action": "added"
+    },
+    {
+      "file": "src/components/SupportWorkspace.tsx",
+      "action": "changed"
+    },
+    {
+      "file": "src/features/system-management/SystemManagement.tsx",
+      "action": "changed"
+    },
+    {
+      "file": "src/styles/support-motion.css",
+      "action": "changed"
+    },
+    {
+      "file": "src/styles/support.css",
+      "action": "changed"
+    },
+    {
+      "file": "src/styles/system-management.css",
+      "action": "changed"
+    },
+    {
+      "file": "tests/stage2-motion-support.test.mjs",
+      "action": "added"
+    },
+    {
+      "file": "tests/support-inbox.test.mjs",
+      "action": "changed"
+    },
+    {
+      "file": "tests/support-layout-v062.test.mjs",
+      "action": "changed"
+    },
+    {
+      "file": "tests/support-motion-polish.test.mjs",
+      "action": "changed"
+    },
+    {
+      "file": "tests/v0661-banner-release.test.mjs",
+      "action": "changed"
+    }
+  ]
+}

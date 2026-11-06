@@ -1,10 +1,10 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {readFileSync} from 'node:fs'
+import {readFileSync} from './helpers/source-for-legacy-checks.mjs'
 import {createRequire} from 'node:module'
 import vm from 'node:vm'
 const require=createRequire(import.meta.url)
-const ts=require('/opt/nvm/versions/node/v22.16.0/lib/node_modules/typescript')
+const ts=require('typescript')
 function load(path){
  const code=readFileSync(new URL(path,import.meta.url),'utf8')
  const js=ts.transpileModule(code,{fileName:path,compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText

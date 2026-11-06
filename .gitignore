@@ -1,0 +1,28 @@
+# Dependencies and generated production bundles
+node_modules/
+dist/
+.vite/
+coverage/
+
+# Secrets, private overrides and local credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local test reports, renders and caches
+visual-reference.html
+qa-*.html
+*.tsbuildinfo
+*.log
+.tmp/
+.cache/
+
+# OS and IDE artifacts
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json

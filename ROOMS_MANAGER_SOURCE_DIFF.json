@@ -1,0 +1,291 @@
+{
+  "baseline": "resortOS_TablesManager_SmoothDragging_Hotfix_Candidate.zip",
+  "scope": "Rooms Manager Concept B; required routing and tests; unrelated modules preserved",
+  "changes": [
+    {
+      "file": "QA_Reports/RoomsManager/FINAL_SOURCE.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "c642b4f04434f9e16282aae99056af0156dda573b2163a2e74835f517b7e2e90"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/SOURCE_PREFLIGHT_MEASUREMENTS.json",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "37c93d4fd7dd26630ce6180fc624dc1e34b58897433dcfb3bd78646fd713008b"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/Source_Preflight_Screenshots/Rooms_Add_1440x900_SOURCE_PREFLIGHT.png",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "c3ee43843c0ec8a66557f426b8316825a021ebdf2d74430aeab7630da2b65ba4"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/Source_Preflight_Screenshots/Rooms_Default_1024x768_SOURCE_PREFLIGHT.png",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "a11aaa4f1c7298a3138b6e85132fd252a3e2e82fc59ecd19effe9323149aae0f"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/Source_Preflight_Screenshots/Rooms_Default_1440x900_SOURCE_PREFLIGHT.png",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "030b7d51eca322195222dc4bf814aa512015b0037995d501d2c12b25a4b60b15"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/Source_Preflight_Screenshots/Rooms_Default_1858x900_SOURCE_PREFLIGHT.png",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "10a115c21d0d49d6bd27c7f9c19027d8653ff7686165215e92200be1732bbdd8"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/Source_Preflight_Screenshots/Rooms_Default_390x844_SOURCE_PREFLIGHT.png",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "fb49ab34120f9fc9db89f690467ef8bf5b76b69f53b2dca631576c028584c6a3"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/Source_Preflight_Screenshots/Rooms_Edit_1440x900_SOURCE_PREFLIGHT.png",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "1108838950af053f8c9abfe56c96348e64fca182cbd76230631a6c8fa38a9e80"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/baseline-exit.txt",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/baseline-tests.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "453766e01c12839b88f179f503cc7b53894aaef27aaebc979a3cea5f425bc14f"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/build.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "c5f06e02e4dc7c9c9363c04a2427dc7fdec316f2e51ea3ee6e57e94f3cb09581"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/css-format.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "beaf77cc1537958a49c7b8239a003586e7442607b55c436e2f4ef804b9385601"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/feature-stubbed-typecheck.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/format_typescript_check.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "c866d23f662ab9befa272a2fa48a3f49d255c1a743c7da65b1cbfcac3a70ab28"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/lint.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "ba8ace411ab0622596e6692f8be9da90a65008057f6ff662d1c97ace7cb10410"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/model-strict-typecheck.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/npm-install-exit.txt",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/npm-install.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "3b3384c57765ed2ff3c7d1c430973972d3afcea5a1bb19e4dcd386edd7860df0"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/preflight-run.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "7bdf4439fe497d862463239e54b1dd20faa57beb73de54c96384ebb881f05234"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/source-integrity.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "24a7105485a5a179e34eead3a1d6b17f66b005f2b1e28c724c273a9595f41ce2"
+    },
+    {
+      "file": "QA_Reports/RoomsManager/typecheck.log",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "ef0f23ae3f0e16f299195578fe7260ed55f3b221dcfeef724a9235dc825a34b0"
+    },
+    {
+      "file": "ROOMS_MANAGER_APPROVED.json",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "28988d5182f8106d0824b8c7cf253877d1ffc77d3ce8328076fe77572f04f351"
+    },
+    {
+      "file": "ROOMS_MANAGER_CHANGELOG.md",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "1aa8491da491ed4264112c83b17e2d3215c84ec3ef0659cc8ec7d3e1c3d8d057"
+    },
+    {
+      "file": "ROOMS_MANAGER_SQA_REPORT.md",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "6a832433f49d97a50438b2b1505fc62b80e6449d30e2ad3823c45fcc317d80c4"
+    },
+    {
+      "file": "ROOMS_MANAGER_START_HERE.md",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "7182a7c4ad31a5e8a08b0b0c0964b7affd458261c92c95837b187d617f63bd79"
+    },
+    {
+      "file": "ROOMS_MANAGER_VISUAL_COMPARISON.md",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "3663c649099b4817c64f2c97bac7de457dbf8430ee2d97bf7450f1df899f0eb4"
+    },
+    {
+      "file": "scripts/qa-rooms-manager-live.mjs",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "efdcc9f783fae20188cdde55994398d28649b6c2c3defd076d2d78736ff6a8df"
+    },
+    {
+      "file": "scripts/verify-approved-baseline.cjs",
+      "change": "modified",
+      "baseline_sha256": "6c12bcbad71fc042543695c5924710a12d3efa339f09ff52b8450c08fced15eb",
+      "candidate_sha256": "2d316b9f5d284f938c9886a9b99c5b8b07cbd0d30fbdb99dafc82534ae12b33f"
+    },
+    {
+      "file": "scripts/verify-shell-extraction.cjs",
+      "change": "modified",
+      "baseline_sha256": "ae20bd189dffe3ed608db7ab22cc30559e93b40768e6449ca9fc35b872b836ac",
+      "candidate_sha256": "4e88d46fd0e9563c015dfcb869d53cb2c62204f68b406be41898e3be6d377242"
+    },
+    {
+      "file": "scripts/verify-system-management-entrypoint.cjs",
+      "change": "modified",
+      "baseline_sha256": "6a1986ca0c26e93b6f6857da46b7334876bcfb047c45b19e687b4286ee11a0bb",
+      "candidate_sha256": "313d0c62546f822a8f63778341f7fee82f45e6a159ef55ed5414f557dce8aeaf"
+    },
+    {
+      "file": "src/App.tsx",
+      "change": "modified",
+      "baseline_sha256": "64fb3ca9b75726daf098ca1ae7a59aea89b0406fd42153a706c4205a01095ad3",
+      "candidate_sha256": "5f46fb5bcd023dc14227d99c13a6af64b1380013f1c0b6d2036a08e1c138cc77"
+    },
+    {
+      "file": "src/domain/types.ts",
+      "change": "modified",
+      "baseline_sha256": "993e3c0f4f668f318c5fe539f11f043fd78506766b0ca9be1ac23565dc33c9b5",
+      "candidate_sha256": "a366de5fa3e91b9a5a2cbc8dc08a88edbbea4d3ffc5248eead4566e63745f569"
+    },
+    {
+      "file": "src/features/rooms-manager/RoomsManager.tsx",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "7bd5f0a69175dcec5c788870fa4fb0aa1a937529573292d7ff8cbde901d1878d"
+    },
+    {
+      "file": "src/features/rooms-manager/model.ts",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "7342728a39db8e8085f731eb521da6daef8fa1b31280e77a864f959b02cb2eb5"
+    },
+    {
+      "file": "src/features/rooms-manager/rooms-manager.css",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "f21b647a985fda15a7b65ba4dfa624ba81db2068a1e5cfe747c937ca7366dfd9"
+    },
+    {
+      "file": "src/features/system-management/SystemManagement.tsx",
+      "change": "modified",
+      "baseline_sha256": "6653c2cddeacc9b8ad2c2b62bdaed58848fe58c81fe658805280c87f343b05f4",
+      "candidate_sha256": "88e38a2676fba4b0921183da37832e3d5b3a530c1f4e02ee5d1169ba7a300b58"
+    },
+    {
+      "file": "src/main.tsx",
+      "change": "modified",
+      "baseline_sha256": "d2e3a0d69cdac83c4629b8ef9108af2ee275861b505590dc1a8b1448ec332c53",
+      "candidate_sha256": "8c78f26dc7c7cfd74f58569152c50058a23915d0b90f0baf4771d2a7d62f0d4d"
+    },
+    {
+      "file": "src/shell/navigation.ts",
+      "change": "modified",
+      "baseline_sha256": "6b47633bb274fa8910df644ec8433b391f818699956c9bb3ada35ec9bafe3ed4",
+      "candidate_sha256": "e0402678e2b790381e6604548b229cba0a211e7ee85acac76fe1cc3439997fce"
+    },
+    {
+      "file": "tests/dashboard-extraction-v066.test.mjs",
+      "change": "modified",
+      "baseline_sha256": "47758305ff3fe347cabf3a1c29af268267b2230843d1ce0cf7a2e6da2f5e3be1",
+      "candidate_sha256": "5e8096483fc4252939cc9a33c109a66430f7ad22727c060855ae7e95e189e338"
+    },
+    {
+      "file": "tests/helpers/source-for-legacy-checks.mjs",
+      "change": "modified",
+      "baseline_sha256": "75c14fb3220d48c1647bc8f2f4ed95d805f7b5c63150229997bd66caffb2867f",
+      "candidate_sha256": "79ade0b95621adfe5145a5976eea5e5aee9c58b9c9eecbd3f7d97dfc024cd28d"
+    },
+    {
+      "file": "tests/rooms-manager-domain.test.mjs",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "ff2a54a9ae14b2543236538e60ce8ea9aaf04189b0a77d90742800f4b9e418aa"
+    },
+    {
+      "file": "tests/rooms-manager-react-interactions.test.mjs",
+      "change": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "3ea6ffdd29e3e2b176eb1c4ab397f53f45ac9b8129f0007c2750e2a0ed135a76"
+    },
+    {
+      "file": "tests/stage2-motion-support.test.mjs",
+      "change": "modified",
+      "baseline_sha256": "e86d1aed9802c4d86faa2b948250690db6218b51a26ade71e12a26e392eba662",
+      "candidate_sha256": "f86bea16e6a98c5858fc07600fe883901834ee4e27b644e746552ed09c27fab0"
+    },
+    {
+      "file": "tests/system-management-integration.test.mjs",
+      "change": "modified",
+      "baseline_sha256": "6e9a4d55e586241961da6ebd8169daba8328405fc356d75d6a0a8749f51aaf55",
+      "candidate_sha256": "a6e3206efab9b12df3a72eb77b96d98d933c1ea8b02fe69559a847cb46fc36de"
+    },
+    {
+      "file": "tests/tables-manager-domain.test.mjs",
+      "change": "modified",
+      "baseline_sha256": "b1f35efe778d70c32a970e0eb1f33228c23489bbe0c6ffa2c33c7f0d4549559f",
+      "candidate_sha256": "c5f7e9276a303b02aa24253308f560b97664afc088bf4917fa0388bc95674f98"
+    },
+    {
+      "file": "tests/typescript-readability-v064.test.mjs",
+      "change": "modified",
+      "baseline_sha256": "42d66ae87e05f657bd7869109789e1b91b73a336fd9f9b0f7ec68b651246c595",
+      "candidate_sha256": "f970f0ea8abaf2e3929cbb2d3d9630d012a704b7688310e110fc792db04c9e8c"
+    }
+  ],
+  "protected_checks": {
+    "package_json_unmodified": true,
+    "dashboard_unmodified": true,
+    "support_unmodified": true,
+    "tables_manager_unmodified": true,
+    "existing_shared_styles_unmodified": true,
+    "historical_fixtures_unmodified": true,
+    "existing_public_assets_unmodified": true
+  }
+}

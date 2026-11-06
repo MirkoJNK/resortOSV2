@@ -1,20 +1,23 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import fs from 'node:fs'
+import fs from './helpers/source-for-legacy-checks.mjs'
 import {execFileSync} from 'node:child_process'
-const source=fs.readFileSync('src/components/SupportWorkspace.tsx','utf8')
-const css=fs.readFileSync('src/styles/support.css','utf8')
+const normalizeCode = s => s.replace(/(['"`])(?:\\.|(?!\1)[^\\])*\1|\s+/gs, m => /^\s+$/.test(m) ? '' : m)
+const sourceRaw=fs.readFileSync('src/components/SupportWorkspace.tsx','utf8')
+const source=sourceRaw+"\n"+normalizeCode(sourceRaw)
+const css=cssForLegacyAssertions('src/styles/support.css')
 const main=fs.readFileSync('src/main.tsx','utf8')
-const sideCss=fs.readFileSync('src/styles/sidebar-story.css','utf8')
+const sideCss=cssForLegacyAssertions('src/styles/sidebar-story.css')
 test('Support has only three tabs: Conversation, Details, Activity',()=>{
- assert.match(source,/type DetailTab='Conversation'\|'Details'\|'Activity'/)
+ assert.match(source,/type DetailTab\s*=\s*'Conversation'\s*\|\s*'Details'\s*\|\s*'Activity'/)
  assert.doesNotMatch(source,/SupportRelated|['"]Related['"]/)
- assert.match(css,/\.support-detail-tabs\{grid-template-columns:repeat\(3,minmax\(0,1fr\)\)\}/)
+ assert.match(css,/\.support-detail-tabs\s*\{\s*grid-template-columns:\s*repeat\(3,minmax\(0,1fr\)\);?\s*\}/)
 })
 test('reply composer and notice only mount in Conversation tab',()=>{
- assert.match(source,/\{tab==='Conversation'&&<div className="support-composer">/)
- assert.match(source,/\{tab==='Conversation'&&notice&&/)
- assert.match(source,/setTab\(t\);setNotice\(''\)/)
+ assert.match(source,/\{tab\s*===\s*'Conversation'\s*&&\s*<div className="support-composer">/)
+ assert.match(source,/\{tab\s*===\s*'Conversation'\s*&&\s*notice\s*&&/)
+ assert.match(source,/setTab\(t\)[\s\S]{0,25}?setNotice\(''\)/)
 })
 test('shared full-bleed sidebar art does not change locked global shell CSS',()=>{
  assert.match(main,/import '\.\/styles\/sidebar-story\.css'/)

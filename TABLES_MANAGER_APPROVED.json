@@ -1,0 +1,11 @@
+{
+  "release": "Tables Manager approved integration",
+  "appHash": "9fb1a0e6219cc3f8b59ea2e3cd03fdb0a13da293bc93ffef933077fff15abd66",
+  "navigationHash": "1e7a2e496f2623190f3d5e1334401f9cd7a2219a825fcbe05965113d5f10c6e3",
+  "systemManagementHash": "ada0c57d97012d80f18a21703bb1719ee399fff36cc589ae9d944cd413c16083",
+  "systemManagementStylesHash": "b434553b1c6b2921271f3928274a93576aae59653858fa660c34fdc61d1f72e7",
+  "domainTypesHash": "b7ca56ffc7a69ead2b0440a9ac3ec74b7b6c0564deb59347ea6c1a9071b0abd8",
+  "tablesManagerHash": "4f37eddeda4faee6cb7397046ecfe3274c1c3be8080a3768571dd2f23f83be85",
+  "tablesModelHash": "a94d44891dcd8b1e7aeefa046d1d6633325386f8d7e0d4ad3f9c771324cefbaf",
+  "tablesStylesHash": "e90a0b0a607c75e27e40e5dbd3a671df25bd1401c08c28f29a6b679cf5929547"
+}

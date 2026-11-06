@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import fs from 'node:fs'
+import fs from './helpers/source-for-legacy-checks.mjs'
 import {createHash} from 'node:crypto'
 import {execFileSync} from 'node:child_process'
 
@@ -55,7 +55,7 @@ test('static routes show the correct four views; obsolete deep links fall back t
   ['#dashboard','Your resort'],
   ['#support','Manage and resolve employee support requests'],
   ['#audit','Recent events'],
-  ['#systems','Export demo data'],
+  ['#systems','Configure your resort&#39;s operations and settings'],
   ['#employees','Your resort']
  ]
  for(const [hash,expected] of cases){

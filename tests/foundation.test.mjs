@@ -1,9 +1,10 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {readFileSync,existsSync} from 'node:fs'
+import {readFileSync,existsSync} from './helpers/source-for-legacy-checks.mjs'
 const read = file=>readFileSync(new URL(file,import.meta.url),'utf8')
 test('approved design tokens remain defined',()=>{
- const css=read('../src/styles/tokens.css')
+ const css=cssForLegacyAssertions(new URL('../src/styles/tokens.css',import.meta.url))
  for(const token of ['--ros-lime: #d7f36a','--ros-ink: #171d1a','--ros-r-card: 20px','--ros-font:'])assert.ok(css.includes(token),token)
 })
 test('tropical artwork is shipped',()=>{

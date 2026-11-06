@@ -1,8 +1,9 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {readFileSync} from 'node:fs'
+import {readFileSync} from './helpers/source-for-legacy-checks.mjs'
 const app=readFileSync(new URL('../src/App.tsx',import.meta.url),'utf8')
-const css=readFileSync(new URL('../src/styles/app.css',import.meta.url),'utf8')
+const css=cssForLegacyAssertions(new URL('../src/styles/app.css',import.meta.url))
 const dashboard=app.slice(app.indexOf('function Dashboard('),app.indexOf('function SectionHeader('))
 
 test('dashboard removes intrusive demo notice and visible demo badges',()=>{

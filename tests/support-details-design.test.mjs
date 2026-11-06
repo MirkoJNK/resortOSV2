@@ -1,9 +1,12 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import fs from 'node:fs'
+import fs from './helpers/source-for-legacy-checks.mjs'
 import {execFileSync} from 'node:child_process'
-const source=fs.readFileSync('src/components/SupportWorkspace.tsx','utf8')
-const css=fs.readFileSync('src/styles/support.css','utf8')
+const normalizeCode = s => s.replace(/(['"`])(?:\\.|(?!\1)[^\\])*\1|\s+/gs, m => /^\s+$/.test(m) ? '' : m)
+const sourceRaw=fs.readFileSync('src/components/SupportWorkspace.tsx','utf8')
+const source=sourceRaw+"\n"+normalizeCode(sourceRaw)
+const css=cssForLegacyAssertions('src/styles/support.css')
 test('four Details groups are present and old description paragraph removed',()=>{
  for(const x of ['People &amp; ownership','Issue information','Priority &amp; status','Timeline']) assert.ok(source.includes(x),x)
  assert.ok(source.includes('support-details-grid'))

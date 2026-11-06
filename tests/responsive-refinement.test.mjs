@@ -1,8 +1,9 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {readFileSync} from 'node:fs'
+import {readFileSync} from './helpers/source-for-legacy-checks.mjs'
 const read = file => readFileSync(new URL(file,import.meta.url),'utf8')
-const css=read('../src/styles/responsive.css')
+const css=cssForLegacyAssertions(new URL('../src/styles/responsive.css',import.meta.url))
 const app=read('../src/App.tsx')
 const main=read('../src/main.tsx')
 
@@ -38,7 +39,7 @@ test('accessible menu dismissal and body scroll locking',()=>{
   assert.match(app,/document\.body\.style\.overflow='hidden'/)
 })
 test('approved colors, arts, headline, and empty status footer remain unchanged',()=>{
-  assert.match(read('../src/styles/tokens.css'),/--ros-lime: #d7f36a;/)
+  assert.match(cssForLegacyAssertions(new URL('../src/styles/tokens.css',import.meta.url)),/--ros-lime: #d7f36a;/)
   assert.match(app,/Your resort is running smoothly'/)
   assert.match(app,/sidebar-coastal-approved-v058\.png/)
   assert.match(app,/systems-footer-space/)

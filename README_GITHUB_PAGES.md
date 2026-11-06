@@ -1,39 +1,62 @@
-# resortOS 2.0 — Live GitHub Pages demo
+# Publish resortOS 2.0 through GitHub Pages
 
-This repository includes the v0.6.2 resortOS Admin demo with the corrected brown palm-tree trunk and an automatic GitHub Pages deployment workflow.
+**Repository:** https://github.com/MirkoJNK/resortOSV2  
+**Branch verified:** `main`  
+**Expected URL:** https://mirkojnk.github.io/resortOSV2/
 
-## Publish your website (no command line necessary)
+This ZIP is the **source**, not a pre-built website. Upload the *contents* of `resortOS_GitHub_Ready/` to your repository root. Do **not** upload the enclosing folder or the ZIP itself.
 
-1. Open your GitHub repository on github.com. Create a new public repository if you don't already have one.
-2. Extract `resortOS_GitHub_Pages_Ready_Brown_Logo.zip` to a folder on your computer.
-3. In your GitHub repository, click **Add file → Upload files**.
-4. Drag the **contents** of the extracted folder into the upload area (not the ZIP itself). Preserve the folder structure, including `.github/workflows/deploy.yml`.
-5. Commit the files to the `main` branch.
-6. Visit **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-7. Open the **Actions** tab. Watch the workflow named **Publish resortOS to GitHub Pages**. If it was not triggered already, use **Run workflow**.
-8. Once the deployment is successful, find the website link on **Settings → Pages**, normally `https://YOUR_USERNAME.github.io/YOUR_REPOSITORY/`.
+## Recommended method: Git clone + replace + commit
 
-A repository named `YOUR_USERNAME.github.io` deploys at `https://YOUR_USERNAME.github.io/` instead. The workflow handles either layout automatically, including public artwork URLs in the compiled website.
+1. Download and extract the package on your computer.
+2. Install Git and Node.js 22 if you have not already.
+3. Open PowerShell in a safe parent folder. Run:
 
-## Which files go to GitHub?
+   ```powershell
+   git clone https://github.com/MirkoJNK/resortOSV2.git
+   cd resortOSV2
+   git switch main
+   git pull --ff-only origin main
+   git branch backup-before-resortos-update
+   git push origin backup-before-resortos-update
+   ```
 
-Upload everything in this folder (`src/`, `public/`, `.github/`, `index.html`, `package.json`, `vite.config.ts`, `tsconfig.json`, etc.). Do not upload `node_modules/` or `dist/` — the GitHub workflow generates the website from source automatically.
+   This creates a recoverable backup branch, preserving history.
+4. Copy the **contents** of the extracted `resortOS_GitHub_Ready` folder into the cloned repository root, replacing matching source files.
+5. Generate the missing real lockfile, while online:
 
-## What is *not* a real production system?
+   ```powershell
+   npm install
+   npm run check:source
+   npm run build
+   ```
 
-This is a **public demonstration interface**. Shared accounts, real multi-user messaging, backend persistence, and server-enforced permissions are not implemented. Support changes currently reset after a refresh. Sample data, example weather, and parts of Dashboard are illustrative. Do not enter real employee or customer details and do not treat this URL as a secure private operations system.
+   `npm install` creates `package-lock.json`. Include it in the commit. Do not invent a lockfile or run `npm ci` before it exists.
+6. Carefully remove obsolete *tracked* files left over from the old version. In particular, remove obsolete `scripts/fix-pages-assets.mjs` if present and ensure there is **only one** `.github/workflows/deploy.yml`. The old README should be replaced by this one. `git status --short` displays additions, modifications, and deletions. See `GITHUB_UPLOAD_GUIDE.md` for the safest removal method.
+7. Verify you are in the repository root (which directly contains `src/`, `public/`, `package.json`, `vite.config.ts`, and `.github/`). Commit and push:
 
-## Updating the site
+   ```powershell
+   git add -A
+   git status --short
+   git commit -m "Deploy latest resortOS 2.0 frontend demo"
+   git push origin main
+   ```
 
-Commit new source changes to the `main` branch and GitHub Actions will deploy the updated website. Keep the `.github/workflows/deploy.yml` file.
+8. Go to GitHub **Settings → Pages → Build and deployment → Source → GitHub Actions**.
+9. Watch the single deployment workflow in **Actions**; confirm success and the published address.
+10. Open the site, check both departments, artwork, mobile navigation, and catalog interactions. If the site is blank, see the troubleshooting section below.
 
-## If the site shows an empty screen
+## Alternative: GitHub browser upload
 
-- Confirm **Settings → Pages → Source** is set to **GitHub Actions**.
-- Confirm the most recent run in **Actions** succeeded.
-- Check that `index.html`, `src/`, `public/`, and `package.json` are at the *repository root* rather than inside an extra parent folder.
-- Make sure `.github/workflows/deploy.yml` was uploaded, and check Chrome's browser console for an asset error.
+Open the repository → **Add file → Upload files**, and drag the extracted **contents** into the upload form. Ensure hidden `.github/workflows/deploy.yml` remains included. Commit to `main`. **Warning:** GitHub web upload does not automatically remove obsolete tracked files. Remove those manually afterward, or prefer the Git-clone method.
 
-## Local development
+## Troubleshooting
 
-Run `npm install` then `npm run dev` in this folder. The URL is `http://127.0.0.1:5173/#support`.
+- **Blank screen / 404 scripts:** Check workflow success, `Settings → Pages` source, and the configured `/resortOSV2/` Vite base. Check browser DevTools → Network.
+- **Missing coastal/hero images:** Verify `public/assets` is uploaded intact, Vite builds with `GITHUB_PAGES_BASE=/resortOSV2/`, and `verify-pages-dist.mjs` passes in Actions.
+- **Action says missing script:** The new workflow must replace the old one; it must **not** call `fix-pages-assets.mjs`.
+- **Action fails at npm:** Use Node.js 22, commit a genuine `package-lock.json` from `npm install`, and rerun. With a lock, the workflow uses `npm ci`.
+- **Deployment succeeded but old UI remains:** Verify the new commit is on `main`, the newest Action run succeeded, and refresh bypassing cache.
+- **Subpath refresh:** resortOS uses hash routes, which remain after `index.html`; `/#dashboard` on the public site becomes `/resortOSV2/#dashboard`.
+
+> The demo has no server-enforced identity or shared financial persistence. Never use it for real guest, staff, or payment information.

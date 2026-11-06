@@ -1,0 +1,315 @@
+/* System Management design review — resortOS Foundation v1.1. Scope: landing page only */
+
+.sm-page {
+  min-width: 0;
+}
+
+.sm-heading {
+  padding-bottom: 22px;
+}
+
+.sm-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  justify-content: space-between;
+  background: var(--ros-surface);
+  border: 1px solid var(--ros-border);
+  border-radius: var(--ros-r-md);
+  padding: 13px 16px;
+  margin-bottom: 14px;
+  box-shadow: var(--ros-shadow-card);
+}
+
+.sm-search {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex: 1;
+  min-width: 0;
+  max-width: 660px;
+  height: 44px;
+  padding: 0 14px;
+  background: #f3f6f3;
+  border: 1px solid transparent;
+  border-radius: var(--ros-r-sm);
+  color: #60736b;
+}
+
+.sm-search:focus-within {
+  border-color: #93b961;
+  outline: 2px solid #b8df8b66;
+  outline-offset: 1px;
+}
+
+.sm-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  outline: 0;
+  color: var(--ros-text);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.sm-search input::placeholder {
+  color: #78877e;
+  opacity: 1;
+}
+
+.sm-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.sm-clear {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 7px;
+  color: var(--ros-muted);
+  flex: none;
+}
+
+.sm-clear:hover {
+  background: #e7ece7;
+  color: var(--ros-text);
+}
+
+.sm-announcement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sm-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: var(--ros-gap);
+  align-items: start;
+}
+
+.sm-category {
+  min-width: 0;
+  background: var(--ros-surface);
+  border: 1px solid var(--ros-border);
+  border-radius: var(--ros-r-card);
+  box-shadow: var(--ros-shadow-card);
+  overflow: hidden;
+}
+
+.sm-category:last-child {
+  grid-column: 1 / -1;
+}
+
+.sm-category:last-child .sm-items {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  column-gap: 16px;
+}
+
+.sm-category-head {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 19px 20px 13px;
+}
+
+.sm-category-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  background: var(--ros-lime-soft);
+  border-radius: 11px;
+  color: #396446;
+}
+
+.sm-category-head>div {
+  min-width: 0;
+}
+
+.sm-category h2 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  line-height: 1.28;
+  font-weight: 800;
+  letter-spacing: -.028em;
+  color: var(--ros-text);
+}
+
+.sm-category-head p {
+  margin: 0;
+  color: #728077;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.sm-items {
+  padding: 0 17px 10px;
+}
+
+.sm-tool {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  padding: 12px 4px;
+  border-top: 1px solid #edf0eb;
+  min-height: 58px;
+  cursor: default;
+  transition: background .16s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sm-tool:hover {
+    background: #f4f9e7;
+  }
+}
+
+.sm-tool-copy {
+  min-width: 0;
+}
+
+.sm-tool h3 {
+  margin: 0 0 3px;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 750;
+  color: #25302a;
+}
+
+.sm-tool p {
+  margin: 0;
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: #7b877e;
+}
+
+.sm-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  text-align: center;
+  background: white;
+  border: 1px solid var(--ros-border);
+  border-radius: var(--ros-r-card);
+  padding: 28px;
+  color: #8c9a90;
+}
+
+.sm-empty h2 {
+  font-size: 16px;
+  color: var(--ros-text);
+  margin: 14px 0 5px;
+}
+
+.sm-empty p {
+  margin: 0 0 18px;
+  font-size: 12px;
+  color: var(--ros-muted);
+}
+
+.sm-empty button {
+  border: 0;
+  background: var(--ros-lime);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.sm-empty button:hover {
+  background: var(--ros-lime-hover);
+}
+
+@media (max-width:1100px) {
+  .sm-category-head {
+    padding: 17px 16px 11px;
+  }
+  .sm-items {
+    padding: 0 13px 8px;
+  }
+}
+
+@media (max-width:700px) {
+  .sm-grid {
+    grid-template-columns: minmax(0,1fr);
+    gap: 13px;
+  }
+  .sm-category:last-child {
+    grid-column: auto;
+  }
+  .sm-category:last-child .sm-items {
+    grid-template-columns: minmax(0,1fr);
+  }
+  .sm-heading {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .sm-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 9px;
+    padding: 12px;
+  }
+  .sm-search {
+    flex: none;
+    max-width: none;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .sm-page * {
+    transition: none !important;
+  }
+}
+
+/* Existing resortOS entrance motion, grouped to avoid filtering replays. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .sm-page .sm-heading, .sm-page .sm-toolbar, .sm-page .sm-results-stage {
+    animation: ros-enter var(--ros-motion-reveal, 360ms) var(--ros-motion-ease, ease-out) both;
+  }
+  .sm-page .sm-heading {
+    animation-delay: 0ms;
+  }
+  .sm-page .sm-toolbar {
+    animation-delay: 55ms;
+  }
+  .sm-page .sm-results-stage {
+    animation-delay: 110ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sm-page .sm-heading, .sm-page .sm-toolbar, .sm-page .sm-results-stage {
+    animation: none !important;
+  }
+}
+
+/* Only Tables Manager has a real destination; other tool rows remain informational. */
+
+.sm-tool-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sm-tool-link:focus-visible {
+  outline: 2px solid #8dbf34;
+  outline-offset: -2px;
+}

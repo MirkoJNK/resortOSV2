@@ -1,1 +1,3 @@
-.systems-panel .system-actions.navigation-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))}
+.systems-panel .system-actions.navigation-shortcuts {
+  grid-template-columns: repeat(3,minmax(0,1fr));
+}

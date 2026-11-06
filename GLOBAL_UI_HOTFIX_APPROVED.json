@@ -1,0 +1,94 @@
+{
+  "release": "Global profile/workspace consistency hotfix \u2014 narrow source approvals",
+  "base": "resortOS_Restaurant_Dashboard_Stage1_Integrated_Candidate.zip",
+  "approved_source": {
+    "src/App.tsx": {
+      "before": "58720843c7c565b0ea5d2416832e654580cd1704b542755da02c5bf72df44491",
+      "after": "eefd7ff9fbe6c1394f2272083669898f0b6f4ab9912d2336b3db1edb9e5bd7b2"
+    },
+    "src/main.tsx": {
+      "before": "f1aa093f99dd1dc4646ab6b5fbbb1968be81ce76e543e6cfa303e0180d235ad9",
+      "after": "bd0510133a488625172ad906ed660263f18e79cd9f023bf86a33ede3d2d8b16b"
+    },
+    "src/shell/Sidebar.tsx": {
+      "before": "254a261ce8765808916797bc6d3a36499fcf178b8f5e41784e67f384b345b9fd",
+      "after": "b2aca93e94fd47750540ba165d466c19048c30d6f99aa13130aebc84d865b5df"
+    },
+    "src/shell/Topbar.tsx": {
+      "before": "766c349602bdd87874b33304a84b353f569c6bbe1a8b81cf0bac7c30adc28881",
+      "after": "b473ba7293788559e7eadd53958be4da3c9715e1cfe462dd18a1ca0d041c6997"
+    },
+    "src/shell/WorkspaceSwitcher.tsx": {
+      "before": null,
+      "after": "4db06c7021d836419c504d2255873628c018414bf80c39cc6052a10b8b7ff128"
+    },
+    "src/components/SupportWorkspace.tsx": {
+      "before": "6c09dee1fc2672dc7906e8ffffe2c150863f2a7fe2c066deb4025ec66bcfaa70",
+      "after": "a53c6e1910f4ec8ab43821e6d422ae8fff97e0277beb47a90dd97c613b74cb0a"
+    },
+    "src/features/system-management/SystemManagement.tsx": {
+      "before": "424eafeabd97aad42a79969d0787a82b5d1748ccb9c9aa97d9cce006c707120e",
+      "after": "37a50d196b8d72e7554add835f6a17b24730f70df5c77ea9d951f3ea62f2d666"
+    },
+    "src/features/rooms-manager/RoomsManager.tsx": {
+      "before": "7bd5f0a69175dcec5c788870fa4fb0aa1a937529573292d7ff8cbde901d1878d",
+      "after": "8029c9acfaf4fce31bf5183fdc44480dd951817e55810018e779b7d5ab14f868"
+    },
+    "src/features/service-catalog/ServiceCatalog.tsx": {
+      "before": "956827a54ad040f2fd0fbc5e423126dc38261eb5222961cd5fb99d98e4e88cfe",
+      "after": "1fd7b4fc5e2680c4b80c842fb8496a50ef3443b14908f641bf3b107b5ed8c009"
+    },
+    "src/styles/profile-workspace-hotfix.css": {
+      "before": null,
+      "after": "e48a3f7a44122f1898ba5fc4c862dd441cec6da0b246b2d990cae67007d7cff9"
+    }
+  },
+  "protected_source": {
+    "public/assets/resort-illustration.png": "8ecfcd238e1a7b588a8814f654d49298a50557225a0e3dce6a0fefed37368d82",
+    "public/assets/resort-shore.png": "a310175391db5c527554ecd146ccedf4cd2df4281bf7d34eb9d829d5375e1467",
+    "public/assets/sidebar-brand-approved-v058.png": "eeced18e7024ed4bf87c6f9178ccd3433bd5872a72ceb94ee396a700c3d11799",
+    "public/assets/sidebar-coastal-approved-v058.png": "89c81bbba4be707fc9007a1239d35f8117b738e5597b940129ecdb0236c9a30c",
+    "public/assets/sidebar-icon-audit-approved-v058.png": "b416dc982f2cf08113a3cf6bf97f545ce2708c4c20eee0248757b66d4967cf96",
+    "public/assets/sidebar-icon-dashboard-approved-v058.png": "bbb6f0eff255867ee8c0b9021c7710f9ed785680aeb4d7f94418480f5328411a",
+    "public/assets/sidebar-icon-support-approved-v058.png": "078df1b76c2eab1d09651675a4b6e832286ab1f8879db4aafba6e3cb0e65d8d9",
+    "public/assets/sidebar-icon-systems-approved-v058.png": "fb19130aeee75b5153babcdcdb0d06d7993d225f5cd0a47e59944ff31c2999f5",
+    "public/assets/sidebar-tropical-clean-original.png": "7f87de462009ae0de4b669554d2400af023dd54b0ae109b3c0514a5162e57bd3",
+    "public/assets/sidebar-tropical-clean.png": "3512ab56ca125f094ef1f6b734e23adf3ccaa6f11499a1c9b25c6b592ccfbefb",
+    "public/assets/sidebar-tropical.png": "13f3a4e03810b779faf2e989896dbf258480520a51d52729aa25ea7c1c12953d",
+    "public/assets/support-coastal-panorama-v0661.png": "3033b43d83b638a38b24819f96143bbe886768fa9edbe538d8d670d71ea759d8",
+    "public/assets/support-painterly-banner.png": "163e84e7ab3c5f0495ba13b995bbd4a4eb4f33e62def6c31de8a83aa65a112c3",
+    "src/components/Charts.tsx": "bc51a481dff688d29d006f2e4bb7dd74dd38015ac5ec9c0fdfcd1678b0c11628",
+    "src/components/Ui.tsx": "5d0272afba0f2f0a77dea2d84ea7c9a7b1b9ed2acc6cb1fed694632f424e33e0",
+    "src/data/demo.ts": "b818c595cd06e2171a41b7587e875fa3b11961a3874c68394de1314798e2193c",
+    "src/data/qualityFixtures.ts": "27acbedfde3ead3b47818b9672bae759d3d7c709249f0b1ae047faa1d164496b",
+    "src/domain/store.ts": "7f8728bda01416a25fe1b3b7783d781d7f68428d2943d064cc30aecd117d0939",
+    "src/domain/supportNavigation.ts": "9b602423f4337260808c1f501c06d34a5b851a1773653838019e215015b90211",
+    "src/domain/types.ts": "d2f849b10b3dbe865aadae77343cef5384f5955d4702e26e1e960947ef59b0d2",
+    "src/features/dashboard/Dashboard.tsx": "0f205055d64b91f7c7de531399abe581fe1ad4f1268b95db0f0e723a43ef9556",
+    "src/features/restaurant/RestaurantDashboard.tsx": "eaa7b72041123a9733f57dea8d70ef7c149dbbff4e2f64ecf4984b9bfce23f59",
+    "src/features/restaurant/restaurant-dashboard.css": "7309efd99492772aae4cc9b0136f62463a17fdb3d2c8618070c891f688cfecce",
+    "src/features/rooms-manager/model.ts": "7342728a39db8e8085f731eb521da6daef8fa1b31280e77a864f959b02cb2eb5",
+    "src/features/rooms-manager/rooms-manager.css": "f21b647a985fda15a7b65ba4dfa624ba81db2068a1e5cfe747c937ca7366dfd9",
+    "src/features/service-catalog/model.ts": "55f6d30f091d335fc042fb688d96dfe48da7b32bf0fdf498767c706e520fa533",
+    "src/features/service-catalog/service-catalog.css": "dd15a7008260bdf2829defb2493cc8014b88c995d1bda64e39db26b63b284962",
+    "src/features/tables-manager/TablesManager.tsx": "78776592a7de9541276f4ebe0243a4e96479a7fbcb700491b6b5bde389112002",
+    "src/features/tables-manager/model.ts": "ba3cca90dfe176bfc962d4931da2793baa8f1807684eb0578de1716f0c67a94b",
+    "src/features/tables-manager/tables-manager.css": "4ab04047ab42712dbbe64a98de9387d94af56d78f052c9f262894eb9c1d26b48",
+    "src/shell/GlobalSearch.tsx": "768dc66c1325b68e491246679b9dfd30fda4bb83632d80cc8803bec72632801f",
+    "src/shell/navigation.ts": "6a55116fabd72faffcee0842fb6950bc96d6bdae1ab7349bfa138f7db8ef5348",
+    "src/styles/app.css": "9445b404878548158de03fa77ab669f059855ec305b8d4f8c99c9f0dfa62afdd",
+    "src/styles/components.css": "d875c0656c3b31b3c34cb7f6b8ac41163e3f379a604df67be01e256b5493cb6c",
+    "src/styles/layout-integration-v062.css": "8e589975509fc89339cd8bc1689fdf7765a44c3f8b3f62597d8cc38f17d5625a",
+    "src/styles/light-sidebar-v058.css": "2867cdf444826f830dbdfb5eb1972b806094b82d1e22a7c9a4f83b600042172c",
+    "src/styles/motion.css": "da81d9bcb990c2c506fc3749e58aceb404863c1d980ee4d4ca3afef060c51075",
+    "src/styles/navigation-cleanup.css": "20445959c87a5ca6e4df865580eae00eea2974f4fff3a2d5b89fc40be21ac7c8",
+    "src/styles/responsive.css": "960f9fcf9947dd6eb19a22574fe4f2d6c880482338e6f0d71f4651ec5efa1313",
+    "src/styles/sidebar-story.css": "230fd41b4820ffbc8cc418a254c82f60b7127796e0d4084d2acd6dfec65738da",
+    "src/styles/support-motion.css": "5d8f8700201d1a38e2129ada0deb5567a0649e5a01d5e8ecf477f39d26ccb27e",
+    "src/styles/support.css": "a5250627554b7b7187db8322eca8f5ea9504e8183a05c18f79aa51cee6f6a060",
+    "src/styles/system-management.css": "d3b8306d252efd21049bfdc737e8ca6aa8b892bd88152617b886a3e19ead3667",
+    "src/styles/tokens.css": "98af423a6e0175e3c118fc82411997590519518a2bbeb8b3f8e3b48dde67cdf4",
+    "src/styles/typography.css": "2c300a09b34e79fb9c2b657088744304c1555e72bd899c5c6058509d27628162"
+  },
+  "reason": "Only global profile identity, sidebar workspace switcher, page eyebrow cleanup, and deactivation dialog copy/UI are authorized. All historic approval files retained."
+}

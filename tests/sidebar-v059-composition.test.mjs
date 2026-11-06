@@ -1,7 +1,8 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import fs from 'node:fs'
-const css=fs.readFileSync('src/styles/light-sidebar-v058.css','utf8')
+import fs from './helpers/source-for-legacy-checks.mjs'
+const css=cssForLegacyAssertions('src/styles/light-sidebar-v058.css')
 const app=fs.readFileSync('src/App.tsx','utf8')
 const image=fs.readFileSync('public/assets/sidebar-coastal-approved-v058.png')
 

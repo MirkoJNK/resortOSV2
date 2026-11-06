@@ -1,0 +1,11 @@
+{
+  "release": "Service Catalog Concept B approved production integration",
+  "baseline": "Rooms Manager Concept B integrated candidate",
+  "appHash": "f2ab438778b7e3e7840a1f291a813942039d377e4a7c5a7c8a6d5dd5c764eb89",
+  "navigationHash": "41c344de5e9e0421655e692b5f3945fba1298f3653b8a711abe1d868ed2d80ed",
+  "domainTypesHash": "d7c4c24e33dae49602477efdb95c6fc59d2337117aa8fd59ae84efdfb14cf947",
+  "systemManagementHash": "68bacb69dabf0f7c5935cf4b89485be7dc514d411e049f8b0116a9b88a2a8d99",
+  "serviceComponentHash": "5c1dc4503568c69d0dad937ee07491bc605147f89db3b1c140859e12660af48b",
+  "serviceModelHash": "c6e192803151a60a4237f2260ebb9218c351eabff21575948dc801dfb0079a4b",
+  "serviceStylesHash": "5eb23e7871bf6526fea0c01e39b67a34939c4749ae020a63eb88786e60b0e3c8"
+}

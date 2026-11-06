@@ -1,8 +1,9 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import fs from 'node:fs'
+import fs from './helpers/source-for-legacy-checks.mjs'
 import {createHash} from 'node:crypto'
-const css=fs.readFileSync('src/styles/light-sidebar-v058.css','utf8')
+const css=cssForLegacyAssertions('src/styles/light-sidebar-v058.css')
 const app=fs.readFileSync('src/App.tsx','utf8')
 const sha=f=>createHash('sha256').update(fs.readFileSync(f)).digest('hex')
 

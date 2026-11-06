@@ -1,0 +1,46 @@
+{
+  "description": "v0.6.2 design and behavior baseline: assets locked byte-for-byte, CSS by cascade tree, and TS/TSX by parsed syntax so formatting remains safe.",
+  "sourceAndAssets": {
+    "public/assets/resort-illustration.png": "8ecfcd238e1a7b588a8814f654d49298a50557225a0e3dce6a0fefed37368d82",
+    "public/assets/resort-shore.png": "a310175391db5c527554ecd146ccedf4cd2df4281bf7d34eb9d829d5375e1467",
+    "public/assets/sidebar-brand-approved-v058.png": "eeced18e7024ed4bf87c6f9178ccd3433bd5872a72ceb94ee396a700c3d11799",
+    "public/assets/sidebar-coastal-approved-v058.png": "89c81bbba4be707fc9007a1239d35f8117b738e5597b940129ecdb0236c9a30c",
+    "public/assets/sidebar-icon-audit-approved-v058.png": "b416dc982f2cf08113a3cf6bf97f545ce2708c4c20eee0248757b66d4967cf96",
+    "public/assets/sidebar-icon-dashboard-approved-v058.png": "bbb6f0eff255867ee8c0b9021c7710f9ed785680aeb4d7f94418480f5328411a",
+    "public/assets/sidebar-icon-support-approved-v058.png": "078df1b76c2eab1d09651675a4b6e832286ab1f8879db4aafba6e3cb0e65d8d9",
+    "public/assets/sidebar-icon-systems-approved-v058.png": "fb19130aeee75b5153babcdcdb0d06d7993d225f5cd0a47e59944ff31c2999f5",
+    "public/assets/sidebar-tropical-clean-original.png": "7f87de462009ae0de4b669554d2400af023dd54b0ae109b3c0514a5162e57bd3",
+    "public/assets/sidebar-tropical-clean.png": "3512ab56ca125f094ef1f6b734e23adf3ccaa6f11499a1c9b25c6b592ccfbefb",
+    "public/assets/sidebar-tropical.png": "13f3a4e03810b779faf2e989896dbf258480520a51d52729aa25ea7c1c12953d",
+    "public/assets/support-painterly-banner.png": "163e84e7ab3c5f0495ba13b995bbd4a4eb4f33e62def6c31de8a83aa65a112c3",
+    "index.html": "919218ff4cfe8e661b88f78e89036ec55e30bc44b5a5bfe8f613511abbf765e4",
+    "tsconfig.json": "3520a98e7b36269f80bd3c1605dbbd43fff80cd775415aecd471d39da9b86e47"
+  },
+  "cssSemantics": {
+    "src/styles/app.css": "e5439b770cae78506b40fc91cea7eee52b620ace7add31ee13138070c60224e9",
+    "src/styles/components.css": "8ffe4d23f04a6a7b68295a701466ef401832adf2d474fa51635afc38ebc2e73f",
+    "src/styles/layout-integration-v062.css": "3c4796724cd3e04877d81b9f9e19721db4f858d027f28a79f6841db4ae02678b",
+    "src/styles/light-sidebar-v058.css": "1d6ef3aeccbfe14d73eedaebf37dd00b3868c2dc8558080c2d898d4d2d7baf58",
+    "src/styles/motion.css": "e54a1eefecdd629359528736a19d0d6ed020c770f0a95f797fbcff367d0e73d9",
+    "src/styles/navigation-cleanup.css": "2972c4998b948a9e2858a5418d14fbdf320861f4d25d5e8ee3f4455c12ba1e45",
+    "src/styles/responsive.css": "91ebefdca02cf3bc2932ad18672b084a71b21739983351bc392037b6c1b076dc",
+    "src/styles/sidebar-story.css": "cd60c1a103fa5d29bb254bc679b2687391764ebde1bde6a5457727bbd6f2f0e2",
+    "src/styles/support-motion.css": "622d5abdaeca4593beb84cd5b8a3f3ac5a178d2ba5bb8b591ed354977ce861cd",
+    "src/styles/support.css": "e5bacd4c012a3c5c5c65c612377d964f98b4d4421bdc919dddbd92807c8e41fb",
+    "src/styles/tokens.css": "f53419b8377ff0ea2745c689573f65d8740b452ba4c23f1317a3ee281d0cabd4",
+    "src/styles/typography.css": "a72af94f230df3d7b9e6a6874ab112e79742010d2c2e7f2c44fed0b38a327182"
+  },
+  "sourceSemantics": {
+    "src/App.tsx": "f9a80c4bdfb681d9f130512514a77bfb692bf1bb91f53c2e8d919654db278dc7",
+    "src/components/Charts.tsx": "e9666cfd14d8f132f6ac288e480fccf05afe85d43c79e676edbda2067639ae6c",
+    "src/components/SupportWorkspace.tsx": "6ee9aa3bede76bd3a61d376880e6830f68eb0792407d71966fff648e3e4c644d",
+    "src/components/Ui.tsx": "a61a5088015954c9ec0550ad6b022caec25d7817a595702f9f9ffab91d865e6f",
+    "src/data/demo.ts": "193401509c27e1e866709725d953d8047c6995493c2eb437afe78ade9cd4f103",
+    "src/data/qualityFixtures.ts": "14f6b9c0e15df74381b03f012505dbe048a7ca49c148241983a24855cc7335c8",
+    "src/domain/store.ts": "93637622d0499cc106e9a22d78df5beaed039a91d147077546c2e05e270d8cb7",
+    "src/domain/supportNavigation.ts": "7620f3b4fea6f8f51fd40f3aa87406f47e9b8f9c34a5a589bf18a2a7f724ccd0",
+    "src/domain/types.ts": "721fdc331165d48eda451cf16f1ce03c33be26a523ec24e0eee51c124d5a41d5",
+    "src/main.tsx": "8bfc53c6d1bb4c15082404ddad3066ee919ba34a055c858037cdd0c47041db44",
+    "vite.config.ts": "b9ec00ed334010d0d6427dad534d01e88720b9d9cab99f99a9733bdbd53c8a46"
+  }
+}

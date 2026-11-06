@@ -1,8 +1,9 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {readFileSync} from 'node:fs'
+import {readFileSync} from './helpers/source-for-legacy-checks.mjs'
 const read = f=>readFileSync(new URL(f, import.meta.url), 'utf8')
-const app=read('../src/App.tsx'), charts=read('../src/components/Charts.tsx'), css=read('../src/styles/motion.css'), main=read('../src/main.tsx')
+const app=read('../src/App.tsx'), charts=read('../src/components/Charts.tsx'), css=cssForLegacyAssertions(new URL('../src/styles/motion.css',import.meta.url)), main=read('../src/main.tsx')
 test('the isolated motion layer loads after the approved responsive rules',()=>{
  assert.ok(main.indexOf("import './styles/motion.css'")>main.indexOf("import './styles/responsive.css'"))
  assert.match(css,/--ros-motion-reveal: 360ms/)

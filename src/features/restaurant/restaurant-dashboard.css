@@ -1,0 +1,110 @@
+/* Restaurant-only presentation. The Admin Dashboard and global design tokens are untouched. */
+.restaurant-dashboard .restaurant-data-unavailable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #6d7a70;
+  font-size: 11px;
+  line-height: 1.45;
+  text-align: center;
+  min-width: 0;
+}
+.restaurant-dashboard .restaurant-data-unavailable svg { flex: none; color: #78967e; }
+.restaurant-dashboard .restaurant-chart-placeholder {
+  margin-top: auto;
+  min-height: 108px;
+  display: grid;
+  place-items: center;
+}
+.restaurant-dashboard .restaurant-middle-empty {
+  min-height: 110px;
+  display: grid;
+  place-items: center;
+  padding: 12px 0;
+}
+.restaurant-dashboard .restaurant-activity-empty {
+  min-height: 134px;
+  display: grid;
+  place-items: center;
+}
+.restaurant-dashboard .circle-action:disabled,
+.restaurant-dashboard .system-actions button:disabled {
+  cursor: not-allowed;
+}
+.restaurant-dashboard .circle-action:disabled { opacity: .6; }
+.restaurant-dashboard .circle-action:disabled:hover { background: white; border-color: #e4eae3; transform: none; }
+.restaurant-dashboard .system-actions button:disabled { opacity: .92; }
+.restaurant-dashboard .system-actions button:disabled:hover { background: #f8faf9; border-color: #dfe4dd; }
+
+/* The account dropdown is scoped to the new optional demo switch; closed Admin shell geometry is unchanged. */
+.demo-account-control { position: relative; flex: none; }
+.demo-account-control .user-select { position: relative; gap: 8px; padding-right: 9px; cursor: pointer; font-family: var(--ros-font); color: #121714; }
+.demo-account-control .user-select > span { overflow: hidden; text-overflow: ellipsis; }
+.demo-account-control .demo-chevron { flex: none; color: #657368; }
+.demo-account-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 7px);
+  z-index: 90;
+  min-width: 193px;
+  background: #fff;
+  border: 1px solid var(--ros-border);
+  box-shadow: var(--ros-shadow-popover);
+  padding: 6px;
+  border-radius: 12px;
+}
+.demo-account-menu button {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: left;
+  background: transparent;
+  color: #27342b;
+  cursor: pointer;
+  font: 600 11px var(--ros-font);
+}
+.demo-account-menu button:hover,
+.demo-account-menu button:focus-visible { background: #f0f6e5; }
+.demo-account-menu button[aria-checked="true"] { background: #eef8d5; color: #20341d; }
+.demo-account-menu button:focus-visible { outline: 2px solid #679a37; outline-offset: -2px; }
+.ros-light-sidebar .side-link.restaurant-nav-unavailable { opacity: .65; cursor: not-allowed; }
+.ros-light-sidebar .side-link.restaurant-nav-unavailable:hover { background: transparent; color: #3c5159; }
+@media (max-width: 480px) {
+  .demo-account-control { max-width: 148px; min-width: 0; }
+  .demo-account-control .user-select { max-width: 148px; }
+  .restaurant-dashboard .restaurant-data-unavailable { font-size: 10px; }
+}
+@media (max-width: 360px) {
+  .demo-account-control { max-width: 104px; }
+  .demo-account-control .user-select { max-width: 104px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-account-menu button { transition: none !important; }
+}
+
+/* Empty-data cards retain the approved Admin Dashboard's occupied geometry. */
+@media (min-width: 1121px) {
+  .restaurant-dashboard .top-stats > .panel { min-height: 242px; }
+  .restaurant-dashboard .cards-row > .panel { min-height: 302px; }
+  .restaurant-dashboard .bottom-row > .panel,
+  .restaurant-dashboard .bottom-row > .systems-panel { min-height: 248px; }
+}
+@media (min-width: 641px) and (max-width: 1120px) {
+  .restaurant-dashboard .top-stats > .panel { min-height: 234px; }
+  .restaurant-dashboard .cards-row > .panel { min-height: 294px; }
+  .restaurant-dashboard .cards-row .access-panel { min-height: 265px; }
+  .restaurant-dashboard .bottom-row > .audit-panel { min-height: 240px; }
+}
+@media (max-width: 640px) {
+  .restaurant-dashboard .welcome { min-height: 120px; }
+  .restaurant-dashboard .top-stats > .panel { min-height: 244px; height: 244px; }
+  .restaurant-dashboard .top-stats > .payments-panel { min-height: 225px; height: 225px; }
+  .restaurant-dashboard .payments-panel .restaurant-chart-placeholder { min-height: 72px; }
+  .restaurant-dashboard .cards-row > .employees-panel { min-height: 281px; }
+  .restaurant-dashboard .cards-row > .approvals-panel { min-height: 301px; }
+  .restaurant-dashboard .cards-row > .access-panel { min-height: 269px; }
+  .restaurant-dashboard .bottom-row > .audit-panel { min-height: 342px; }
+}

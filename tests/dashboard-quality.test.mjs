@@ -1,8 +1,9 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {readFileSync} from 'node:fs'
+import {readFileSync} from './helpers/source-for-legacy-checks.mjs'
 const read=(name)=>readFileSync(new URL(name,import.meta.url),'utf8')
-const app=read('../src/App.tsx'),fixture=read('../src/data/qualityFixtures.ts'),css=read('../src/styles/components.css')
+const app=read('../src/App.tsx'),fixture=read('../src/data/qualityFixtures.ts'),css=cssForLegacyAssertions(new URL('../src/styles/components.css',import.meta.url))
 test('ambiguous top-right shortcut arrow is gone and only live shortcuts remain',()=>{
  assert.match(app,/>Administration shortcuts<\/h2>/)
  assert.doesNotMatch(app,/CircleAction label="Open System Management"/)

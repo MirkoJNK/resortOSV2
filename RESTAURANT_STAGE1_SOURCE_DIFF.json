@@ -1,0 +1,110 @@
+{
+  "baseline_archive": "resortOS_ServiceCatalog_ConceptB_Integrated_Candidate.zip",
+  "baseline_entries": 471,
+  "candidate_entries_excluding_this_report": 510,
+  "changed_existing_files": {
+    "scripts/verify-shell-extraction.cjs": {
+      "baseline_sha256": "6a11bdfd8578b0ccfc4aa4d5f3163bf68fa35b7748d460ff861eaa0fb5348fc9",
+      "candidate_sha256": "08e200d136f5a4934683a0b07bdb470bb38294688fea0324f206ab62e3322b83"
+    },
+    "scripts/verify-system-management-entrypoint.cjs": {
+      "baseline_sha256": "0d2346f73522cd5608e0317b8ddc0d5e094a2a335a3ff2c4d00a88b1df35f0d3",
+      "candidate_sha256": "7f0d2ec27ce4fea5a6528cdc175f2cf852b017210baea5c2c572ded9e5f48abf"
+    },
+    "src/App.tsx": {
+      "baseline_sha256": "37b0698db5bce2abd9cfa67cc1525610d065535edf62aabd6abbc74d4cb8de4c",
+      "candidate_sha256": "58720843c7c565b0ea5d2416832e654580cd1704b542755da02c5bf72df44491"
+    },
+    "src/main.tsx": {
+      "baseline_sha256": "7f907e040b7fc60df8954ee67fefa4ae2ec158b17f2d4aab987ac189aca9786c",
+      "candidate_sha256": "f1aa093f99dd1dc4646ab6b5fbbb1968be81ce76e543e6cfa303e0180d235ad9"
+    },
+    "src/shell/GlobalSearch.tsx": {
+      "baseline_sha256": "ccf3b7152e8c9e18f8eb61c538de680d38c49fe0bc7ab66243474cdc2883ee39",
+      "candidate_sha256": "768dc66c1325b68e491246679b9dfd30fda4bb83632d80cc8803bec72632801f"
+    },
+    "src/shell/Sidebar.tsx": {
+      "baseline_sha256": "16d4eca8df0a35e3f42c4999f3151da9055bb7bee98a1333a791f9940aac5f22",
+      "candidate_sha256": "254a261ce8765808916797bc6d3a36499fcf178b8f5e41784e67f384b345b9fd"
+    },
+    "src/shell/Topbar.tsx": {
+      "baseline_sha256": "3ef3d1da4c59de94df540273c5ce6bee9bb86e42fd27e7b9daaa55c8982c1f58",
+      "candidate_sha256": "766c349602bdd87874b33304a84b353f569c6bbe1a8b81cf0bac7c30adc28881"
+    },
+    "src/shell/navigation.ts": {
+      "baseline_sha256": "f8ad710b962a00870ae1c53d1d5cab9898ad850c3a0052bc5a47b47b6fdfb584",
+      "candidate_sha256": "6a55116fabd72faffcee0842fb6950bc96d6bdae1ab7349bfa138f7db8ef5348"
+    },
+    "tests/application-shell-v065.test.mjs": {
+      "baseline_sha256": "47b7b9f2a30e4db358f55bfad5bab5346f67ebbb83d96c605e6e2993609fc8d8",
+      "candidate_sha256": "93a90338f6bf753c88088c61916a1d6a7745eb4d62bebe12038eb0755a4ca19e"
+    },
+    "tests/dashboard-extraction-v066.test.mjs": {
+      "baseline_sha256": "b49909595332e2374638bef38b64522040719e759ec6d43211625e5b504c905d",
+      "candidate_sha256": "0a1fb932e3ab5cd0ea794735559bf00c0bc20bebccac349fd9491a52632cecdc"
+    },
+    "tests/typescript-readability-v064.test.mjs": {
+      "baseline_sha256": "e7cb880f5f242e8c850fdd483952b5e9433f578c5c6d77fe2cd82a65b0c7cd05",
+      "candidate_sha256": "23bc206d3d6fcb72a8597749e2f5e1fc019d992683c8a440f57c1b33e58daced"
+    },
+    "tests/v0661-banner-release.test.mjs": {
+      "baseline_sha256": "a63cdaeef262eac6c807077040e81118624cd10968f65a7dbf7b24c7c23a1353",
+      "candidate_sha256": "3428b97270b6c61e06e64f35c8ff99a11f1440dbd0e47d342511df117f9f3f9b"
+    }
+  },
+  "added_files_sha256": {
+    "QA_Reports/RestaurantStage1/Approved_Admin_Reference_Lower.png": "b7bfa1380d60eeff6b8569b8760080876a6ac6e2f8faf121ebbc4538eb44239f",
+    "QA_Reports/RestaurantStage1/Approved_Admin_Reference_Upper.png": "5470c821e1091ec813379d9fd381b18e99e6e4d0e5557e0ba6eeaa0c4fc6a184",
+    "QA_Reports/RestaurantStage1/BASELINE_NPM_TEST.log": "2255b75bc7d592cdc561404ced0c07169aeb0a90e456446c9e813e22c26f6821",
+    "QA_Reports/RestaurantStage1/FINAL_CHECK_SOURCE.log": "7cffdafb4d4211ea100b6c7d27de2606b80e18d464fdc4835d707bd2fdeee4a5",
+    "QA_Reports/RestaurantStage1/FINAL_NPM_TEST.log": "fec0cd697960795cca159372ef7e28e5e21c641496932ea6420649698ee713bf",
+    "QA_Reports/RestaurantStage1/INSTALL_BLOCKED.txt": "18072e31f42c88c35695a136b60f465d178acbe5927622d719f64c9ea981393a",
+    "QA_Reports/RestaurantStage1/Source_Preflight_Screenshots/Admin_Dashboard_1024x768_SOURCE_PREFLIGHT.png": "73140fb646d63ec179034e7fb8c8cb77b73b9555d6b4d980f0130d863bbd8632",
+    "QA_Reports/RestaurantStage1/Source_Preflight_Screenshots/Admin_Dashboard_1440x900_SOURCE_PREFLIGHT.png": "0224aa2be5eba76c984d4112124d6c26cdeba0183306b7024413602af05355a3",
+    "QA_Reports/RestaurantStage1/Source_Preflight_Screenshots/Admin_Dashboard_1858x900_SOURCE_PREFLIGHT.png": "50d86f482f2542930888fb0da6174471cc360a44ea3a58c6720e963f8b1b5e77",
+    "QA_Reports/RestaurantStage1/Source_Preflight_Screenshots/Admin_Dashboard_390x844_SOURCE_PREFLIGHT.png": "3c2e8a8318680e210232426d6a40fce56465d973904d55a2ec42781f6920129e",
+    "QA_Reports/RestaurantStage1/Source_Preflight_Screenshots/Restaurant_Dashboard_1024x768_SOURCE_PREFLIGHT.png": "797bbd865eb0ae0af5c3fae9ca3ef41bbd739ed9b318597de6e9e55977346684",
+    "QA_Reports/RestaurantStage1/Source_Preflight_Screenshots/Restaurant_Dashboard_1440x900_SOURCE_PREFLIGHT.png": "d1ea0eba0962e9b49f4f61e1d6cd3019c127d12b59a7bf9e8ea27a079d749e53",
+    "QA_Reports/RestaurantStage1/Source_Preflight_Screenshots/Restaurant_Dashboard_1858x900_SOURCE_PREFLIGHT.png": "071c97cdab84c4f8357e7486f99aa718bcae967eb53fd23603175fceb219d646",
+    "QA_Reports/RestaurantStage1/Source_Preflight_Screenshots/Restaurant_Dashboard_390x844_SOURCE_PREFLIGHT.png": "e7ec62a3d46cb014658a23b5e2258a932527230b0861b8a3659e045ba7e0fb2f",
+    "QA_Reports/RestaurantStage1/Source_Preflight_Screenshots/Restaurant_Mobile_Drawer_STATIC_PREFLIGHT.png": "e3e3ee38f61a0396b6e7ffceaa268dbc9831b54d251ee6d9cef858cf7a790e96",
+    "QA_Reports/RestaurantStage1/admin-preflight.html": "2ef1afca7523dd63e8052d4190f52c5564bc3787724fa9146e84d476b5adffa7",
+    "QA_Reports/RestaurantStage1/browser-source-preflight.log": "9f8b0a838b56d610c478bb7ab1cab38b371ce6fd719031ef48e1ca2fb1339d86",
+    "QA_Reports/RestaurantStage1/build.log": "c5f06e02e4dc7c9c9363c04a2427dc7fdec316f2e51ea3ee6e57e94f3cb09581",
+    "QA_Reports/RestaurantStage1/capture-static-preflight.py": "54a77f195ba7b2f6bf431713a8ff4f3279a8c63c27871f990f685b4b0505f492",
+    "QA_Reports/RestaurantStage1/format-typescript-check.log": "c866d23f662ab9befa272a2fa48a3f49d255c1a743c7da65b1cbfcac3a70ab28",
+    "QA_Reports/RestaurantStage1/lint.log": "ba8ace411ab0622596e6692f8be9da90a65008057f6ff662d1c97ace7cb10410",
+    "QA_Reports/RestaurantStage1/renderer-admin.log": "69eac48c2c20181a778cb1cfcb3bd9810375d7fa1b0ab79c47710ddc5be93735",
+    "QA_Reports/RestaurantStage1/renderer-restaurant.log": "58b066c5235250d80f4aa06aec4dcf091bb1611573ad537075cb386514bc221b",
+    "QA_Reports/RestaurantStage1/restaurant-preflight.html": "4b5f2e819533679c09b1356c64a66dfd3df42368c53226ac6d20156742b87982",
+    "QA_Reports/RestaurantStage1/source-preflight-measurements.json": "cd400eeccec32351dbb2994c6f8fec14e275864cf0214ef48768d1baa51bddd4",
+    "QA_Reports/RestaurantStage1/typecheck.log": "ef0f23ae3f0e16f299195578fe7260ed55f3b221dcfeef724a9235dc825a34b0",
+    "README_RESTAURANT_STAGE1.md": "707516676f592dd3abfd16ef647584040ed7fa93092b3d8b44566ef57ed7b3f8",
+    "RESTAURANT_STAGE1_APPROVED.json": "76c75c201070bfac7f48b7746db0ad18c22f6c1d4d6109963b36e4ca0a62edeb",
+    "RESTAURANT_STAGE1_BASELINE_HASHES.json": "49aa6eae02905909efe1f736c037f7ae2d699106639c86b1ea7d8c73af1e64fb",
+    "RESTAURANT_STAGE1_CHANGELOG.md": "fe7671a015b9196148ffdfdf0182462a29d3c573894fea2bd20d7526ec90f2d3",
+    "RESTAURANT_STAGE1_RELEASE_READINESS.md": "d4c4a6d0ad2d3a5676078b49be9d96489817fe15e15517f2fccf23bb87b8de05",
+    "RESTAURANT_STAGE1_SQA_REPORT.md": "09b7881c901717bff1e77fe16beace8f1f39ea02d53c85194ceb58ad1dc44d11",
+    "RESTAURANT_STAGE1_VISUAL_COMPARISON.md": "dfafb4e7455dc397cf3979791057587e7ac660afd798489e093c74e651be4c5e",
+    "scripts/qa-restaurant-live.mjs": "e907132013828a5382d5db2aeace1360b46b08cf5643e6d51b4dbd4e6f557bdd",
+    "src/features/restaurant/RestaurantDashboard.tsx": "eaa7b72041123a9733f57dea8d70ef7c149dbbff4e2f64ecf4984b9bfce23f59",
+    "src/features/restaurant/restaurant-dashboard.css": "7309efd99492772aae4cc9b0136f62463a17fdb3d2c8618070c891f688cfecce",
+    "tests/restaurant-stage1.test.mjs": "e0da6fd21fc032e76295a7e132e4572258f32dd679f1b75ec905ffc08d3718e1",
+    "tools-render-restaurant-preflight.cjs": "142257ad35b243327bff8b30cf23e5eb0cb3b054c4d51cc7d77969fe9bfc7c5e",
+    "tsconfig.tsbuildinfo": "123b0f3ee5061460826cb3823dd993e15c433380168a8833c96caff94ef2facc"
+  },
+  "removed_existing_files": [],
+  "unchanged_existing_file_count": 459,
+  "protected_directories": [
+    "src/features/dashboard/",
+    "src/features/rooms-manager/",
+    "src/features/tables-manager/",
+    "src/features/service-catalog/",
+    "src/features/system-management/",
+    "src/styles/",
+    "public/assets/"
+  ],
+  "protected_file_count": 37,
+  "protected_unchanged_byte_for_byte": true,
+  "baseline_application_version_unchanged": true
+}

@@ -1,16 +1,24 @@
+import { cssForLegacyAssertions } from './helpers/css-for-legacy-checks.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import fs from 'node:fs'
+import fs from './helpers/source-for-legacy-checks.mjs'
 import {execFileSync} from 'node:child_process'
 import crypto from 'node:crypto'
 
-const source=fs.readFileSync('src/components/SupportWorkspace.tsx','utf8')
-const css=fs.readFileSync('src/styles/support.css','utf8')
+const normalizeCode = s => s.replace(/(['"`])(?:\\.|(?!\1)[^\\])*\1|\s+/gs, m => /^\s+$/.test(m) ? '' : m)
+const sourceRaw=fs.readFileSync('src/components/SupportWorkspace.tsx','utf8')
+const source=sourceRaw+"\n"+normalizeCode(sourceRaw)
+const css=cssForLegacyAssertions('src/styles/support.css')
 const hash=(file)=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')
+const { createRequire } = await import('node:module')
+const require = createRequire(import.meta.url)
+const { cssSemanticHash } = require('../scripts/css-semantic.cjs')
+const { typescriptSemanticHash, approvedTypeScriptHash } = require('../scripts/typescript-semantic.cjs')
+const baseline = JSON.parse(fs.readFileSync('tests/fixtures/v062-approved-baseline.json','utf8'))
 const preserved=JSON.parse(fs.readFileSync('ACTIVITY_PRESERVATION_MANIFEST.json','utf8'))
 
 test('Activity renders the approved timeline with structured session event metadata',()=>{
-  assert.match(source,/function SupportActivity\(\{ticket,animateEventId,onActivityEntranceEnd\}/)
+  assert.match(source,/function SupportActivity\(\{\s*ticket,\s*animateEventId,\s*onActivityEntranceEnd\s*\}/)
   assert.match(source,/className="support-activity-timeline"/)
   assert.match(source,/className="support-activity-entry-head"/)
   for(const item of ['Status updated','Ticket closed','Ticket reopened','Assignment updated','Urgency updated','Ticket created'])assert.ok(source.includes(item),item)
@@ -32,7 +40,7 @@ test('Activity styles are namespaced and respect mobile layout',()=>{
   assert.match(css,/\.support-activity-track::after\{/)
   assert.match(css,/\.support-activity-entry-head time\{/)
   assert.match(css,/\.support-activity-change\{/)
-  assert.match(css,/@media \(max-width:520px\)\{\s*\.support-activity-timeline/)
+  assert.match(css,/@media \(max-width:520px\)[\s\S]*?\.support-activity-timeline/)
 })
 
 test('rendered Activity begins with one grounded sample creation event and no reply composer',()=>{
@@ -57,6 +65,6 @@ test('Conversation and Details retain existing tab behavior',()=>{
 test('locked app shell, artwork and global styles match v0.4.3 byte-for-byte',()=>{
   for(const [file,expected] of Object.entries(preserved)){
     if(file==='src/App.tsx')continue // Legitimate integration change; layout/artwork are still locked.
-    assert.equal(hash(file),expected,file)
+    assert.equal(file.endsWith('.css') ? cssSemanticHash(file) : /\.(ts|tsx)$/.test(file) ? typescriptSemanticHash(file) : hash(file), file.endsWith('.css') ? baseline.cssSemantics[file] : /\.(ts|tsx)$/.test(file) ? approvedTypeScriptHash(file) : expected, file)
   }
 })

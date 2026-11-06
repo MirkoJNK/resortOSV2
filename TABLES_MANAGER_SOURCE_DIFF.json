@@ -1,0 +1,38 @@
+{
+  "baseline_archive_sha256": "11387d0dffb4868a67ed1dbd75509f628dedd0c1940b1030419fe281e4ba3a82",
+  "changed_files": [
+    "scripts/qa-system-management-live.mjs",
+    "scripts/verify-approved-baseline.cjs",
+    "scripts/verify-shell-extraction.cjs",
+    "scripts/verify-system-management-entrypoint.cjs",
+    "src/App.tsx",
+    "src/domain/types.ts",
+    "src/features/system-management/SystemManagement.tsx",
+    "src/main.tsx",
+    "src/shell/navigation.ts",
+    "src/styles/system-management.css",
+    "tests/dashboard-extraction-v066.test.mjs",
+    "tests/helpers/source-for-legacy-checks.mjs",
+    "tests/system-management-integration.test.mjs",
+    "tests/typescript-readability-v064.test.mjs"
+  ],
+  "added_files": [
+    "QA_Reports/TablesManager/FINAL_SOURCE.log",
+    "QA_Reports/TablesManager/LIVE_QA.log",
+    "QA_Reports/TablesManager/baseline-tests.log",
+    "QA_Reports/TablesManager/build.log",
+    "QA_Reports/TablesManager/lint.log",
+    "QA_Reports/TablesManager/prettier.log",
+    "QA_Reports/TablesManager/typecheck.log",
+    "TABLES_MANAGER_APPROVED.json",
+    "TABLES_MANAGER_CHANGELOG.md",
+    "TABLES_MANAGER_SQA_REPORT.md",
+    "TABLES_MANAGER_START_HERE.md",
+    "scripts/qa-tables-manager-live.mjs",
+    "src/features/tables-manager/TablesManager.tsx",
+    "src/features/tables-manager/model.ts",
+    "src/features/tables-manager/tables-manager.css",
+    "tests/tables-manager-domain.test.mjs"
+  ],
+  "removed_files": []
+}

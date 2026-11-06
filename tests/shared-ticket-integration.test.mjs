@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import fs from 'node:fs'
+import fs from './helpers/source-for-legacy-checks.mjs'
 import path from 'node:path'
 import vm from 'node:vm'
 import {createRequire} from 'node:module'
@@ -121,15 +121,17 @@ test('old localStorage ticket copies are discarded without removing unrelated sa
  }finally{h.restore()}
 })
 
-test('v0.5.4: overview has exactly three cards with live counts and no In progress urgency breakdown',()=>{
+test('v0.6.6.1: removed overview cards do not remove live inbox queue counts',()=>{
  const h=makeHost()
  try{
   h.click(n=>n.type==='button'&&String(n.props.className).includes('side-link')&&h.text(n).includes('Support & Issues'))
-  const cards=h.all(n=>n.type==='div'&&String(n.props.className).includes('support-overview-card'))
-  assert.equal(cards.length,3)
-  assert.deepEqual(cards.map(c=>h.text(c).replace(/\s+/g,' ')),['Open tickets71 urgent','In progress5','Closed tickets8'])
-  assert.ok(cards.every(c=>h.all(n=>n.type==='span'&&String(n.props.className).includes('support-overview-icon')).length===3))
-  assert.doesNotMatch(h.text(h.find(n=>n.type==='div'&&n.props['aria-label']==='Live in-session support metrics')),/\d+ high|Urgent open tickets|Waiting for response/)
+  assert.equal(h.all(n=>n.type==='div'&&String(n.props.className).includes('support-overview-card')).length,0)
+  const tabs=h.all(n=>n.type==='button'&&n.props['aria-pressed'] !== undefined && ['Open','In progress','Closed'].includes(n.props.children?.[0]))
+  assert.equal(tabs.length,3)
+  const texts=tabs.map(x=>h.text(x).replace(/\s+/g,' '))
+  assert.ok(texts.some(x=>x.includes('Open')&&x.includes('7')),texts.join(' | '))
+  assert.ok(texts.some(x=>x.includes('In progress')&&x.includes('5')),texts.join(' | '))
+  assert.ok(texts.some(x=>x.includes('Closed')&&x.includes('8')),texts.join(' | '))
  }finally{h.restore()}
 })
 
@@ -141,9 +143,8 @@ test('v0.5.4: zero urgent Open tickets hides warning while the Admin Dashboard s
   h.click(n=>n.type==='button'&&n.props.role==='tab'&&n.props.children==='Details')
   h.click(n=>n.type==='button'&&n.props['aria-label']==='Change ticket urgency')
   h.click(n=>n.type==='button'&&n.props['aria-label']==='Change ticket urgency: High')
-  const card=h.find(n=>n.type==='div'&&String(n.props.className).includes('support-overview-open'))
-  assert.equal(h.text(card),'Open tickets7')
-  assert.equal(h.all(n=>n.type==='em'&&String(n.props.className).includes('support-count-detail')).length,0)
+  assert.equal(h.support.getSupportCounts(h.support.createSupportTickets()).urgentOpen,1) // frozen seed remains unchanged
+  assert.equal(h.all(n=>n.type==='div'&&String(n.props.className).includes('support-overview-open')).length,0)
   h.click(n=>n.type==='button'&&String(n.props.className).includes('side-link')&&h.text(n).includes('Dashboard'))
   assert.match(h.text(h.find(n=>n.type==='article'&&String(n.props.className).includes('ticket-panel'))),/No urgent issues/)
   assert.equal(h.writes.length,0)

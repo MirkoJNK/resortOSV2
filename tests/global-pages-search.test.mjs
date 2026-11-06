@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import fs from 'node:fs'
+import fs from './helpers/source-for-legacy-checks.mjs'
 
 const app=fs.readFileSync('src/App.tsx','utf8')
 const workspace=fs.readFileSync('src/components/SupportWorkspace.tsx','utf8')
@@ -48,5 +48,5 @@ test('search dialog keeps the same focus, keyboard, close, and navigation intera
 test('local Support & Issues ticket search and filters remain available',()=>{
  assert.match(workspace,/placeholder="Search tickets"/)
  assert.match(workspace,/aria-label="Search tickets"/)
- assert.match(workspace,/filterSupportTickets\(tickets,filters\)/)
+ assert.match(workspace,/filterSupportTickets\(tickets,\s*filters\)/)
 })
