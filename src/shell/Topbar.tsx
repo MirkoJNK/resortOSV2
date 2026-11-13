@@ -1,15 +1,17 @@
 import { Bell, CircleHelp, Menu, Search } from 'lucide-react'
 import type { Department } from './navigation'
+import { WorkspaceSwitcher } from './WorkspaceSwitcher'
 
 /** Display-only identity: demo routing is controlled separately by WorkspaceSwitcher. */
-export function Topbar({ onSearch, onMenu, menuOpen, department = 'admin' }: {
+export function Topbar({ onSearch, onMenu, menuOpen, department = 'admin', onWorkspaceChange }: {
   onSearch: () => void
   onMenu: () => void
   menuOpen: boolean
   department?: Department
+  onWorkspaceChange: (next: Department) => void
 }) {
-  const name = department === 'admin' ? 'Demo Administrator' : 'Demo Restaurant'
-  const initials = department === 'admin' ? 'DA' : 'DR'
+  const name = department === 'admin' ? 'Demo Administrator' : department === 'restaurant' ? 'Demo Restaurant' : 'Demo Front Desk'
+  const initials = department === 'admin' ? 'DA' : department === 'restaurant' ? 'DR' : 'DF'
   return <header className="topbar">
     <button
       className="mobile-toggle"
@@ -19,6 +21,7 @@ export function Topbar({ onSearch, onMenu, menuOpen, department = 'admin' }: {
       aria-expanded={menuOpen}>
       <Menu size={22} />
     </button>
+    <WorkspaceSwitcher department={department} onSwitch={onWorkspaceChange}/>
     <div className="topbar-spacer" />
     <button className="global-search" onClick={onSearch}>
       <Search size={17} />
@@ -35,7 +38,6 @@ export function Topbar({ onSearch, onMenu, menuOpen, department = 'admin' }: {
     </button>
     <div className="ros-profile-identity" aria-label={`Current demo identity: ${name}`}>
       <span className="ros-profile-avatar" aria-hidden="true">{initials}</span>
-      <span className="ros-profile-name">{name}</span>
     </div>
   </header>
 }

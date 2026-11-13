@@ -1,77 +1,47 @@
-import {
-  ArrowRight,
-  CalendarDays,
-  ClipboardList,
-  CreditCard,
-  FileClock,
-  Headphones,
-  ListChecks,
-  Settings2,
-  Sun,
-  UtensilsCrossed,
-} from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
-import { StatIcon } from '../../components/Ui'
+import { useEffect, useRef, useState } from 'react'
+import type { AppRoute } from '../../shell/navigation'
+import { ClipboardList, CreditCard, FileClock, Settings2, UtensilsCrossed } from 'lucide-react'
+import { loadOperations } from '../restaurant-tables/storage'
+import type { Operations } from '../restaurant-tables/model'
+import { readTables, STORAGE_KEY as TABLES_STORAGE_KEY } from '../tables-manager/model'
+import { formatPrice } from '../menu-management/model'
+import { restaurantDashboardMetrics } from './dashboardMetrics'
+import type { FinanceConfig } from '../discount-management/model'
+import { loadFinanceConfig, FINANCE_CHANGED_EVENT } from '../discount-management/storage'
+import { recordedOrdersByDay, currentRestaurantOrderBreakdown } from '../dashboard/chartSelectors'
+import { DashboardHero, DashboardGreeting, DashboardKpi, DashboardChart, DashboardMiniMetric, DashboardActivity } from '../dashboard/DashboardVisuals'
 
-/** Read-only departmental view: no operational store exists yet. */
+/** Actual Restaurant operations in the browser-local demonstration. */
 export const restaurantDashboardSources = {
-  orders: 'not-implemented',
-  roomPostings: 'not-implemented',
-  liveTables: 'not-implemented',
-  exceptions: 'not-implemented',
-  activity: 'not-implemented',
+  orders: 'operational-demo', roomPostings: 'operational-demo', liveTables: 'operational-demo',
+  exceptions: 'reservations', activity: 'operational-demo'
 } as const
 
-function DayMeta() {
-  return <div className="day-meta">
-    <span>
-      <CalendarDays size={15} />
-      {new Date().toLocaleDateString('en-US', {
-        weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
-      })}
-    </span>
-    <span className="meta-divider" />
-    <span title="Illustrative weather — not a live forecast"><Sun size={17} className="sun-icon" />28°C</span>
-    <span>Oceanview Resort</span>
-  </div>
-}
-
-/** Identical markup, artwork paths, and classes as Admin's approved hero. */
-function ResortArt() {
-  return <section className="resort-art motion-reveal motion-order-1" aria-label="Resort illustration">
-    <div className="art-shore" />
-    <div className="art-arch" />
-    <div className="art-copy">Operations<br />power<br />unforgettable<br />stays<span className="art-underline" /></div>
-    <div className="weather" title="Illustrative weather — not a live forecast" aria-label="Illustrative weather, not a live forecast">
-      <Sun size={29} strokeWidth={1.8} />
-      <div><strong>28°C</strong><small>Oceanview Resort</small></div>
-    </div>
-  </section>
-}
-
-function InformationalPanelHeader({ icon, title, tone }: { icon: LucideIcon; title: string; tone?: 'lime' | 'blue' }) {
-  return <div className="panel-head"><StatIcon icon={icon} tone={tone} /><h2>{title}</h2></div>
-}
-function Unavailable({ children }: { children: string }) {
-  return <div className="restaurant-data-unavailable" role="status"><FileClock size={18} aria-hidden="true" /><span>{children}</span></div>
-}
-
-/** One inaccessible-in-production destination is never represented as a working link. */
 const shortcuts = [
-  { icon: UtensilsCrossed, label: 'Tables' },
-  { icon: ClipboardList, label: 'Orders' },
-  { icon: Headphones, label: 'Support & Issues' },
+  { icon: UtensilsCrossed, label: 'Tables', route: 'restaurant-tables' as AppRoute },
+  { icon: ClipboardList, label: 'Orders', route: 'restaurant-orders' as AppRoute }
 ]
-function RestaurantShortcuts() {
+function RestaurantShortcuts({ go }: { go: (area: AppRoute) => void }) {
+  const [pressed, setPressed] = useState<AppRoute | null>(null)
+  const timeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+  useEffect(() => () => { if (timeout.current !== null) clearTimeout(timeout.current) }, [])
+  const navigate = (route: AppRoute) => {
+    if (pressed !== null) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { go(route); return }
+    setPressed(route)
+    timeout.current = setTimeout(() => go(route), 125)
+  }
   return <article className="systems-panel motion-reveal motion-order-8">
     <div className="systems-head"><span className="systems-icon"><Settings2 size={18} /></span><h2>Restaurant Shortcuts</h2></div>
-    <div className="system-actions navigation-shortcuts">
-      {shortcuts.map(({icon: Icon,label}) => <button
+    <div className="system-actions navigation-shortcuts ros-restaurant-shortcuts">
+      {shortcuts.map(({icon: Icon,label,route}) => <button
         key={label}
         type="button"
-        disabled
-        aria-label={`${label} — not yet available`}
-        title="Not yet available">
+        className={pressed === route && route ? 'is-pressed' : ''}
+        onClick={route ? () => navigate(route) : undefined}
+        disabled={!route}
+        aria-label={route ? label : `${label} — not yet available`}
+        title={route ? undefined : 'Not yet available'}>
         <Icon size={21} /><span>{label}</span>
       </button>)}
     </div>
@@ -79,62 +49,60 @@ function RestaurantShortcuts() {
   </article>
 }
 
-export function RestaurantDashboard() {
-  return <div className="restaurant-dashboard" data-department="restaurant">
+export function RestaurantDashboard({ go }: { go: (area: AppRoute) => void }) {
+  const [ops, setOps] = useState<Operations | null>(null)
+  const [finance,setFinance] = useState<FinanceConfig|null>(null)
+  const [tables, setTables] = useState<ReturnType<typeof readTables> | null>(null)
+  useEffect(() => {
+    let live = true, generation = 0
+    const refresh = () => {
+      const ticket = ++generation
+      setTables(readTables())
+      void Promise.all([loadOperations(),loadFinanceConfig()]).then(([next,policy]) => {if(live && ticket===generation){setOps(next);setFinance(policy)}})
+        .catch(()=>{if(live && ticket===generation)setOps(null)})
+    }
+    const storage = (event:StorageEvent) => {if(event.key===TABLES_STORAGE_KEY)refresh()}
+    refresh()
+    window.addEventListener('focus',refresh)
+    window.addEventListener('restaurant-operations-changed',refresh)
+    window.addEventListener(FINANCE_CHANGED_EVENT,refresh)
+    window.addEventListener('storage',storage)
+    return ()=>{live=false;window.removeEventListener('focus',refresh);window.removeEventListener('restaurant-operations-changed',refresh);window.removeEventListener(FINANCE_CHANGED_EVENT,refresh);window.removeEventListener('storage',storage)}
+  },[])
+  const metrics = ops && tables && !tables.error && finance ? restaurantDashboardMetrics(ops,tables.data.tables,new Date(),finance) : null
+  const dailyOrders = ops ? recordedOrdersByDay(ops) : null
+  const orderStatus = metrics ? currentRestaurantOrderBreakdown(metrics.ordersRequiringAction,metrics.readyToPay) : null
+  return <div className="restaurant-dashboard ros-dashboard-v2" data-department="restaurant">
     <div className="overview-top">
       <div className="overview-left">
-        <div className="welcome motion-reveal motion-order-0">
-          <p>Good morning,</p>
-          <h1>Your restaurant at a glance</h1>
-          <DayMeta />
-        </div>
+        <DashboardGreeting employee="Employee" />
         <div className="top-stats">
-          <article className="panel ticket-panel motion-reveal motion-order-2">
-            <div className="panel-head">
-              <StatIcon icon={ClipboardList} />
-              <h2>Orders requiring action</h2>
-              <button type="button" className="circle-action" disabled aria-label="Orders not yet available" title="Orders not yet available"><ArrowRight size={16} /></button>
-            </div>
-            <div className="stat-main"><b aria-label="Orders data unavailable">—</b></div>
-            <div className="restaurant-chart-placeholder"><Unavailable>Order data not available yet</Unavailable></div>
-          </article>
-          <article className="panel payments-panel motion-reveal motion-order-3">
-            <InformationalPanelHeader icon={CreditCard} title="Room charges posted today" tone="blue" />
-            <div className="stat-main payments-total"><b aria-label="Room-charge data unavailable">—</b></div>
-            <div className="restaurant-chart-placeholder"><Unavailable>Room postings not available yet</Unavailable></div>
-          </article>
+          <DashboardKpi icon={ClipboardList} title="Orders requiring action" value={metrics?.ordersRequiringAction ?? '—'}
+            note={metrics ? `${metrics.readyToPay} ready to pay` : 'Order data unavailable'} order={2}
+            open={{label:'Open Restaurant Orders',action:()=>go('restaurant-orders')}} />
+          <DashboardKpi icon={CreditCard} title="Room charges posted today (Demo)"
+            value={metrics ? formatPrice(metrics.postedCentavos) : '—'}
+            note={metrics ? `${metrics.roomPostingsToday} room postings today` : 'Room postings unavailable'} tone="blue" order={3} />
         </div>
       </div>
-      <ResortArt />
+      <DashboardHero />
     </div>
-    <div className="cards-row">
-      <article className="panel employees-panel motion-reveal motion-order-4">
-        <InformationalPanelHeader icon={ListChecks} title="Order status overview" />
-        <div className="stat-main"><b aria-label="Order-status data unavailable">—</b></div>
-        <div className="restaurant-middle-empty"><Unavailable>Order stages not available yet</Unavailable></div>
-      </article>
-      <article className="panel approvals-panel motion-reveal motion-order-5">
-        <InformationalPanelHeader icon={FileClock} title="Needs attention" tone="blue" />
-        <div className="stat-main"><b aria-label="Operational exceptions unavailable">—</b></div>
-        <div className="approvals-list restaurant-middle-empty"><Unavailable>Restaurant alerts not available yet</Unavailable></div>
-      </article>
-      <article className="panel access-panel motion-reveal motion-order-6">
-        <InformationalPanelHeader icon={UtensilsCrossed} title="Tables in service" />
-        <div className="access-metric"><b aria-label="Table activity unavailable">—</b></div>
-        <div className="restaurant-middle-empty"><Unavailable>Live table activity not available yet</Unavailable></div>
-        <div className="access-leaves" aria-hidden="true"><span /><span /><span /><span /></div>
-      </article>
+    <section className="ros-analytics" aria-label="Restaurant operational charts">
+      <DashboardChart title="Recorded orders" context="Last 7 days, Manila time" series={dailyOrders} kind="columns" order={4}
+        footer="Recorded orders count once, including those later canceled" />
+      <DashboardChart title="Current order status" context="Active dining sessions" series={orderStatus} kind="bars" order={5} />
+    </section>
+    <div className="cards-row ros-metric-strip motion-reveal motion-order-6">
+      <DashboardMiniMetric icon={UtensilsCrossed} label="Tables in service" value={metrics?.tablesInService ?? '—'} note="Active dining sessions" />
+      <DashboardMiniMetric icon={FileClock} label="Upcoming reservations" value={metrics?.upcomingReservations ?? '—'} note="Next 24 hours" />
+      <DashboardMiniMetric icon={ClipboardList} label="Ready to Pay" value={metrics?.readyToPay ?? '—'} note="Awaiting staff action" />
     </div>
     <div className="bottom-row">
-      <article className="panel audit-panel motion-reveal motion-order-7">
-        <div className="panel-head">
-          <StatIcon icon={FileClock} />
-          <h2>Recent restaurant activity</h2>
-          <button type="button" className="circle-action" disabled aria-label="Restaurant activity not yet available" title="Restaurant activity not yet available"><ArrowRight size={16} /></button>
-        </div>
-        <div className="audit-lines restaurant-activity-empty"><Unavailable>Restaurant activity not available yet</Unavailable></div>
-      </article>
-      <RestaurantShortcuts />
+      <DashboardActivity title="Recent restaurant activity">
+        {metrics?.recentActivity.length ? metrics.recentActivity.map(event=><div key={event.id} className="ros-activity-line"><span>{event.label}</span><time>{new Intl.DateTimeFormat('en-PH',{timeZone:'Asia/Manila',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(event.date))}</time></div>)
+          : <div className="dashboard-empty-message">{metrics ? 'No recorded restaurant activity' : 'Restaurant activity unavailable'}</div>}
+      </DashboardActivity>
+      <RestaurantShortcuts go={go} />
     </div>
   </div>
 }

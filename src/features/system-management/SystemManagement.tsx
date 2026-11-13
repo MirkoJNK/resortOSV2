@@ -3,8 +3,8 @@ import { Building2, CreditCard, ReceiptText, Search, Store, Users, X } from 'luc
 import type { LucideIcon } from 'lucide-react'
 
 /**
- * Management directory: Rooms Manager, Tables Manager, and Service Catalog have approved routes.
- * The eight remaining legacy editors stay informational until their React pages exist.
+ * Management directory: six implemented managers have routes.
+ * The remaining editors stay informational until their React pages exist.
  */
 type ManagementTool = { id: string; label: string; description: string; searchTerms?: string }
 type ManagementSection = { id: string; title: string; description: string; icon: LucideIcon; tools: ManagementTool[] }
@@ -70,7 +70,7 @@ export function SystemManagement() {
     <div className="section-header sm-heading">
       <div>
           <h1 id="sm-page-heading">System Management</h1>
-        <span>Configure your resort's operations and settings</span>
+        
       </div>
     </div>
 
@@ -107,7 +107,7 @@ export function SystemManagement() {
           </div>
         </div>
         <div className="sm-items">
-          {section.tools.map(tool => tool.id === 'tables' || tool.id === 'rooms' || tool.id === 'services' ? <a className="sm-tool sm-tool-link" key={tool.id} href={tool.id === 'rooms' ? '#systems/rooms' : tool.id === 'services' ? '#systems/services' : '#systems/tables'}>
+          {section.tools.map(tool => tool.id === 'tables' || tool.id === 'rooms' || tool.id === 'services' || tool.id === 'menu-categories' || tool.id === 'menu' || tool.id === 'methods' || tool.id === 'discounts' ? <a className="sm-tool sm-tool-link" key={tool.id} href={tool.id === 'discounts' ? '#systems/discounts' : tool.id === 'rooms' ? '#systems/rooms' : tool.id === 'services' ? '#systems/services' : tool.id === 'menu-categories' ? '#systems/menu-categories' : tool.id === 'menu' ? '#systems/menu' : tool.id === 'methods' ? '#systems/payment-methods' : '#systems/tables'}>
             <div className="sm-tool-copy"><h3>{tool.label}</h3><p>{tool.description}</p></div>
           </a> : <div className="sm-tool" key={tool.id}>
             <div className="sm-tool-copy">

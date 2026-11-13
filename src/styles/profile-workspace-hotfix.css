@@ -6,10 +6,9 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 0 10px 0 5px;
-  border: 1px solid var(--ros-border);
-  border-radius: 12px;
-  background: #fff;
+  padding: 0;
+  border: none;
+  background: transparent;
   color: #121714;
   white-space: nowrap;
   font: 700 11px var(--ros-font);
@@ -34,19 +33,20 @@
   text-overflow: ellipsis;
 }
 
-.ros-light-sidebar .ros-workspace {
+.topbar .ros-workspace {
   position: relative;
   z-index: 5;
   flex: none;
-  margin: 0 2px 8px;
+  margin: 0;
+  width: clamp(160px, 15vw, 220px);
 }
 
-.ros-light-sidebar .ros-workspace-trigger {
+.topbar .ros-workspace-trigger {
   display: flex;
   align-items: center;
   gap: 9px;
   width: 100%;
-  min-height: 42px;
+  min-height: 38px;
   padding: 4px 9px;
   background: #fff;
   border: 1px solid #d8e3d6;
@@ -58,12 +58,12 @@
   transition: border-color 170ms ease, background 170ms ease;
 }
 
-.ros-light-sidebar .ros-workspace-trigger:hover {
+.topbar .ros-workspace-trigger:hover {
   background: #f9fcf6;
   border-color: #b4cbb2;
 }
 
-.ros-light-sidebar .ros-workspace-trigger:focus-visible, .ros-light-sidebar .ros-workspace-menu button:focus-visible {
+.topbar .ros-workspace-trigger:focus-visible, .topbar .ros-workspace-menu button:focus-visible {
   outline: 2px solid #799e45;
   outline-offset: 2px;
 }
@@ -101,6 +101,7 @@
   top: calc(100% + 5px);
   left: 0;
   right: 0;
+  min-width: 190px;
   z-index: 55;
   padding: 5px;
   border: 1px solid #dce5da;
@@ -136,10 +137,10 @@
 /* The approved sidebar art flexes into remaining height, without cropping or moving. */
 
 @media (max-height: 650px) {
-  .ros-light-sidebar .ros-workspace {
+  .topbar .ros-workspace {
     margin-bottom: 4px;
   }
-  .ros-light-sidebar .ros-workspace-trigger {
+  .topbar .ros-workspace-trigger {
     min-height: 37px;
   }
 }
@@ -147,7 +148,7 @@
 @media (max-width: 900px) {
   .ros-profile-identity {
     height: 44px;
-    padding: 0 5px;
+    padding: 0;
   }
   .ros-profile-avatar {
     width: 32px;
@@ -159,7 +160,62 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ros-workspace-chevron, .ros-light-sidebar .ros-workspace-trigger {
+  .ros-workspace-chevron, .topbar .ros-workspace-trigger {
     transition: none;
+  }
+}
+
+/* Workspace lives in the top bar: retain the same interaction on narrow screens. */
+
+@media (max-width: 700px) {
+  .topbar .ros-workspace {
+    width: 148px;
+    min-width: 0;
+  }
+  .topbar .ros-workspace-trigger {
+    padding: 3px 6px;
+    gap: 5px;
+  }
+  .topbar .ros-workspace-icon {
+    width: 23px;
+    height: 23px;
+  }
+  .topbar .ros-workspace-name {
+    font-size: 10px;
+  }
+  .topbar .ros-workspace-menu {
+    min-width: 160px;
+  }
+}
+
+@media (max-width: 440px) {
+  .topbar {
+    gap: 5px;
+    padding-inline: 8px;
+  }
+  .topbar .ros-workspace {
+    width: 115px;
+  }
+  .topbar .ros-workspace-icon {
+    display: none;
+  }
+  .topbar .ros-workspace-name {
+    font-size: 10px;
+  }
+  .topbar .global-search {
+    flex: 0 0 38px;
+    width: 38px;
+    padding: 0;
+  }
+  .topbar .global-search span, .topbar .global-search kbd {
+    display: none;
+  }
+  .topbar .header-circle {
+    width: 34px;
+    height: 34px;
+  }
+  .topbar .mobile-toggle {
+    width: 36px;
+    height: 36px;
   }
 }

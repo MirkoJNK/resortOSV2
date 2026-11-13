@@ -187,3 +187,85 @@
     transition: none !important;
   }
 }
+
+/* Only workspace changes use this isolated full-viewport brand screen.
+   The portal sits directly under body: no transformed shell, page, or modal ancestor. */
+
+.ros-workspace-loader {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 2147483647;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  background: #fff;
+  overflow: hidden;
+  isolation: isolate;
+  outline: none;
+  animation: ros-workspace-overlay 1500ms linear both;
+}
+
+.ros-workspace-loader-logo {
+  position: relative;
+  width: clamp(220px, 36vw, 400px);
+  aspect-ratio: 329 / 104;
+  max-width: calc(100vw - 48px);
+  user-select: none;
+}
+
+.ros-workspace-loader-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  inset: 0;
+}
+
+.ros-workspace-loader-faint {
+  opacity: .23;
+  filter: grayscale(1);
+}
+
+.ros-workspace-loader-color {
+  clip-path: inset(0 100% 0 0);
+  animation: ros-workspace-brand-fill 1500ms cubic-bezier(.22,1,.36,1) both;
+}
+
+.ros-workspace-loader-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes ros-workspace-overlay {
+  0%, 8% {
+    opacity: 1;
+  }
+  86.67% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ros-workspace-brand-fill {
+  0%, 10% {
+    clip-path: inset(0 100% 0 0);
+  }
+  66.67%, 100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ros-workspace-loader, .ros-workspace-loader-color {
+    animation: none !important;
+  }
+}

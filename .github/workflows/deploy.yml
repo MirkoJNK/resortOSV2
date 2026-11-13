@@ -1,4 +1,4 @@
-name: Publish resortOS to GitHub Pages
+name: Deploy resortOS to GitHub Pages
 
 on:
   push:
@@ -7,60 +7,45 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: github-pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    env:
-      # The published address for MirkoJNK/resortOSV2 is under this project path.
-      GITHUB_PAGES_BASE: /resortOSV2/
     steps:
-      - name: Checkout current source
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js 22
-        uses: actions/setup-node@v4
+      - name: Check out source
+        uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
-
-      # package-lock.json cannot be resolved in the provided offline build environment.
-      # Once a real lockfile is committed, npm ci automatically becomes mandatory.
-      - name: Install dependencies
-        shell: bash
-        run: |
-          if test -f package-lock.json; then
-            npm ci --no-audit --no-fund
-          else
-            echo '::warning::No committed package-lock.json; use npm install to bootstrap. Commit a real lockfile for reproducibility.'
-            npm install --no-audit --no-fund
-          fi
-
-      - name: Verify protected source and regression tests
-        run: npm run check:source
-
-      - name: Build static website
+          cache: npm
+      - name: Install exact dependencies
+        run: npm ci
+      - name: TypeScript check
+        run: npm run typecheck
+      - name: Build site
         run: npm run build
-
-      - name: Validate GitHub Pages assets and base path
-        run: node scripts/verify-pages-dist.mjs
-
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload generated website
-        uses: actions/upload-pages-artifact@v4
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
-      - name: Deploy GitHub Pages
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

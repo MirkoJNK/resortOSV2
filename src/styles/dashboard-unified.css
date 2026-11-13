@@ -1,0 +1,421 @@
+/* Shared presentation only: all three departmental dashboards follow one composition. */
+
+.ros-dashboard-v2 .overview-top {
+  grid-template-columns: minmax(0,1.64fr) minmax(280px,1fr);
+}
+
+.ros-dashboard-v2 .welcome {
+  min-height: 86px;
+}
+
+.ros-dashboard-v2 .top-stats {
+  flex: none;
+}
+
+.ros-dashboard-v2 .top-stats > .panel {
+  min-height: 132px;
+  height: auto;
+}
+
+.ros-dashboard-v2 .ros-kpi-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ros-dashboard-v2 .ros-kpi-card .panel-head {
+  gap: 9px;
+}
+
+.ros-dashboard-v2 .ros-kpi-card .panel-head h2 {
+  font-size: 12px;
+}
+
+.ros-kpi-value {
+  margin: 2px 0 0 43px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(26px,2.35vw,38px);
+  letter-spacing: -.055em;
+  line-height: 1.1;
+  color: #101a13;
+}
+
+.ros-kpi-note {
+  margin: auto 0 0 43px;
+  color: #5d7260;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.ros-kpi-open {
+  border: 1px solid #d8e2d5;
+  border-radius: 9px;
+  background: #fff;
+  color: #314639;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ros-kpi-open:hover, .ros-kpi-open:focus-visible {
+  background: #e9f9cb;
+  outline-offset: 2px;
+}
+
+.ros-dashboard-v2 .resort-art {
+  min-height: 260px;
+}
+
+.ros-dashboard-v2 .ros-analytics {
+  display: grid;
+  grid-template-columns: minmax(0,1.62fr) minmax(255px,1fr);
+  gap: var(--ros-gap);
+  margin-top: var(--ros-gap);
+}
+
+.ros-dashboard-v2 .ros-chart-panel {
+  min-height: 263px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 19px 19px 16px;
+}
+
+.ros-chart-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 10px;
+}
+
+.ros-chart-head h2, .ros-activity-panel > h2 {
+  font-size: 14px;
+  margin: 0;
+  letter-spacing: -.035em;
+  color: #16221a;
+  font-weight: 800;
+}
+
+.ros-chart-head > span {
+  color: #758176;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.ros-chart-series {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  flex: 1;
+  min-height: 155px;
+}
+
+.ros-chart-series li {
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+
+.ros-chart-series li:focus-visible {
+  outline: 2px solid #649f32;
+}
+
+.ros-chart-series .ros-chart-mark-track {
+  display: block;
+  overflow: hidden;
+  background: #f1f5ed;
+  border-radius: 6px;
+}
+
+.ros-chart-series .ros-chart-mark {
+  display: block;
+  background: #bfe66a;
+  border-radius: 6px;
+  transition: opacity 160ms ease;
+}
+
+.ros-chart-series li:hover .ros-chart-mark, .ros-chart-series li:focus-visible .ros-chart-mark {
+  background: #94cc49;
+}
+
+.ros-chart-series .ros-chart-label {
+  color: #5f7167;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.ros-chart-series .ros-chart-number {
+  color: #22392b;
+  font-size: 11px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.ros-chart-columns {
+  display: grid;
+  grid-template-columns: repeat(7,minmax(0,1fr));
+  align-items: end;
+  gap: clamp(5px,1.2vw,17px);
+}
+
+.ros-chart-columns li {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.ros-chart-columns .ros-chart-mark-track {
+  width: min(38px,100%);
+  flex: 1;
+  display: flex;
+  align-items: end;
+  background: repeating-linear-gradient(to top,#f0f4ec 0 1px,transparent 1px 40px);
+}
+
+.ros-chart-columns .ros-chart-mark {
+  width: 100%;
+  min-height: 0;
+}
+
+.ros-chart-columns .ros-chart-label {
+  font-variant-numeric: tabular-nums;
+}
+
+.ros-chart-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 140px;
+  justify-content: center;
+}
+
+.ros-chart-bars li {
+  display: grid;
+  grid-template-columns: minmax(76px,102px) minmax(0,1fr) auto;
+  align-items: center;
+  gap: 9px;
+}
+
+.ros-chart-bars .ros-chart-mark-track {
+  height: 13px;
+}
+
+.ros-chart-bars .ros-chart-mark {
+  height: 100%;
+}
+
+.ros-chart-empty {
+  flex: 1;
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+  color: #6d7a6c;
+  font-size: 12px;
+  text-align: center;
+  border: 1px dashed #e1e7de;
+  border-radius: 10px;
+}
+
+.ros-chart-footer {
+  border-top: 1px solid #edf1e9;
+  padding-top: 9px;
+  color: #718075;
+  font-size: 10px;
+}
+
+.ros-dashboard-v2 .ros-metric-strip {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: var(--ros-gap);
+  margin-top: var(--ros-gap);
+}
+
+.ros-dashboard-v2 .ros-metric-strip .panel {
+  min-height: 0;
+  height: auto;
+}
+
+.ros-mini-metric {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 17px;
+}
+
+.ros-mini-icon {
+  flex: none;
+}
+
+.ros-mini-metric h3 {
+  margin: 0 0 3px;
+  color: #333d35;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.ros-mini-metric strong {
+  display: block;
+  color: #151c17;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(21px,2vw,29px);
+  letter-spacing: -.04em;
+}
+
+.ros-mini-metric p {
+  margin: 2px 0 0;
+  color: #748176;
+  font-size: 10px;
+}
+
+.ros-dashboard-v2 .bottom-row > .panel, .ros-dashboard-v2 .bottom-row > .systems-panel {
+  min-height: 224px;
+}
+
+.ros-dashboard-v2 .ros-activity-panel {
+  min-height: 224px;
+}
+
+.ros-activity-list {
+  max-height: 165px;
+  overflow-y: auto;
+}
+
+.ros-activity-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 2px;
+  border-bottom: 1px solid #edf1e9;
+  font-size: 12px;
+}
+
+.ros-activity-line time {
+  white-space: nowrap;
+  color: #6d7f70;
+  font-size: 10px;
+}
+
+.ros-dashboard-v2 .navigation-shortcuts {
+  align-items: stretch;
+}
+
+.ros-dashboard-v2 .systems-panel .system-actions.navigation-shortcuts.ros-restaurant-shortcuts {
+  grid-template-columns: repeat(2,minmax(0,1fr));
+}
+
+@media (max-width: 1120px) {
+  .ros-dashboard-v2 .ros-analytics {
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  }
+  .ros-dashboard-v2 .overview-top {
+    grid-template-columns: 1fr;
+  }
+  .ros-dashboard-v2 .overview-left {
+    display: contents;
+  }
+  .ros-dashboard-v2 .resort-art {
+    grid-row: 2;
+  }
+  .ros-dashboard-v2 .top-stats {
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 680px) {
+  .ros-dashboard-v2 .ros-analytics, .ros-dashboard-v2 .ros-metric-strip {
+    grid-template-columns: minmax(0,1fr);
+  }
+  .ros-dashboard-v2 .top-stats {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+  .ros-dashboard-v2 .top-stats > .panel {
+    min-height: 150px;
+    height: auto;
+  }
+  .ros-kpi-value {
+    margin-left: 0;
+    font-size: clamp(22px,5vw,31px);
+  }
+  .ros-kpi-note {
+    margin-left: 0;
+  }
+  .ros-dashboard-v2 .ros-chart-panel {
+    min-height: 245px;
+  }
+  .ros-chart-series {
+    min-height: 148px;
+  }
+  .ros-mini-metric {
+    min-height: 88px;
+  }
+  .ros-dashboard-v2 .ros-metric-strip {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ros-dashboard-v2 .top-stats {
+    gap: 9px;
+  }
+  .ros-dashboard-v2 .top-stats > .panel {
+    padding: 13px 10px;
+  }
+  .ros-dashboard-v2 .ros-kpi-card .panel-head {
+    gap: 5px;
+  }
+  .ros-dashboard-v2 .ros-kpi-card .panel-head h2 {
+    font-size: 10px;
+  }
+  .ros-dashboard-v2 .ros-kpi-card .stat-icon {
+    width: 27px;
+    height: 27px;
+  }
+  .ros-chart-bars li {
+    grid-template-columns: minmax(70px,86px) minmax(0,1fr) auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ros-dashboard-v2 .ros-chart-mark, .ros-dashboard-v2 .ros-kpi-open {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Animate only chart marks when first mounted, without reflow or page-ancestor transforms. */
+
+@keyframes ros-dashboard-mark-enter {
+  from {
+    opacity: .35;
+    transform: scaleY(.74);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.ros-dashboard-v2 .ros-chart-mark {
+  transform-origin: bottom center;
+  animation: ros-dashboard-mark-enter 260ms ease-out both;
+}
+
+.ros-dashboard-v2 .ros-chart-bars .ros-chart-mark {
+  transform-origin: left center;
+}
+
+.ros-dashboard-v2 .ros-kpi-value, .ros-dashboard-v2 .ros-chart-number {
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ros-dashboard-v2 .ros-chart-mark {
+    animation: none;
+  }
+}

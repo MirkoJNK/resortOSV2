@@ -541,7 +541,6 @@ function SupportHeader() {
   return <div className="section-header support-standard-header">
     <div>
       <h1>Support &amp; Issues</h1>
-      <span>Manage and resolve employee support requests</span>
     </div>
   </div>
 }

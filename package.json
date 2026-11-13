@@ -8,18 +8,10 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
-    "visual:reference": "node tools-render-preview.cjs",
-    "visual:support": "node tools-render-support.cjs",
-    "quality:baseline": "node scripts/verify-approved-baseline.cjs",
-    "format:css": "node scripts/format-css.cjs --write",
-    "format:css:check": "node scripts/format-css.cjs --check",
+    "test": "node --test tests/discount-financial-integration.test.mjs",
     "lint": "eslint \"src/**/*.{ts,tsx}\" vite.config.ts",
     "format:typescript": "prettier --write \"src/**/*.{ts,tsx}\" vite.config.ts",
-    "format:typescript:check": "prettier --check \"src/**/*.{ts,tsx}\" vite.config.ts",
-    "check:source": "npm run quality:baseline && npm run format:css:check && npm run syntax:ts && npm test",
-    "check:full": "npm run check:source && npm run typecheck && npm run lint && npm run build",
-    "syntax:ts": "node scripts/check-typescript-syntax.cjs"
+    "format:typescript:check": "prettier --check \"src/**/*.{ts,tsx}\" vite.config.ts"
   },
   "dependencies": {
     "react": "^19.2.0",

@@ -197,3 +197,18 @@
 @media (prefers-reduced-motion: reduce) {
   .sc-page .sc-heading, .sc-page .sc-shared-toolbar, .sc-page .sc-results-stage { animation: none !important; }
 }
+/* Charges-aligned, text-first production list. Historical service and pricing logic is unchanged. */
+.sc-page .sc-table-head, .sc-page .sc-service-row {
+  grid-template-columns: minmax(165px, 1.55fr) minmax(110px, 1fr) minmax(92px, .85fr) minmax(85px, .85fr) 78px;
+  gap: 11px;
+  padding: 14px 18px;
+}
+.sc-page .sc-table-head { background: #fafbf8; color: #6f8072; font-size: 11px; text-transform: none; letter-spacing: 0; }
+.sc-page .sc-service-row { min-height: 68px; }
+.sc-page .sc-row-name { gap: 0; }
+.sc-page .sc-row-name .sc-name { font-size: 12px; }
+.sc-page .sc-row-name-copy { overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  .sc-page .sc-table-head { display: none; }
+  .sc-page .sc-service-row { grid-template-columns: minmax(0,1fr) auto; padding: 14px; gap: 10px; }
+}

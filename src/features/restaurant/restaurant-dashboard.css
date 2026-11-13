@@ -108,3 +108,7 @@
   .restaurant-dashboard .cards-row > .access-panel { min-height: 269px; }
   .restaurant-dashboard .bottom-row > .audit-panel { min-height: 342px; }
 }
+/* Source-backed dashboard metrics use the existing panel geometry, not invented graphs. */
+.restaurant-data-caption { display: block; font-size: 13px; color: #637369; padding: 9px 2px; }
+.restaurant-dashboard-activity { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 4px; border-bottom: 1px solid #edf0eb; font-size: 13px; }
+.restaurant-dashboard-activity time { color: #697a6b; font-size: 11px; white-space: nowrap; }

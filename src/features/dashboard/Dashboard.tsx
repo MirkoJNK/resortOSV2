@@ -1,77 +1,31 @@
 import { useEffect, useRef, useState } from 'react'
 import type { LucideIcon } from 'lucide-react'
-import {
-  Building2,
-  CalendarDays,
-  Check,
-  CreditCard,
-  FileText,
-  Headphones,
-  Settings2,
-  ShieldCheck,
-  Sun,
-  Users,
-} from 'lucide-react'
+import { BedDouble, ClipboardList, CreditCard, FileText, Headphones, ReceiptText, Settings2 } from 'lucide-react'
 import type { Area, Store } from '../../domain/types'
-import { php, todayPayments } from '../../domain/store'
-import { PanelHeader, StatIcon } from '../../components/Ui'
-import { Bars, PaymentLine, ProgressBar, RoleDistribution } from '../../components/Charts'
 import { getSupportCounts } from '../../components/SupportWorkspace'
 import type { SampleTicket } from '../../components/SupportWorkspace'
+import type { Operations } from '../restaurant-tables/model'
+import { loadOperations } from '../restaurant-tables/storage'
+import { checkoutDashboardMetrics } from '../front-desk/dashboardMetrics'
+import { formatPrice } from '../menu-management/model'
+import { readServices, STORAGE_KEY as SERVICES_STORAGE_KEY } from '../service-catalog/model'
+import { DashboardHero, DashboardGreeting, DashboardKpi, DashboardChart, DashboardMiniMetric, DashboardActivity } from './DashboardVisuals'
+import { supportStatusBreakdown, supportPriorityBreakdown } from './chartSelectors'
 
-const niceTime = (iso: string) => {
-  const min = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 60000))
-  return min < 60 ? `${min}m ago` : min < 1440 ? `${Math.floor(min / 60)}h ago` : `${Math.floor(min / 1440)}d ago`
-}
-const initial = (name: string) => name.trim().split(/\s+/).filter(Boolean).map(x => x[0]).join('').slice(0, 2).toUpperCase() || '?'
-
-function ResortArt() {
-  return <section
-    className="resort-art motion-reveal motion-order-1"
-    aria-label="Resort illustration">
-    <div className="art-shore" />
-    <div className="art-arch" />
-    <div className="art-copy">Operations<br />power<br />unforgettable<br />stays<span className="art-underline" /></div>
-    <div
-      className="weather"
-      title="Illustrative weather — not a live forecast"
-      aria-label="Illustrative weather, not a live forecast">
-      <Sun
-        size={29}
-        strokeWidth={1.8} />
-      <div>
-        <strong>28°C</strong>
-        <small>Oceanview Resort</small>
-      </div>
-    </div>
-  </section>
-}
-function DayMeta() {
-  return <div className="day-meta">
-    <span>
-      <CalendarDays size={15} />
-      {new Date().toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      })}
-    </span>
-    <span className="meta-divider" />
-    <span title="Illustrative weather — not a live forecast"><Sun
-      size={17}
-      className="sun-icon" />28°C</span>
-    <span>Oceanview Resort</span>
-  </div>
+/** No saved configuration is unavailable, never an invented active-service count. */
+function configuredActiveServices(): number | null {
+  try {
+    if (localStorage.getItem(SERVICES_STORAGE_KEY) === null) return null
+    const source = readServices()
+    if (source.error || !source.recoverable) return null
+    return source.data.services.filter(service => service.status === 'active').length
+  } catch { return null }
 }
 
-/** The dashboard shortcuts are navigation, not a selection control
- *  They stay neutral until hover, keyboard focus, or a brief click confirmation
- */
 const administrationShortcuts: { icon: LucideIcon; label: string; area: Area }[] = [
-  { icon: Headphones, label: 'Support & Issues', area: 'support' },
+  { icon: Settings2, label: 'System Management', area: 'systems' },
   { icon: FileText, label: 'Audit Log', area: 'audit' },
-  { icon: Settings2, label: 'System Management', area: 'systems' }
+  { icon: Headphones, label: 'Support & Issues', area: 'support' }
 ]
 function AdministrationShortcuts({ go }: { go: (area: Area) => void }) {
   const [pressed, setPressed] = useState<Area | null>(null)
@@ -104,254 +58,59 @@ function AdministrationShortcuts({ go }: { go: (area: Area) => void }) {
   </article>
 }
 
-function InformationalPanelHeader({ icon, title, tone }: {
-  icon: LucideIcon
-  title: string
-  tone?: 'lime' | 'blue' | 'mint' | 'rose'
-}) {
-  return <div className="panel-head"><StatIcon icon={icon} tone={tone} /><h2>{title}</h2></div>
-}
-
-export function Dashboard({ store, tickets, go }: { store: Store; tickets: SampleTicket[]; go: (a: Area) => void }) {
+/** Shared dashboard layout; administrative metrics are current demo snapshots, not invented time series. */
+export function Dashboard({ tickets, go }: { store: Store; tickets: SampleTicket[]; go: (a: Area) => void }) {
   const { unresolved: open, urgentOpen: urgent } = getSupportCounts(tickets)
-  const employees = store.employees.filter(x => x.enabled)
-  const total = todayPayments(store)
-  const groups = [
-    ['Front Office', '#a5db1a'],
-    ['Housekeeping', '#b3df36'],
-    ['Food & Beverage', '#bee65b'],
-    ['Maintenance', '#cbec7e'],
-    ['Management', '#d6ed9b']
-  ] as const
-  const largestDepartment = Math.max(1, ...groups.map(([name]) => employees.filter(e => e.department === name).length))
-  const roles = [
-    { label: 'Administrators', value: employees.filter(e => /admin/i.test(e.role)).length, color: '#355c43' },
-    { label: 'Managers', value: employees.filter(e => /^manager$/i.test(e.role)).length, color: '#a4dc1d' },
-    { label: 'Supervisors', value: employees.filter(e => /supervisor/i.test(e.role)).length, color: '#c9efc6' },
-    { label: 'Staff', value: employees.filter(e => !/admin|manager|supervisor/i.test(e.role)).length, color: '#d7d9db' }
-  ]
-  const approvedHeading = urgent > 0 ? 'Your resort needs your attention' : open > 0 || store.approvals.length > 0 ? 'Your resort at a glance' : 'Your resort is running smoothly'
-  return <>
+  const [operations, setOperations] = useState<Operations | null>(null)
+  const [activeServices, setActiveServices] = useState<number | null>(configuredActiveServices)
+  useEffect(() => {
+    let live = true, generation = 0
+    const refresh = () => {
+      const ticket = ++generation
+      setActiveServices(configuredActiveServices())
+      void loadOperations().then(next => {if (live && ticket===generation) setOperations(next)})
+        .catch(() => {if (live && ticket===generation) setOperations(null)})
+    }
+    const storage = (event: StorageEvent) => {if (event.key === SERVICES_STORAGE_KEY) refresh()}
+    refresh()
+    window.addEventListener('focus',refresh)
+    window.addEventListener('storage',storage)
+    window.addEventListener('restaurant-operations-changed',refresh)
+    return () => {live=false; window.removeEventListener('focus',refresh);window.removeEventListener('storage',storage);window.removeEventListener('restaurant-operations-changed',refresh)}
+  }, [])
+  const metrics = operations ? checkoutDashboardMetrics(operations) : null
+  const statuses = supportStatusBreakdown(tickets)
+  const priorities = supportPriorityBreakdown(tickets)
+  return <div className="ros-dashboard-v2" data-department="admin">
     <div className="overview-top">
       <div className="overview-left">
-        <div className="welcome motion-reveal motion-order-0">
-          <p>Good morning,</p>
-          <h1>
-            {approvedHeading}
-          </h1>
-          <DayMeta />
-        </div>
+        <DashboardGreeting employee="Admin" />
         <div className="top-stats">
-          <article className="panel ticket-panel motion-reveal motion-order-2">
-            <PanelHeader
-              icon={Headphones}
-              title="Unresolved support tickets"
-              onOpen={() => go('support')}
-              actionLabel="Open Support & Issues" />
-            <div className="stat-main">
-              <b>
-                {open}
-              </b>
-              {urgent > 0 ? <span className="delta red">{urgent} urgent</span> : <span className="delta green">
-                {open === 0 ? 'All caught up' : 'No urgent issues'}
-              </span>}
-            </div>
-            {open > 0 ? <Bars
-              values={[
-                72,
-                53,
-                48,
-                31,
-                40,
-                54,
-                36,
-                27,
-                63,
-                77,
-                92,
-                81
-              ]}
-              labels={[
-                'Oct 22',
-                'Oct 23',
-                'Oct 24',
-                'Oct 25',
-                'Oct 26',
-                'Today'
-              ]} /> : <div className="chart-empty-state">
-              <Check size={20} />
-              <span>No unresolved tickets</span>
-            </div>}
-          </article>
-          <article className="panel payments-panel motion-reveal motion-order-3">
-            <InformationalPanelHeader
-              icon={CreditCard}
-              title="Today's payments"
-              tone="blue" />
-            <div className="stat-main payments-total">
-              <b>
-                {php(total)}
-              </b>
-            </div>
-            {total > 0 ? <PaymentLine /> : <div className="chart-empty-state">
-              <CreditCard size={20} />
-              <span>No payments recorded today</span>
-            </div>}
-          </article>
+          <DashboardKpi icon={Headphones} title="Unresolved support tickets (Demo)" value={open}
+            note={urgent > 0 ? `${urgent} urgent tickets` : 'Current employee tickets'} order={2}
+            open={{label:'Open Support & Issues',action:()=>go('support')}} />
+          <DashboardKpi icon={CreditCard} title="Outstanding room balance (Demo)"
+            value={metrics ? formatPrice(metrics.outstandingCentavos) : '—'}
+            note={metrics ? `${metrics.openChargeCount} open charges` : 'Charge records unavailable'} tone="blue" order={3} />
         </div>
       </div>
-      <ResortArt />
+      <DashboardHero />
     </div>
-    <div className="cards-row">
-      <article className="panel employees-panel motion-reveal motion-order-4">
-        <InformationalPanelHeader
-          icon={Users}
-          title="Active employees" />
-        <div className="stat-main">
-          <b>
-            {employees.length}
-          </b>
-        </div>
-        {employees.length > 0 ? <div className="avatar-stack">
-          {employees.slice(0, 4).map(x => <span
-            key={x.id}
-            className="mini-avatar"
-            style={{ background: x.color }}
-            title={x.name}
-            aria-label={x.name}>
-            {initial(x.name)}
-          </span>)}
-          {employees.length > 4 && <span className="mini-avatar more">+{employees.length - 4}</span>}
-        </div> : <p className="dashboard-empty-message">No active employees yet</p>}
-        <div className="dept-bars">
-          {groups.map(([dep, color]) => {
-            const count = employees.filter(x => x.department === dep).length
-            return <div
-              className="dept-row"
-              key={dep}>
-              <span>
-                {dep}
-              </span>
-              <b>
-                {count}
-              </b>
-              <ProgressBar
-                label={`${dep} staffing comparison`}
-                value={count}
-                max={largestDepartment}
-                color={color} />
-            </div>
-          })}
-        </div>
-      </article>
-      <article className="panel approvals-panel motion-reveal motion-order-5">
-        <InformationalPanelHeader
-          icon={FileText}
-          title="Pending approvals"
-          tone="blue" />
-        <div className="stat-main">
-          <b>
-            {store.approvals.length}
-          </b>
-        </div>
-        <div className="approvals-list">
-          {store.approvals.length === 0 ? <div className="dashboard-empty-message">No pending approvals</div> : store.approvals.slice(0, 5).map((a, i) => <div
-            className="approval-row"
-            key={a.id}>
-            <span className={`mini-activity ${a.tone}`}>
-              {[
-                <Users size={16} />,
-                <FileText size={16} />,
-                <Settings2 size={16} />,
-                <CreditCard size={16} />,
-                <Building2 size={16} />
-              ][i]}
-            </span>
-            <div title={`${a.title} — ${a.detail}`}>
-              <strong>
-                {a.title}
-              </strong>
-              <small>
-                {a.detail}
-              </small>
-            </div>
-            <time>
-              {a.ago}
-            </time>
-          </div>)}
-        </div>
-      </article>
-      <article className="panel access-panel motion-reveal motion-order-6">
-        <InformationalPanelHeader
-          icon={ShieldCheck}
-          title="Roles & access" />
-        <div className="access-metric">
-          <b>
-            {roles.reduce((sum, role) => sum + role.value, 0)}
-          </b>
-        </div>
-        {employees.length > 0 ? <RoleDistribution items={roles} /> : <div className="dashboard-empty-message">No active role assignments</div>}
-        <div className="access-types">
-          {roles.map(({ label, value, color }) => <div key={label}>
-            <i style={{ background: color }} />
-            {label}
-            <strong>
-              {value}
-            </strong>
-          </div>)}
-        </div>
-        <div
-          className="access-leaves"
-          aria-hidden="true">
-          <span />
-          <span />
-          <span />
-          <span />
-        </div>
-      </article>
+    <section className="ros-analytics" aria-label="Administration operational charts">
+      <DashboardChart title="Support ticket status" context="Current snapshot (Demo)" series={statuses} kind="bars" order={4} />
+      <DashboardChart title="Open tickets by priority" context="Excludes closed tickets (Demo)" series={priorities} kind="bars" order={5} />
+    </section>
+    <div className="cards-row ros-metric-strip motion-reveal motion-order-6">
+      <DashboardMiniMetric icon={BedDouble} label="Occupied rooms" value={metrics?.occupiedRoomCount ?? '—'} note="Active guest stays" />
+      <DashboardMiniMetric icon={ClipboardList} label="Checkouts requiring attention" value={metrics?.pendingCheckoutCount ?? '—'} note="Expected today or earlier" />
+      <DashboardMiniMetric icon={ReceiptText} label="Active services" value={activeServices ?? '—'} note={activeServices === null ? 'Saved catalog unavailable' : 'Saved Service Catalog'} />
     </div>
     <div className="bottom-row">
-      <article className="panel audit-panel motion-reveal motion-order-7">
-        <PanelHeader
-          icon={FileText}
-          title="Recent audit events"
-          onOpen={() => go('audit')}
-          actionLabel="Open Audit Log" />
-        <div className="audit-lines">
-          {store.events.length === 0 ? <div className="dashboard-empty-message">No recent audit activity</div> : store.events.slice(0, 5).map((e, i) => <div
-            key={e.id}
-            className="audit-line">
-            <span
-              className="audit-avatar"
-              style={{
-background: [
-                  '#f7c9b4',
-                  '#c1def0',
-                  '#e4defa',
-                  '#dfedd2',
-                  '#f6e7a7'
-                ][i % 5]
-}}>
-              {initial(e.author)}
-            </span>
-            <strong title={e.author}>
-              {e.author}
-            </strong>
-            <span
-              className="audit-action"
-              title={e.action}>
-              {e.action}
-            </span>
-            <em className={`category-pill ${e.tone}`}>
-              {e.category}
-            </em>
-            <time>
-              {niceTime(e.created)}
-            </time>
-          </div>)}
-        </div>
-      </article>
+      <DashboardActivity title="Recent operational activity (Demo)">
+        {metrics?.recentActivity.length ? metrics.recentActivity.map(event=><div key={event.id} className="ros-activity-line"><span>{event.label}</span><time>{new Intl.DateTimeFormat('en-PH',{timeZone:'Asia/Manila',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(event.recordedAt))}</time></div>)
+          : <div className="dashboard-empty-message">{metrics ? 'No recorded operational activity' : 'Operational records unavailable'}</div>}
+      </DashboardActivity>
       <AdministrationShortcuts go={go} />
     </div>
-  </>
+  </div>
 }

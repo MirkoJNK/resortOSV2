@@ -133,7 +133,7 @@ export function RoomsManager({ onDirtyChange }: { onDirtyChange?: (dirty: boolea
     if (!canWrite) { setStorageError('Saved data must be repaired before making changes. Existing storage has not been overwritten.'); return false }
     const result = writeRooms(next)
     if (!result.ok) { setStorageError(result.error); return false }
-    setDirectory(copyRooms(next)); setStorageError(null); setNotice(success); return true
+    setDirectory(copyRooms(next)); setStorageError(null); setNotice(success); window.dispatchEvent(new Event('resortos-feedback-saved')); return true
   }
   const saveEditor = () => {
     if (!editor) return
@@ -186,7 +186,7 @@ export function RoomsManager({ onDirtyChange }: { onDirtyChange?: (dirty: boolea
   const showEmpty = !visible.length && !editor
   return <section className="rm-page" aria-labelledby="rm-page-heading">
     <div className="section-header rm-heading">
-      <div><h1 id="rm-page-heading">Rooms Manager</h1><span>Manage room information and configuration</span></div>
+      <div><h1 id="rm-page-heading">Rooms Manager</h1></div>
     </div>
     <div className="rm-toolbar">
       <div className="rm-toolbar-main">

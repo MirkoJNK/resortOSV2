@@ -1,0 +1,35 @@
+/* Checkout intentionally inherits the exact Front Desk Rooms grid and card presentation. */
+.fd-checkout-dialog{width:min(760px,100%);max-height:min(92vh,900px);overflow-y:auto;overscroll-behavior:contain}
+.fd-checkout-confirm-dialog{width:min(470px,100%)}
+.fd-checkout-content{display:flex;flex-direction:column;gap:15px;min-width:0}
+.fd-checkout-stay{display:grid;grid-template-columns:1fr 1fr;column-gap:18px}
+.fd-checkout-stay .fd-detail-heading{font-size:12px}
+.fd-checkout-charges h3,.fd-checkout-payment h3{font-size:14px;font-weight:800;margin:0 0 10px}
+.fd-checkout-payment h3 small{font-weight:600;color:#788e7d}
+.fd-checkout-charge-list{display:flex;flex-direction:column;gap:8px}
+.fd-checkout-charge{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;align-items:center;gap:12px;border:1px solid #e1e9df;border-radius:12px;padding:12px;color:#304535}
+.fd-checkout-charge-info{min-width:0;display:flex;flex-direction:column;gap:4px;font-size:12px}
+.fd-checkout-charge-info strong{overflow-wrap:anywhere}.fd-checkout-charge-info small{font-size:10px;color:#809080}
+.fd-checkout-amount{font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.fd-checkout-charge-detail{grid-column:1/-1;min-width:0;padding:12px 6px 2px;border-top:1px solid #e2eae0;font-size:12px}
+.fd-checkout-charge-detail>p{margin:7px 0;color:#627a67}
+.fd-checkout-summary{display:flex;flex-direction:column;gap:11px;border-top:1px solid #e0e9de;padding-top:15px}
+.fd-checkout-summary>div{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:12px;color:#6d806f}
+.fd-checkout-summary strong{font-variant-numeric:tabular-nums;color:#223c2d}
+.fd-checkout-summary .fd-checkout-balance{border-top:1px solid #e3eae2;padding-top:12px;font-size:14px;font-weight:800;color:#293d2e}
+.fd-checkout-balance strong{font-size:22px}
+.fd-checkout-methods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.fd-checkout-method{display:flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:10px;border:1px solid #dfe8dc;background:#fff;border-radius:11px;font:750 12px var(--ros-font);color:#405b44;cursor:pointer}
+.fd-checkout-method.selected{border-color:#9ccb69;background:#f4fbe6;box-shadow:inset 0 0 0 1px #afd779}
+.fd-checkout-method:hover:not(:disabled){background:#f7faef}.fd-checkout-method:focus-visible{outline:2px solid #a8d06b;outline-offset:2px}
+.fd-checkout-cash{display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:12px;margin-top:12px}
+.fd-checkout-cash label{display:flex;flex-direction:column;gap:7px;color:#48604d;font-size:11px;font-weight:750}
+.fd-checkout-cash input{width:100%;height:42px;padding:9px 11px;border:1px solid #dfe8dd;border-radius:10px;background:#fff;font:600 13px var(--ros-font)}
+.fd-checkout-cash input:focus-visible{outline:2px solid #a8ce70;outline-offset:1px}
+.fd-checkout-cash>div{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;font-size:12px}
+.fd-checkout-cash strong{font-size:17px;font-variant-numeric:tabular-nums}
+.fd-checkout-note{font-size:11px;color:#788b7d;margin:10px 0 0}
+@media(max-width:620px){.fd-checkout-dialog{max-height:89vh}.fd-checkout-stay{grid-template-columns:1fr}.fd-checkout-charge{grid-template-columns:minmax(0,1fr) auto;gap:8px}.fd-checkout-charge .fd-charge-status{justify-self:start}.fd-checkout-charge .rt-btn{justify-self:end}.fd-checkout-methods{gap:5px}.fd-checkout-method{font-size:10px;gap:5px;padding:7px}.fd-checkout-cash{grid-template-columns:1fr}.fd-checkout-summary .fd-checkout-balance strong{font-size:19px}}
+@media(prefers-reduced-motion:reduce){.fd-checkout-page *, .fd-checkout-page *::before, .fd-checkout-page *::after{animation:none!important;transition:none!important}}
+.fd-dashboard-activity{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #e7ece6;color:#354e3c;font-size:12px;font-weight:700}
+.fd-dashboard-activity small{color:#7c8d7e;font-size:10px;font-weight:500;white-space:nowrap}

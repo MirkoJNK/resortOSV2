@@ -1,0 +1,15 @@
+/* Shares the established Front Desk Charges management-page geometry. */
+.pm-page .pm-list-head,.pm-page .pm-list-row{display:grid;grid-template-columns:minmax(140px,1.6fr) minmax(95px,.8fr) minmax(95px,.8fr) minmax(180px,1.3fr);align-items:center;gap:16px;padding:16px 20px}
+.pm-page .pm-list-head{background:#fafbf8;color:#6f8072;font-weight:800;font-size:11px}
+.pm-page .pm-list-row{min-height:69px;border-top:1px solid #edf1eb;font-size:12px;color:#314138}
+.pm-page .pm-list-row:hover{background:#fbfdf8}
+.pm-page .pm-list-row>strong{font-size:13px;overflow-wrap:anywhere}
+.pm-method-status{display:inline-flex;width:max-content;padding:6px 10px;border-radius:8px;font-weight:800;font-size:11px}
+.pm-method-status.active{background:#e8f4eb;color:#317653}.pm-method-status.inactive{background:#f1f2ef;color:#6a786c}
+.pm-manage{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.pm-manage .rt-btn{display:inline-flex;gap:6px;align-items:center}
+.pm-payment-select{display:flex;flex-direction:column;gap:7px;font-weight:750;font-size:11px;color:#48604d}
+.pm-payment-select select{width:100%;min-width:0;height:42px;padding:8px 12px;border:1px solid #dfe8dd;border-radius:10px;background:white;font:600 12px var(--ros-font);color:#29402d}
+.pm-payment-select select:focus-visible{outline:2px solid #a8ce70;outline-offset:1px}.pm-payment-unavailable{font-size:11px;color:#ab5b42}
+@media(max-width:750px){.pm-page .pm-list-head{display:none}.pm-page .pm-list-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:14px;gap:10px}.pm-page .pm-list-row>:first-child{grid-column:1}.pm-page .pm-list-row>:nth-child(2){grid-column:2;text-align:right}.pm-page .pm-list-row>:nth-child(3){grid-column:1}.pm-page .pm-manage{grid-column:2}}
+@media(max-width:400px){.pm-page .pm-manage{gap:5px}.pm-page .pm-manage .rt-btn{font-size:10px;padding:7px}}
+@media(prefers-reduced-motion:reduce){.pm-page *{animation:none!important;transition:none!important}}

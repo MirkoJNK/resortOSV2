@@ -190,7 +190,7 @@ export function ServiceCatalog({ onDirtyChange }: { onDirtyChange?: (value: bool
     if (!canWrite) { setStorageError('Existing saved data could not be validated. It has not been overwritten.'); return false }
     const result = writeServices(next)
     if (!result.ok) { setStorageError(result.error); return false }
-    setDirectory(copyDirectory(next)); setStorageError(null); setNotice(message); return true
+    setDirectory(copyDirectory(next)); setStorageError(null); setNotice(message); window.dispatchEvent(new Event('resortos-feedback-saved')); return true
   }
   const saveEditor = () => {
     if (!editor) return
@@ -235,7 +235,7 @@ export function ServiceCatalog({ onDirtyChange }: { onDirtyChange?: (value: bool
     onQuantityChange={quantity => setEditor(old => old ? { ...old, quantity } : old)}
     onCancel={closeEditor} onSave={saveEditor} service={service} onStatus={requestStatus}/>
   return <section className="sc-page" aria-labelledby="sc-page-heading">
-    <header className="section-header sc-heading"><div><h1 id="sc-page-heading">Service Catalog</h1><span>Manage services and pricing configurations</span></div></header>
+    <header className="section-header sc-heading"><div><h1 id="sc-page-heading">Service Catalog</h1></div></header>
     <div className="rm-toolbar sc-shared-toolbar">
       <div className="rm-toolbar-main">
         <label className="rm-search"><Search size={18} aria-hidden="true"/>
@@ -267,8 +267,7 @@ export function ServiceCatalog({ onDirtyChange }: { onDirtyChange?: (value: bool
         <div className="sc-table-head" aria-hidden="true"><span>Service</span><span>Billing unit</span><span>Price</span><span>Status</span><span>Manage</span></div>
         {visible.map(service => <div className={`sc-service-row ${service.status === 'inactive' ? 'inactive' : ''}`} key={service.id} data-service-id={service.id}>
           <div className="sc-row-name">
-            <span className="sc-row-icon" aria-hidden="true"><Receipt size={20}/></span>
-            <div className="sc-row-name-copy"><div className="sc-name">{service.name}</div><div className="sc-code">{service.code || 'No code'}</div></div>
+            <div className="sc-row-name-copy"><div className="sc-name">{service.name}</div>{service.code && <div className="sc-code">{service.code}</div>}</div>
           </div>
           <div className="sc-col-unit"><span className="sc-unit">{SERVICE_UNITS[service.unit].label}</span></div>
           <div className="sc-col-price"><span className="sc-price sc-row-price">{peso(service.priceCents)}</span></div>

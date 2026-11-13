@@ -1,0 +1,83 @@
+/* Shared tactile feedback only. Do not transform page ancestors or dialog surfaces. */
+
+:root {
+  --ros-press-duration: 105ms;
+  --ros-feedback-duration: 165ms;
+}
+
+@media (prefers-reduced-motion:no-preference) {
+  .app-shell button:not(:disabled) {
+    transition-property: background-color,border-color,color,box-shadow,opacity,transform;
+    transition-duration: var(--ros-feedback-duration);
+    transition-timing-function: var(--ros-motion-ease);
+  }
+  .app-shell button:not(:disabled):active {
+    transform: scale(.986);
+    transition-duration: var(--ros-press-duration);
+  }
+  .app-shell input,.app-shell textarea,.app-shell select {
+    transition: border-color var(--ros-feedback-duration) ease,box-shadow var(--ros-feedback-duration) ease,background-color var(--ros-feedback-duration) ease;
+  }
+}
+
+/* A composite search control owns focus indication; its inner input must not grow another outline. */
+
+.app-shell :is(.sm-search,.rm-search,.sc-search,.rt-search-box,.rt-menu-search,.fd-room-search,.ro-search,.support-ticket-search):focus-within {
+  border-color: #a1c76c;
+  box-shadow: 0 0 0 2px #d9e9c2;
+}
+
+.app-shell :is(.sm-search,.rm-search,.sc-search,.rt-search-box,.rt-menu-search,.fd-room-search,.ro-search,.support-ticket-search) input:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}
+
+.app-shell :is(button,[role=button]):focus-visible {
+  outline: 2px solid #668b25;
+  outline-offset: 3px;
+}
+
+.app-shell button:disabled {
+  cursor: not-allowed;
+}
+
+.dashboard-operational-note {
+  font-size: 12px;
+  color: #657466;
+  padding: 8px 2px;
+}
+
+.dashboard-operations-activity {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+  padding: 12px 6px;
+  border-bottom: 1px solid #edf0ea;
+  font-size: 13px;
+}
+
+.dashboard-operations-activity time {
+  white-space: nowrap;
+  font-size: 11px;
+  color: #647665;
+}
+
+@media (max-width:650px) {
+  .dashboard-operations-activity time {
+    white-space: normal;
+    text-align: right;
+  }
+}
+
+@media (max-width:440px) {
+  .topbar>.header-circle {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .app-shell button,.app-shell input,.app-shell textarea,.app-shell select {
+    transition: none !important;
+  }
+}

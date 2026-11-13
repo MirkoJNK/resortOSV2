@@ -110,7 +110,7 @@ export function TablesManager({onDirtyChange}:{onDirtyChange?:(dirty:boolean)=>v
   useEffect(()=>{const warn=(e:BeforeUnloadEvent)=>{if(dirty){e.preventDefault();e.returnValue=''}};window.addEventListener('beforeunload',warn);return()=>window.removeEventListener('beforeunload',warn)},[dirty])
   useEffect(()=>{if(dialog){focusRef.current?.focus()}},[dialog])
   const cancel=()=>{setDraft(copy(saved));setPast([]);setFuture([]);setSelected(null);setEditing(false);setNotice('')}
-  const save=()=>{const result=writeTables(draft);if(!result.ok){setNotice(result.error??'Could not save');return}setSaved(copy(draft));setPast([]);setFuture([]);setEditing(false);setSelected(null);setNotice('Changes saved')}
+  const save=()=>{const result=writeTables(draft);if(!result.ok){setNotice(result.error??'Could not save');return}setSaved(copy(draft));setPast([]);setFuture([]);setEditing(false);setSelected(null);setNotice('Changes saved');window.dispatchEvent(new Event('resortos-feedback-saved'))}
   const undo=()=>{const previous=past.at(-1);if(!previous)return;setFuture(f=>[...f,copy(draft)]);setDraft(copy(previous));setPast(p=>p.slice(0,-1))}
   const redo=()=>{const next=future.at(-1);if(!next)return;setPast(p=>[...p,copy(draft)]);setDraft(copy(next));setFuture(f=>f.slice(0,-1))}
   const selectArea=(name:string)=>{if(name!==area){setArea(name);setSelected(null)}}
@@ -167,7 +167,7 @@ export function TablesManager({onDirtyChange}:{onDirtyChange?:(dirty:boolean)=>v
   }
   const chooseView=(v:'floor'|'list')=>{setView(v);setSelected(null);if(v==='floor'&&area==='All areas')setArea(draft.areas[0])}
   return <section className="tm-root" aria-label="Tables Manager">
-    <header className="tm-header"><div><h1 className="tm-heading">Tables Manager</h1><p className="tm-sub">Configure restaurant tables and seating layouts</p></div>
+    <header className="tm-header"><div><h1 className="tm-heading">Tables Manager</h1></div>
       <div className="tm-actions">{dirty&&<span className="tm-dirty-text" role="status">Unsaved changes</span>}
         <Btn onClick={editCreate}><Plus size={15}/> Add table</Btn>
         {editing||dirty?<><Btn onClick={cancel}>Cancel</Btn><Btn onClick={save} primary>Save changes</Btn></>:<Btn primary onClick={()=>{setEditing(true);setView('floor')}}><Pencil size={14}/> Edit Layout</Btn>}

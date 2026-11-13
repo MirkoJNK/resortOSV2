@@ -1,0 +1,340 @@
+.dm-page {
+  min-width: 0;
+}
+.dm-page > .rt-tabs {
+  margin: 16px 0 20px;
+}
+.dm-toolbar {
+  gap: 12px;
+}
+.dm-list-head,
+.dm-list-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1.7fr) minmax(88px, 0.8fr) minmax(98px, 1fr) minmax(
+      108px,
+      0.9fr
+    ) minmax(150px, 1.2fr);
+  align-items: center;
+  gap: 14px;
+  padding: 14px 19px;
+}
+.dm-list-head {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--text-muted, #728078);
+  background: #f5f8f3;
+}
+.dm-list-row {
+  border-top: 1px solid #e8eee7;
+  transition: background 0.17s ease;
+}
+.dm-list-row:hover {
+  background: #f4f9e7;
+}
+.dm-list-row strong {
+  font-weight: 650;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.dm-list-row small {
+  display: block;
+  color: #738676;
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+.dm-list-row .pm-manage {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.dm-list-row .rt-btn {
+  white-space: nowrap;
+}
+.dm-settings {
+  display: grid;
+  gap: 20px;
+  max-width: 950px;
+}
+.dm-setting-panel {
+  background: #fff;
+  border: 1px solid #e7eae5;
+  border-radius: 19px;
+  padding: 23px 27px;
+  box-shadow: 0 4px 20px rgba(22, 46, 34, 0.035);
+  display: grid;
+  gap: 15px;
+}
+.dm-setting-panel h2 {
+  font-size: 19px;
+  margin: 0;
+  font-weight: 700;
+}
+.dm-setting-panel label,
+.dm-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 650;
+  color: #273e32;
+}
+.dm-setting-panel input:not([type='checkbox']),
+.dm-setting-panel select,
+.dm-form input:not([type='checkbox']),
+.dm-form select {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  border: 1px solid #d9e3d9;
+  border-radius: 10px;
+  padding: 9px 11px;
+  font: inherit;
+  background: white;
+  color: #243f30;
+}
+.dm-setting-panel input:focus-visible,
+.dm-setting-panel select:focus-visible,
+.dm-form input:focus-visible,
+.dm-form select:focus-visible {
+  outline: 2px solid #9eca52;
+  outline-offset: 1px;
+}
+.dm-field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+  align-items: end;
+}
+.dm-setting-panel .dm-check,
+.dm-form .dm-check {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  padding-bottom: 9px;
+}
+.dm-check input {
+  accent-color: #709d4c;
+  width: 16px;
+  height: 16px;
+}
+.dm-hint {
+  margin: 0;
+  color: #69796f;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.dm-setting-panel details,
+.dm-form details {
+  border-top: 1px solid #eef0ec;
+  padding-top: 12px;
+  color: #657b69;
+  font-size: 13px;
+}
+.dm-setting-panel summary,
+.dm-form summary {
+  cursor: pointer;
+  font-weight: 650;
+}
+.dm-setting-panel details p,
+.dm-form details p {
+  font-size: 12px;
+  margin: 8px 0;
+}
+.dm-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.dm-dialog {
+  max-width: 540px;
+  max-height: min(86vh, 840px);
+  overflow: auto;
+}
+.dm-form {
+  display: grid;
+  gap: 14px;
+}
+.dm-form .dm-field-row {
+  align-items: start;
+}
+.dm-choices {
+  margin: 0;
+  border: 1px solid #e3eae1;
+  border-radius: 10px;
+  max-height: 165px;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: grid;
+  gap: 8px;
+}
+.dm-choices legend {
+  font-size: 12px;
+  font-weight: 650;
+  color: #738676;
+  padding: 0 5px;
+}
+.dm-form .dm-choices label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.dm-choices input {
+  accent-color: #749b4d;
+}
+.dm-page .rt-dialog-actions {
+  margin-top: 8px;
+}
+@media (max-width: 980px) {
+  .dm-list-head {
+    display: none;
+  }
+  .dm-list-row {
+    grid-template-columns: minmax(140px, 1fr) minmax(85px, 0.65fr) minmax(115px, 1fr);
+    gap: 8px;
+  }
+  .dm-list-row > span:nth-child(3) {
+    display: none;
+  }
+  .dm-list-row .pm-manage {
+    grid-column: 3;
+  }
+  .dm-toolbar .fd-charge-tools {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 620px) {
+  .dm-list-row {
+    grid-template-columns: 1fr auto;
+    padding: 14px;
+  }
+  .dm-list-row > span:nth-child(2) {
+    text-align: right;
+  }
+  .dm-list-row > span:nth-child(4) {
+    grid-column: 1;
+  }
+  .dm-list-row .pm-manage {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .dm-setting-panel {
+    padding: 17px;
+  }
+  .dm-field-row {
+    grid-template-columns: 1fr;
+  }
+  .dm-toolbar {
+    flex-wrap: wrap;
+  }
+  .dm-toolbar .fd-charge-tools {
+    width: 100%;
+  }
+  .dm-dialog {
+    width: min(95vw, 540px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dm-list-row {
+    transition: none;
+  }
+}
+.dm-allocation,
+.dm-elections {
+  border: 1px solid #e5eee3;
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+.dm-allocation > strong,
+.dm-elections > strong {
+  font-size: 13px;
+}
+.dm-allocation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 70px 78px;
+  gap: 10px;
+  align-items: end;
+  padding: 7px 0;
+  border-top: 1px solid #eef2ed;
+}
+.dm-allocation-row > div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+.dm-allocation-row strong {
+  font-size: 13px;
+}
+.dm-allocation-row small {
+  font-size: 11px;
+  color: #6f8072;
+}
+.dm-allocation-row label {
+  font-size: 11px;
+}
+.dm-allocation-row input {
+  min-height: 34px !important;
+}
+.dm-elections > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.dm-financial-breakdown {
+  display: grid;
+  gap: 7px;
+  padding: 8px 0;
+}
+.dm-financial-breakdown > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  font-size: 13px;
+  color: #536b58;
+}
+.dm-financial-breakdown strong {
+  font-weight: 650;
+  color: #304635;
+}
+.dm-financial-breakdown .dm-breakdown-total {
+  border-top: 1px solid #e3ece0;
+  padding-top: 10px;
+  margin-top: 4px;
+  font-weight: 700;
+  color: #233e2d;
+}
+.dm-financial-breakdown .dm-breakdown-total strong {
+  font-size: 17px;
+}
+.dm-breakdown-compact {
+  margin: 12px 0;
+}
+.dm-breakdown-compact .dm-breakdown-total strong {
+  font-size: 14px;
+}
+@media (max-width: 420px) {
+  .dm-allocation-row {
+    grid-template-columns: minmax(0, 1fr) 55px 65px;
+    gap: 7px;
+  }
+  .dm-allocation-row input {
+    padding: 5px !important;
+  }
+}
+.dm-order-pricing {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.dm-apply-discount {
+  justify-self: start;
+  font-size: 12px !important;
+  padding: 7px 11px !important;
+}

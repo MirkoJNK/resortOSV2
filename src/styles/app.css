@@ -354,6 +354,14 @@ a {
   padding: 1px 28px 44px;
 }
 
+/* The workspace loader moves programmatic focus here for screen-reader context.
+   This noninteractive tabIndex=-1 landing target should not draw a page-wide
+   browser focus rectangle; interactive controls retain their focus indicators. */
+
+.main-content[tabindex="-1"]:focus {
+  outline: none;
+}
+
 .overview-top {
   display: grid;
   grid-template-columns: minmax(0,1.64fr) minmax(280px,1fr);
