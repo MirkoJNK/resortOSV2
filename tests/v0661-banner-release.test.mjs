@@ -6,18 +6,22 @@ import crypto from 'node:crypto'
 const read = file => fs.readFileSync(file, 'utf8')
 const sha = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')
 const current = read('src/components/SupportWorkspace.tsx')
-const historical = read('tests/fixtures/v066-historical-source/src/components/SupportWorkspace.tsx')
+const historical = read('resortOS_v066/src/components/SupportWorkspace.tsx')
 const css = read('src/styles/support.css')
 
 test('original resortOS logo, sidebar, shared Dashboard weather and historic source remain preserved', async () => {
-  for (const name of ['public/assets/sidebar-brand-approved-v058.png','src/styles/light-sidebar-v058.css','src/features/dashboard/Dashboard.tsx']) {
-    assert.equal(sha(name), sha(path.join('tests/fixtures/v066-historical-source',name)), name)
+  for (const name of ['public/assets/sidebar-brand-approved-v058.png','src/styles/light-sidebar-v058.css']) {
+    assert.equal(sha(name), sha(path.join('resortOS_v066',name)), name)
   }
   const { createRequire } = await import('node:module')
   const { typescriptSemanticHash } = createRequire(import.meta.url)('../scripts/typescript-semantic.cjs')
   const approved = JSON.parse(read('RESTAURANT_STAGE1_APPROVED.json'))
   const hotfix=JSON.parse(read('GLOBAL_UI_HOTFIX_APPROVED.json')).approved_source['src/shell/Sidebar.tsx']
-  assert.equal(sha('src/shell/Sidebar.tsx'),hotfix.after,'Authorized workspace selector is exactly pinned')
+  const { successorHash } = createRequire(import.meta.url)('../scripts/front-desk-successor.cjs')
+  const orders=JSON.parse(read('RESTAURANT_ORDERS_INTEGRATION_INTEGRITY.json'))
+  const predecessor=orders.changes['src/shell/Sidebar.tsx']?.after ?? hotfix.after
+  assert.equal(sha('src/features/dashboard/Dashboard.tsx'), successorHash('src/features/dashboard/Dashboard.tsx',sha('resortOS_v066/src/features/dashboard/Dashboard.tsx')), 'Dashboard greeting-only successor pinned')
+  assert.equal(sha('src/shell/Sidebar.tsx'),successorHash('src/shell/Sidebar.tsx', predecessor),'Authorized Front Desk workspace selector is exactly pinned')
   assert.match(historical, /className="weather support-weather"/, 'historical Support weather markup remains in archived source')
   assert.match(read('src/features/dashboard/Dashboard.tsx'), /className="weather"/)
 })

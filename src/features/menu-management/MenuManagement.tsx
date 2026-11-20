@@ -9,6 +9,8 @@ import { categoryAssignmentError, cleanItemName, flipItemStatus, formatPrice, it
 import type { ItemSort, ItemStatus, MenuItem } from './model'
 import { commitItemCatalog, loadItemCatalog, seedDemoMenuIfFirstUse } from './storage'
 import type { ItemCatalog, ItemImage } from './storage'
+import { useDiscardConfirmation } from '../../shared/useDiscardConfirmation'
+import { MenuFallbackImage } from '../../shared/MenuFallbackImage'
 
 type Draft = {
   id: string | null
@@ -31,10 +33,7 @@ function useImageUrls(images?: Map<string, ItemImage>) {
   return urls
 }
 function ItemPicture({ image, name, large = false }: { image?: string; name: string; large?: boolean }) {
-  return <span className={`mc-image-frame ${large ? 'mc-image-large' : ''}`}>
-    {image ? <img src={image} alt={`Menu item: ${name}`} /> :
-      <span className="mc-image-placeholder" aria-label="No item image"><ImageIcon size={large ? 29 : 20} aria-hidden="true" /></span>}
-  </span>
+  return <MenuFallbackImage image={image} name={name} large={large} kind="item" />
 }
 function handleDialogKeys(event: KeyboardEvent, container: HTMLDivElement | null, cancel: () => void) {
   if (event.key === 'Escape') { event.preventDefault(); cancel(); return }
@@ -171,7 +170,8 @@ function StatusDialog({ item, busy, onCancel, onConfirm }: { item: MenuItem; bus
   </div>
 }
 
-export function MenuManagement({ onDirtyChange }: { onDirtyChange?: (dirty: boolean) => void }) {
+export function MenuManagement({ onDirtyChange, onBusyChange }: { onDirtyChange?: (dirty: boolean) => void; onBusyChange?: (busy:boolean) => void }) {
+  const {requestDiscard,discardDialog} = useDiscardConfirmation()
   const [catalog, setCatalog] = useState<ItemCatalog | null>(null)
   const [categories, setCategories] = useState<MenuCategory[]>([])
   const [loading, setLoading] = useState(true)
@@ -212,6 +212,7 @@ export function MenuManagement({ onDirtyChange }: { onDirtyChange?: (dirty: bool
     return () => { active = false }
   }, [])
   useEffect(() => { onDirtyChange?.(dirty); return () => onDirtyChange?.(false) }, [dirty, onDirtyChange])
+  useEffect(() => {onBusyChange?.(busy || processing);return () => onBusyChange?.(false)},[busy,processing,onBusyChange])
   useEffect(() => {
     if (!dirty) return
     const handler = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = '' }
@@ -233,19 +234,22 @@ export function MenuManagement({ onDirtyChange }: { onDirtyChange?: (dirty: bool
   const restoreFocus = () => requestAnimationFrame(() => lastFocus.current?.focus())
   const closeEditor = () => {
     if (busyRef.current) return
-    if (dirty && !window.confirm('Discard unsaved item changes?')) return
-    imageSession.current++
-    setDraft(null); setErrors({}); setImageError(null); setProcessing(false); restoreFocus()
+    requestDiscard(dirty, () => {
+      imageSession.current++
+      setDraft(null); setErrors({}); setImageError(null); setProcessing(false); restoreFocus()
+    }, processing)
   }
   const openEditor = (item?: MenuItem, trigger?: HTMLElement) => {
-    if (busyRef.current || (dirty && !window.confirm('Discard unsaved item changes?'))) return
-    lastFocus.current = trigger ?? document.activeElement as HTMLElement
-    imageSession.current++
-    setDraft({ id: item?.id ?? null, name: item?.name ?? '', categoryId: item?.categoryId ?? '',
-      price: item ? priceForInput(item.priceCentavos) : '', imageAction: 'keep', pending: null })
-    setErrors({}); setImageError(null); setNotice(''); setStorageError(null)
-    void loadCatalog().then(result => setCategories(result.categories))
-      .catch((error: unknown) => setStorageError(error instanceof Error ? error.message : 'Could not refresh categories'))
+    if (busyRef.current) return
+    requestDiscard(dirty, () => {
+      lastFocus.current = trigger ?? document.activeElement as HTMLElement
+      imageSession.current++
+      setDraft({ id: item?.id ?? null, name: item?.name ?? '', categoryId: item?.categoryId ?? '',
+        price: item ? priceForInput(item.priceCentavos) : '', imageAction: 'keep', pending: null })
+      setErrors({}); setImageError(null); setNotice(''); setStorageError(null)
+      void loadCatalog().then(result => setCategories(result.categories))
+        .catch((error: unknown) => setStorageError(error instanceof Error ? error.message : 'Could not refresh categories'))
+    }, processing)
   }
   const persist = async (next: ItemCatalog, success: string) => {
     if (busyRef.current) return false
@@ -310,10 +314,12 @@ export function MenuManagement({ onDirtyChange }: { onDirtyChange?: (dirty: bool
   }
   const statusItem = items.find(item => item.id === confirmId)
   const requestStatus = (item: MenuItem, trigger?: HTMLElement) => {
-    if (busyRef.current || (dirty && !window.confirm('Discard unsaved item changes?'))) return
-    if (trigger) lastFocus.current = trigger
-    imageSession.current++
-    setDraft(null); setProcessing(false); setConfirmId(item.id); setErrors({}); setImageError(null)
+    if (busyRef.current) return
+    requestDiscard(dirty, () => {
+      if (trigger) lastFocus.current = trigger
+      imageSession.current++
+      setDraft(null); setProcessing(false); setConfirmId(item.id); setErrors({}); setImageError(null)
+    }, processing)
   }
   const toggleStatus = async () => {
     if (!catalog || !statusItem || busyRef.current) return
@@ -390,5 +396,6 @@ export function MenuManagement({ onDirtyChange }: { onDirtyChange?: (dirty: bool
       onRemove={() => { imageSession.current++; setProcessing(false); setDraft(previous => previous ? { ...previous, imageAction: 'remove', pending: null } : previous); setImageError(null) }}
       onCancel={closeEditor} onSave={() => { void saveDraft() }} onStatus={() => { if (original) requestStatus(original) }} />}
     {statusItem && <StatusDialog item={statusItem} busy={busy} onCancel={closeStatus} onConfirm={() => { void toggleStatus() }} />}
+    {discardDialog}
   </section>
 }

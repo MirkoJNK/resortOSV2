@@ -1,0 +1,107 @@
+.support-new-ticket {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid #cee79a;
+  border-radius: 10px;
+  background: var(--ros-lime);
+  color: #2b402c;
+  cursor: pointer;
+  font: 800 11px var(--ros-font);
+}
+
+.support-new-ticket:hover {
+  background: var(--ros-lime-hover);
+}
+
+.support-new-ticket:focus-visible {
+  outline: 2px solid #6d9840;
+  outline-offset: 2px;
+}
+
+.support-readonly-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.support-readonly-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 9px;
+  font: 800 12px var(--ros-font);
+  background: #e9f4e9;
+  color: #3b6546;
+}
+
+.support-create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 6px 0;
+}
+
+.support-create-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #314032;
+  font: 700 12px var(--ros-font);
+}
+
+.support-create-form input,.support-create-form textarea,.support-create-form select {
+  width: 100%;
+  box-sizing: border-box;
+  background: #f7f9f5;
+  border: 1px solid #dae4d8;
+  border-radius: 10px;
+  padding: 12px 13px;
+  font: 600 12px var(--ros-font);
+  color: #203023;
+  outline: 0;
+}
+
+.support-create-form textarea {
+  resize: vertical;
+  min-height: 107px;
+  line-height: 1.6;
+}
+
+.support-create-form input:focus,.support-create-form textarea:focus,.support-create-form select:focus {
+  border-color: #8eb366;
+  box-shadow: 0 0 0 3px #e5f3d0;
+}
+
+.support-create-context {
+  font: 500 11px var(--ros-font);
+  color: #7a887b;
+  margin: 0;
+}
+
+.support-save-error {
+  margin: 10px 20px;
+  color: #b3463d;
+  font: 600 11px/1.5 var(--ros-font);
+}
+
+.support-create-form .support-save-error {
+  margin: 0;
+}
+
+@media (max-width:650px) {
+  .support-search-row {
+    flex-wrap: wrap;
+  }
+  .support-new-ticket {
+    flex: 1;
+    min-width: 106px;
+  }
+  .support-create-form {
+    gap: 15px;
+  }
+}

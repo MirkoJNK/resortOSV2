@@ -7,6 +7,7 @@ import type { RestaurantOrder } from '../restaurant-tables/model'
 import { activeRecordedLines } from '../restaurant-tables/model'
 import type { DiscountElection, FinanceConfig, Portion } from './model'
 import { calculateOrder, discountAvailable, electDiscount } from './model'
+import { useDiscardConfirmation } from '../../shared/useDiscardConfirmation'
 
 export function OrderDiscountDialog({
   order,
@@ -25,6 +26,7 @@ export function OrderDiscountDialog({
   onSave: (elections: DiscountElection[]) => Promise<boolean>
   onClose: () => void
 }) {
+  const {requestDiscard,discardDialog} = useDiscardConfirmation()
   const [ruleId, setRuleId] = useState('')
   const [portions, setPortions] = useState<Record<string, Portion>>({})
   const [confirmed, setConfirmed] = useState(false)
@@ -56,6 +58,8 @@ export function OrderDiscountDialog({
   const selected = Object.values(portions).filter(
     (p) => p.quantity > 0 && applicable.some((line) => line.id === p.lineId),
   )
+  const changed = Boolean(ruleId || confirmed || Object.values(portions).some(p => p.quantity !== 0 || p.sharePercent !== 100))
+  const closeSafely = () => requestDiscard(changed, onClose, busy || saving)
   const save = async (elections: DiscountElection[]) => {
     if (saving || busy) return
     setSaving(true)
@@ -78,7 +82,7 @@ export function OrderDiscountDialog({
     try {
       const election = electDiscount(order, rule, selected, finance.taxMode, confirmed)
       const next = [...existing, election]
-      calculateOrder(order, next, finance.service)
+      calculateOrder(order, next, finance.service, new Date().toISOString(), finance.taxMode)
       void save(next)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Invalid discount selection')
@@ -87,7 +91,7 @@ export function OrderDiscountDialog({
   return (
     <DialogFrame
       title="Apply Discount"
-      onClose={onClose}
+      onClose={closeSafely}
       closeDisabled={busy || saving}
       className="dm-dialog"
     >
@@ -135,11 +139,6 @@ export function OrderDiscountDialog({
         {rule && (
           <>
             <div className="dm-allocation">
-              <strong>Eligible portions</strong>
-              <p className="dm-hint">
-                Choose the quantity and share of each portion actually consumed by the eligible
-                person. Unselected items are not discounted.
-              </p>
               {!applicable.length && (
                 <p className="dm-hint">No currently eligible recorded menu items</p>
               )}
@@ -211,10 +210,6 @@ export function OrderDiscountDialog({
             )}
           </>
         )}
-        <p className="dm-hint">
-          Statutory and promotional benefits cannot be combined on the same order. Different
-          statutory benefits may apply to different eligible portions.
-        </p>
         {error && (
           <p className="fd-form-error" role="alert">
             {error}
@@ -231,7 +226,7 @@ export function OrderDiscountDialog({
               Confirm Reviewed
             </button>
           )}
-          <button className="rt-btn" type="button" disabled={busy || saving} onClick={onClose}>
+          <button className="rt-btn" type="button" disabled={busy || saving} onClick={closeSafely}>
             Done
           </button>
           <button
@@ -246,6 +241,7 @@ export function OrderDiscountDialog({
           </button>
         </div>
       </div>
+      {discardDialog}
     </DialogFrame>
   )
 }

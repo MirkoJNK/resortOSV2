@@ -8,6 +8,8 @@ import { commitOperations, loadOperations } from '../restaurant-tables/storage'
 import { formatPrice } from '../menu-management/model'
 import { FinancialBreakdown } from '../discount-management/FinancialBreakdown'
 import { DialogFrame } from '../restaurant-tables/DialogFrame'
+import { useDiscardConfirmation } from '../../shared/useDiscardConfirmation'
+import { requireCurrentDemoPermission } from '../demo/access'
 import { checkInError, createStay, currentStay,
   normalizeGuestName, postedOrderLines, resortDate, roomOperationalStatus } from './stays'
 import { chargeKey, stayCharges, outstandingTotal } from './charges'
@@ -28,7 +30,8 @@ const formatDay = (day: string) => new Intl.DateTimeFormat('en-PH', {
 }).format(new Date(`${day}T00:00:00.000Z`))
 const nextDay = () => resortDate(new Date(Date.now() + 86_400_000))
 
-export function FrontDeskRooms({ onDirtyChange }: { onDirtyChange?: (dirty: boolean) => void }) {
+export function FrontDeskRooms({ onDirtyChange, onBusyChange, accountId,tutorialReadOnly=false }: { onDirtyChange?: (dirty: boolean) => void; onBusyChange?: (busy:boolean)=>void;accountId?:string;tutorialReadOnly?:boolean }) {
+  const {requestDiscard,discardDialog} = useDiscardConfirmation()
   const [directory, setDirectory] = useState<DirectoryState>(roomDirectory)
   const [operations, setOperations] = useState<Operations>(emptyOperations)
   const opsRef = useRef(operations)
@@ -46,11 +49,12 @@ export function FrontDeskRooms({ onDirtyChange }: { onDirtyChange?: (dirty: bool
   const [checkInDate, setCheckInDate] = useState(resortDate)
   const [expectedCheckoutDate, setExpectedCheckoutDate] = useState(nextDay)
   const [formError, setFormError] = useState('')
-  const dirty = checkInRoomId !== null
+  const dirty = checkInRoomId !== null && Boolean(guestName.trim() || checkInDate !== resortDate() || expectedCheckoutDate !== nextDay())
   useEffect(() => {onDirtyChange?.(dirty); return () => onDirtyChange?.(false)}, [dirty, onDirtyChange])
+  useEffect(() => {onBusyChange?.(busy);return () => onBusyChange?.(false)},[busy,onBusyChange])
   useEffect(() => {
     let mounted = true
-    const refresh = () => loadOperations().then(data => {
+    const refresh = () => loadOperations(!tutorialReadOnly).then(data => {
       if (!mounted) return
       opsRef.current = data; setOperations(data); setError(''); setLoading(false)
     }).catch(err => {if (mounted) {setError(err instanceof Error ? err.message : 'Could not read guest stays'); setLoading(false)}})
@@ -66,7 +70,7 @@ export function FrontDeskRooms({ onDirtyChange }: { onDirtyChange?: (dirty: bool
       window.removeEventListener('storage', onStorage)
       window.removeEventListener('restaurant-operations-changed', refresh)
     }
-  }, [])
+  }, [tutorialReadOnly])
   const visible = useMemo(() => directory.rooms.filter(room => {
     const needle = query.trim().toLocaleLowerCase()
     if (needle && !room.name.toLocaleLowerCase().includes(needle) && !room.code.toLocaleLowerCase().includes(needle)) return false
@@ -86,9 +90,7 @@ export function FrontDeskRooms({ onDirtyChange }: { onDirtyChange?: (dirty: bool
   }
   const closeCheckIn = () => {
     if (busyRef.current) return
-    if ((guestName.trim() || checkInDate !== resortDate() || expectedCheckoutDate !== nextDay()) &&
-      !window.confirm('Discard unsaved check-in details?')) return
-    setCheckInRoomId(null); setFormError('')
+    requestDiscard(dirty, () => {setCheckInRoomId(null);setFormError('')})
   }
   const saveCheckIn = useCallback(async () => {
     if (!checkInRoom || busyRef.current) return
@@ -101,8 +103,9 @@ export function FrontDeskRooms({ onDirtyChange }: { onDirtyChange?: (dirty: bool
       // Check the authoritative room directory again immediately before the write.
       const freshDirectory = roomDirectory()
       if (freshDirectory.error) throw Error(freshDirectory.error)
+      if (accountId) requireCurrentDemoPermission(accountId,'front-desk.rooms.manage')
       const next = createStay(opsRef.current, freshDirectory.rooms, input)
-      const result = await commitOperations(next, opsRef.current.revision)
+      const result = await commitOperations(next, opsRef.current.revision,undefined,false,undefined,accountId)
       opsRef.current = result; setOperations(result)
       setDirectory(freshDirectory); setCheckInRoomId(null)
       setNotice('Check-in recorded')
@@ -111,10 +114,10 @@ export function FrontDeskRooms({ onDirtyChange }: { onDirtyChange?: (dirty: bool
       setFormError(err instanceof Error ? err.message : 'Could not save check-in')
       // Retain the form; never claim success or fake occupancy after failed storage.
     } finally {busyRef.current = false; setBusy(false)}
-  }, [checkInRoom, guestName, checkInDate, expectedCheckoutDate, directory.rooms])
+  }, [checkInRoom, guestName, checkInDate, expectedCheckoutDate, directory.rooms, accountId])
   const blocked = !!directory.error || (!!error && !loading)
   return <div className="fd-rooms-page">
-    <div className="fd-rooms-heading rt-enter-heading"><h1>Rooms</h1></div>
+    <div className="fd-rooms-heading rt-enter-heading" data-tour-target="front-desk-rooms-heading"><h1>Rooms</h1></div>
     <div className="fd-rooms-toolbar rt-enter-toolbar">
       <label className="rt-search-box fd-room-search"><Search size={18} aria-hidden="true"/><span className="rt-sr-only">Search rooms</span>
         <input type="search" placeholder="Search rooms" value={query} onChange={event=>setQuery(event.target.value)}/>
@@ -124,11 +127,10 @@ export function FrontDeskRooms({ onDirtyChange }: { onDirtyChange?: (dirty: bool
         <option value="all">All rooms</option><option value="available">Available</option><option value="occupied">Occupied</option><option value="inactive">Inactive</option>
       </select>
     </div>
-    {directory.sample && !directory.error && <div className="fd-rooms-sample">Sample room configuration from Administration. Save your room directory there to replace these examples</div>}
     {directory.error && <div className="rt-alert rt-alert-error" role="alert">{directory.error}</div>}
     {error && <div className="rt-alert rt-alert-error" role="alert">{error}</div>}
     {notice && <div className="rt-alert rt-alert-success" role="status">{notice}</div>}
-    <div className="fd-rooms-grid rt-enter-content" aria-label="Front Desk rooms">
+    <div className="fd-rooms-grid rt-enter-content" aria-label="Front Desk rooms" data-tour-target="front-desk-rooms-list">
       {loading ? <div className="fd-rooms-empty">Loading rooms</div> : visible.length === 0 ?
         <div className="fd-rooms-empty">{directory.rooms.length ? 'No rooms match your search' : 'No rooms configured in Administration'}</div> :
         visible.map(room => {
@@ -157,6 +159,7 @@ export function FrontDeskRooms({ onDirtyChange }: { onDirtyChange?: (dirty: bool
           <button className="rt-btn rt-btn-primary" type="submit" disabled={busy}>{busy ? 'Saving…' : 'Check In'}</button></div>
       </form>
     </DialogFrame>}
+    {discardDialog}
     {selectedRoom && stay && <DialogFrame title={chargeId && selectedCharge ? 'Charge Details' : selectedRoom.name} onClose={() => {
       if (chargeId) {setChargeId(null);return}
       setSelectedRoomId(null)
@@ -164,7 +167,7 @@ export function FrontDeskRooms({ onDirtyChange }: { onDirtyChange?: (dirty: bool
       {selectedCharge ? <div className="fd-charge-details">
         <div className="fd-detail-heading"><span>Charge</span><strong>{selectedCharge.description}</strong></div>
         <div className="fd-detail-heading"><span>Posted</span><strong>{formatStamp(selectedCharge.recordedAt)}</strong></div>
-        <div className="fd-detail-heading"><span>Status</span><strong>{selectedCharge.paidAt ? 'Paid (Demo)' : 'Open'}</strong></div>
+        <div className="fd-detail-heading"><span>Status</span><strong>{selectedCharge.paidAt ? 'Paid' : 'Open'}</strong></div>
         {postedOrder ? <>
           <h3>Order Items</h3><div className="fd-charge-items">
             {postedOrderLines(operations, postedOrder.id).map(line => <div className="fd-charge-item" key={line.id}>
@@ -181,21 +184,22 @@ export function FrontDeskRooms({ onDirtyChange }: { onDirtyChange?: (dirty: bool
           <div className="fd-detail-heading"><span>Unit price</span><strong>{formatPrice(selectedCharge.service.priceCents)}</strong></div>
           <div className="fd-detail-heading"><span>Unit</span><strong>{selectedCharge.service.unit}</strong></div>
         </div> : null}
-        {selectedCharge.calculation&&(selectedCharge.calculation.discounts.length>0||selectedCharge.calculation.serviceCentavos>0)&&<FinancialBreakdown calculation={selectedCharge.calculation} compact/>}
-        <div className="fd-charge-total"><span>Demo amount posted</span><strong>{formatPrice(selectedCharge.amountCentavos)}</strong></div>
+        {selectedCharge.calculation&&<FinancialBreakdown calculation={selectedCharge.calculation} compact/>}
+        {selectedCharge.source==='restaurant'&&!selectedCharge.calculation&&<p className="fd-charge-hint">Historical VAT breakdown unavailable</p>}
+        <div className="fd-charge-total"><span>Posted amount</span><strong>{formatPrice(selectedCharge.amountCentavos)}</strong></div>
         <button className="rt-btn" type="button" onClick={()=>setChargeId(null)}>Back to Room</button>      </div> : <div className="fd-stay-details">
         <div className="fd-room-status-row"><span className="fd-room-state fd-room-state-occupied">Occupied</span>{!selectedRoom.active && <span>Inactive in Administration</span>}</div>
         <div className="fd-detail-heading"><span>Guest Name</span><strong>{stay.guestName}</strong></div>
         <div className="fd-detail-heading"><span>Check-In Date</span><strong>{formatDay(stay.checkInDate)}</strong></div>
         <div className="fd-detail-heading"><span>Expected Checkout</span><strong>{formatDay(stay.expectedCheckoutDate)}</strong></div>
-        <div className="fd-room-charges-heading"><h3>Room Charges (Demo)</h3><strong>{formatPrice(outstandingTotal(currentCharges))}</strong></div>
+        <div className="fd-room-charges-heading"><h3>Room Charges</h3><strong>{formatPrice(outstandingTotal(currentCharges))}</strong></div>
         {currentCharges.length ? <div className="fd-stay-charges">{currentCharges.map(payment => {
           const related = payment.orderId ? operations.orders.find(order => order.id === payment.orderId) : undefined
           return <button type="button" className="fd-stay-charge" key={payment.id} onClick={()=>setChargeId(chargeKey(payment.source,payment.id))}>
             <ReceiptText size={19}/><span><strong>{related ? orderReference(related.id, related.displayNumber) : payment.description}</strong><small>{formatStamp(payment.recordedAt)}</small></span>
-            <strong>{payment.paidAt ? 'Paid (Demo)' : formatPrice(payment.amountCentavos)}</strong><ChevronRight size={17}/>
+            <strong>{payment.paidAt ? 'Paid' : formatPrice(payment.amountCentavos)}</strong><ChevronRight size={17}/>
           </button>
-        })}</div> : <div className="fd-empty-charges"><ClipboardList size={18}/>No current-stay demo charges</div>}
+        })}</div> : <div className="fd-empty-charges"><ClipboardList size={18}/>No current-stay charges</div>}
       </div>}
     </DialogFrame>}
   </div>

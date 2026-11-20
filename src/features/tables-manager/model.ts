@@ -1,4 +1,5 @@
 /** Tables Manager owns a separate, versioned browser-local configuration namespace. */
+import { recordCollection } from '../audit-log/storage'
 export type Shape = 'round' | 'square' | 'rectangle'
 export type Lifecycle = 'active' | 'inactive'
 export type DiningTable = { id: string; label: string; area: string; shape: Shape; chairs: number; status: Lifecycle; x: number; y: number; rotation: number }
@@ -81,7 +82,12 @@ export function readTables():{data:TableConfiguration;error?:string}{
 }
 export function writeTables(value:TableConfiguration):{ok:boolean;error?:string}{
   if(!validateConfig(value))return{ok:false,error:'Fix invalid names, chair counts or table positions before saving.'}
-  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(value));return{ok:true}}
+  const before=readTables()
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(value));
+    if(!before.error)recordCollection({category:'Restaurant',kind:'table',name:'Table',operationId:`tables:${crypto.randomUUID()}`,
+      before:before.data.tables.map(t=>({id:t.id,label:t.label,active:t.status==='active',state:`${t.area}/${t.shape}/${t.chairs}/${t.x}/${t.y}/${t.rotation}`})),
+      after:value.tables.map(t=>({id:t.id,label:t.label,active:t.status==='active',state:`${t.area}/${t.shape}/${t.chairs}/${t.x}/${t.y}/${t.rotation}`}))})
+    return{ok:true}}
   catch{return{ok:false,error:'Could not save tables in this browser. Your draft is still available.'}}
 }
 export function nextId():string {return `table-${crypto.randomUUID()}`}

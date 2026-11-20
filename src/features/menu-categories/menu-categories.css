@@ -22,7 +22,7 @@
 .mc-category-copy span { font-size: 10.5px; font-weight: 600; color: #879387; }
 .mc-image-frame { width: 75px; height: 56px; border-radius: 10px; overflow: hidden; flex: none; display: block; border: 1px solid #e1e9d9; background: #f0f6e9; }
 .mc-image-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.mc-image-placeholder { width: 100%; height: 100%; display: grid; place-items: center; color: #769467; }
+.mc-image-frame img.mc-fallback-art { box-sizing: border-box; object-fit: contain; padding: 3px; }
 .mc-status-cell { display: flex; justify-content: flex-start; }
 .mc-order-cell { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .mc-order-number { font-size: 11px; color: #6d7e70; font-weight: 700; min-width: 19px; text-align: center; }

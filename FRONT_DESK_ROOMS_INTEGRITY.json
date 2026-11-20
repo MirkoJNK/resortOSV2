@@ -1,0 +1,51 @@
+{
+  "release": "Front Desk Rooms Candidate / versioned guest-stay linking",
+  "baseline_archive": "resortOS_MultiFeature_Refinements_Integrated_Candidate.zip",
+  "modified": {
+    "src/App.tsx": {
+      "before": "39d5ddcb52fddb5355f855b6e60d0be557a2e6d35ba1011184946453f7f28dfd",
+      "after": "d76b467c78111ea46a7d05edcb2785ce586160277ea6d995e4f19eb93de4372a"
+    },
+    "src/main.tsx": {
+      "before": "17cb99968d8b8a6058f9f20b33444c96341da264410d5ec731caba57335468cf",
+      "after": "dee96442dbf781c9a49470ced20285c5ee76bd800b8f24909ab558fbf4a991ee"
+    },
+    "src/shell/navigation.ts": {
+      "before": "2189329a5f605878e79016ff138435db930c9746b165a0ce02e1fda4d7db6a49",
+      "after": "b50129c9d60f978ac501dfc1ef0e11b46506b753a11f20a9304d77e20b3d6a47"
+    },
+    "src/features/front-desk/FrontDeskDashboard.tsx": {
+      "before": "066e3008e7e14275474eed80ea828ab153cae2658c689590368efd66ac490c92",
+      "after": "24173a2cf59149afb808807f705caf018131b58d3507f428c784b32a206ec480"
+    },
+    "src/features/restaurant-tables/model.ts": {
+      "before": "2472d1e87320daf36b056189027aac5441d4de8154b259cd9e4ea09f87abc9ca",
+      "after": "4b53fee03c6fcc52308f4a61e71bb7a4ddf1f8ecac8b1e55dca7e5b5256ddeaa"
+    },
+    "src/features/restaurant-tables/storage.ts": {
+      "before": "febeff3effff3361250a013e9a03991ce25714e8fde7dad0f3ff8ddb1d1f380f",
+      "after": "d9c6366293373e69e7c1a8e9f45cc2ff5f79c7e6cc1a046e3d8d06266928278d"
+    },
+    "src/features/restaurant-tables/RestaurantTables.tsx": {
+      "before": "afa6aff83816a13d05b05e96d9c5b6d5a72601a32c0aab0c6cc63f633ecef197",
+      "after": "c8fd239fe0e822a0b7a8543749c1da8b06d8196e3d747b0a9c7f2ef41b7cb3f8"
+    },
+    "src/features/restaurant-tables/OrderWorkspace.tsx": {
+      "before": "ff2cb2da2303ba76ea8e661c8672a56fb612e37971bbb7b89d1191e4b950dfb2",
+      "after": "cec74f871211b1df219550b751097310bb91f39819a935f403392ec877a2b10a"
+    },
+    "src/features/restaurant-tables/DemoPaymentDialog.tsx": {
+      "before": "f284a3c27bb68b58cc4f6bd3a0d443de1a3a956cce627816a1993e1bb6058550",
+      "after": "d0ceb06bd9c850cf54fd8a0e0be9a181c24ddd720b6b5694f4ef321f7e3e92a0"
+    },
+    "scripts/verify-system-management-entrypoint.cjs": {
+      "before": "4fa013a826e4080d2ba4ec7e815bc66fdb72fca6b41a615b5ec124a071c96c43",
+      "after": "2b89d3a396b5fe3a118f7ec0289619aed2978bf5231d8ac7325d767e22367d3d"
+    }
+  },
+  "added": {
+    "src/features/front-desk/stays.ts": "35abf3a328de441ce12a3c52aa5718796155f1cd7914967bccff40fba755a2c9",
+    "src/features/front-desk/FrontDeskRooms.tsx": "a282fd01ea7e93dbc00803884c06b254b451c65e5b4ec162ee9cc3bed0b02f83",
+    "src/features/front-desk/front-desk-rooms.css": "da6864b16d77296af5a2903550ffe4eb5454c73543931a12f1e4fb8a5471afa2"
+  }
+}

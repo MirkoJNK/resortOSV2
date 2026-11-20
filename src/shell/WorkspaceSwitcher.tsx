@@ -10,10 +10,12 @@ const workspaces: { id: Department; label: string }[] = [
 ]
 
 /** Navigation only. The active workspace comes from the URL, not a stored role. */
-export function WorkspaceSwitcher({ department, onSwitch }: {
+export function WorkspaceSwitcher({ department, onSwitch, allowed = ['admin','restaurant','front-desk'] }: {
   department: Department
   onSwitch: (department: Department) => void
+  allowed?: Department[]
 }) {
+  const available = workspaces.filter(w => allowed.includes(w.id))
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
@@ -27,13 +29,14 @@ export function WorkspaceSwitcher({ department, onSwitch }: {
     return () => document.removeEventListener('pointerdown', outside)
   }, [open])
   useEffect(() => { setOpen(false) }, [department])
+  useEffect(() => { if (available.length < 2) setOpen(false) }, [available.length])
   const dismiss = (returnFocus = false) => {
     setOpen(false)
     if (returnFocus) triggerRef.current?.focus()
   }
   const show = () => {
     setOpen(true)
-    requestAnimationFrame(() => optionsRef.current[workspaces.findIndex(w => w.id === department)]?.focus())
+    requestAnimationFrame(() => optionsRef.current[Math.max(0,available.findIndex(w => w.id === department))]?.focus())
   }
   const select = (next: Department) => {
     dismiss(true)
@@ -46,15 +49,18 @@ export function WorkspaceSwitcher({ department, onSwitch }: {
       event.preventDefault()
       const active = optionsRef.current.indexOf(document.activeElement as HTMLButtonElement)
       const delta = event.key === 'ArrowDown' ? 1 : -1
-      const from = active >= 0 ? active : workspaces.findIndex(w => w.id === department)
-      optionsRef.current[(from + delta + workspaces.length) % workspaces.length]?.focus()
+      const from = active >= 0 ? active : Math.max(0,available.findIndex(w => w.id === department))
+      optionsRef.current[(from + delta + available.length) % available.length]?.focus()
     }
     if (event.key === 'Home') { event.preventDefault(); optionsRef.current[0]?.focus() }
-    if (event.key === 'End') { event.preventDefault(); optionsRef.current[workspaces.length - 1]?.focus() }
+    if (event.key === 'End') { event.preventDefault(); optionsRef.current[available.length - 1]?.focus() }
     if (event.key === 'Tab') dismiss()
   }
   const selected = workspaces.find(item => item.id === department) ?? workspaces[0]
   const WorkspaceIcon = ({ id }: { id: Department }) => id === 'admin' ? <LayoutGrid size={16} /> : id === 'restaurant' ? <ConciergeBell size={16} /> : <BedDouble size={16} />
+  // A selector with no alternative workspace provides no navigation value.
+  // Returning null also removes its wrapper, layout footprint and focus targets.
+  if (available.length <= 1) return null
   return <div className="ros-workspace" ref={rootRef} onKeyDown={keys}>
     <button ref={triggerRef} type="button" className="ros-workspace-trigger"
       aria-haspopup="menu" aria-expanded={open} aria-controls="ros-workspace-menu"
@@ -67,7 +73,7 @@ export function WorkspaceSwitcher({ department, onSwitch }: {
       <ChevronDown className={`ros-workspace-chevron ${open ? 'open' : ''}`} size={15} aria-hidden="true" />
     </button>
     {open && <div className="ros-workspace-menu" id="ros-workspace-menu" role="menu" aria-label="Choose workspace">
-      {workspaces.map((workspace, index) => <button key={workspace.id} type="button"
+      {available.map((workspace, index) => <button key={workspace.id} type="button"
         ref={el => { optionsRef.current[index] = el }}
         role="menuitemradio" aria-checked={workspace.id === department}
         onClick={() => select(workspace.id)}>

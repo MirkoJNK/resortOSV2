@@ -177,16 +177,19 @@ test('empty results, hidden accessible announcement and both clear actions resto
   assert.equal(countTools(h), 11)
 })
 
-test('only Tables Manager, Rooms Manager and Service Catalog are links; the other eight tools remain informational', () => {
+test('six authorized managers are links; the remaining five tools stay informational', () => {
   const h = createHarness()
   const rows = h.collect(node => ['sm-tool','sm-tool sm-tool-link'].includes(node.props?.className))
   assert.equal(rows.length,11)
   const links=rows.filter(node=>node.type==='a')
-  assert.equal(links.length,3)
-  assert.deepEqual(links.map(x=>x.props.href), ['#systems/rooms','#systems/tables','#systems/services'])
+  assert.equal(links.length,6)
+  assert.deepEqual(links.map(x=>x.props.href), ['#systems/rooms','#systems/tables','#systems/services','#systems/menu','#systems/menu-categories','#systems/payment-methods'])
   assert.match(h.text(links[0]),/Rooms Manager/)
   assert.match(h.text(links[1]),/Tables Manager/)
   assert.match(h.text(links[2]),/Service Catalog/)
+  assert.match(h.text(links[3]),/Menu Management/)
+  assert.match(h.text(links[4]),/Menu Categories/)
+  assert.match(h.text(links[5]),/Payment Methods/)
   for (const row of rows.filter(node=>!links.includes(node))) {
     assert.equal(row.type,'div')
     assert.equal(row.props.onClick,undefined)
@@ -200,7 +203,7 @@ test('only Tables Manager, Rooms Manager and Service Catalog are links; the othe
 test('the real App route and stylesheet integration remain intact', () => {
   const app = fs.readFileSync('src/App.tsx', 'utf8')
   const main = fs.readFileSync('src/main.tsx', 'utf8')
-  assert.match(app, /case 'systems':\s*return <SystemManagement \/>/)
+  assert.match(app, /case 'systems':\s*return <SystemManagement canOpen=\{canAccess\} \/>/)
   assert.doesNotMatch(app, /function SystemsPage\s*\(/)
   assert.match(main, /import '\.\/styles\/system-management.css'/)
   assert.equal(fs.readFileSync('src/shell/navigation.ts','utf8').includes("'systems'"), true)

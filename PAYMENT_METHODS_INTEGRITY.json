@@ -1,0 +1,55 @@
+{
+  "baseline": "resortOS_FrontDesk_Checkout_Integrated_Candidate.zip",
+  "modified": {
+    "scripts/front-desk-successor.cjs": {
+      "before": "08e7abcedda6da0d0e7e5d9393cc9766b379bdcac92ace8ac86167a86248e109",
+      "after": "e178c1f91ebecf48f512ee69a693c1da16f91bbf86f9e57b5189452c9f15e904"
+    },
+    "scripts/verify-system-management-entrypoint.cjs": {
+      "before": "47072df0670ec0db69975daf01462a469f2b104fe2e429b05ccff48e961f0254",
+      "after": "51ab5dfa54f1521cffce88744097d9075d03518c846328f823d26297e468a904"
+    },
+    "src/App.tsx": {
+      "before": "5cad4025639ffdc72485a473c9ae61564d6dddd474fd0f614fdeb3c42415d9e1",
+      "after": "e9e52d5ed7203586b68167dcb036c918495e51582cbeac007dfb96ffef7b6bc9"
+    },
+    "src/features/front-desk/FrontDeskCharges.tsx": {
+      "before": "121c911314ec64352f165b0f189d8f12a04df0015ada2b74e6def3f3e7c42813",
+      "after": "fc053a8b71356dec282c87f631e6a762a680eb2be1875314f6ef9b21ec67c281"
+    },
+    "src/features/front-desk/FrontDeskCheckout.tsx": {
+      "before": "42d7086c3bfd9e3ea67d2b37a827d217bcda2731c62eca7f48b4c0f1c9bccc1c",
+      "after": "4db0166539a9a658d9a22f9eff413c03c2eeecd5a018d0bc4dd76b3486a21b18"
+    },
+    "src/features/front-desk/charges.ts": {
+      "before": "1f7de6c3e29edeb4d6f88922e196071877f9f8a855020fcda98ab0ab0e4a7b83",
+      "after": "0bdcac8e9f230a9b85cc368079d8c69681ce75ea09b1368f180a37305b8eba11"
+    },
+    "src/features/front-desk/checkout.ts": {
+      "before": "188061eb1ff543fd88b39364d74ebde575047663f87160bc9a21a53e509cfd07",
+      "after": "171f01d8306f4e2c882f4644961fc07a7192d82280f8a2e75f95c7d2787ea3d5"
+    },
+    "src/features/restaurant-tables/model.ts": {
+      "before": "7bceda635c7bdec1b13ece95a73dd032e0ff660d8b7cbe4d51e77e62db07d02c",
+      "after": "ff7a7ec3eab4447bfaf488259001b8a7188c6b979ffbe7dcbf7f1655d5d4a378"
+    },
+    "src/features/system-management/SystemManagement.tsx": {
+      "before": "cef50438178bd9b77cc8fb2f247cde0aadca6b8222b63e5067480d1fdb95abfe",
+      "after": "f271f2f0261cbf6bcc4e52f653dd919442a9ec99d909401c84f33fc9af5c16b2"
+    },
+    "src/main.tsx": {
+      "before": "a23c6f5af6365d47dbcaf33c8af930076776559d0983f177555a160a9e544d1c",
+      "after": "573337ef14b3c4ca572a9d3e1cef7c6f75cb427c25c274e57662e0c89f6cdb94"
+    },
+    "src/shell/navigation.ts": {
+      "before": "28fdf50eff6c875acb44fa5fbb9bb439a60a1c73f007d251f5fc72410a8ac9e9",
+      "after": "8415eeec854a1a110cefc0a683617aec7f46694de8208e3f824ce90303df2ba0"
+    }
+  },
+  "added": {
+    "src/features/payment-methods/PaymentMethodSelect.tsx": "2a79a5e3544dcc14e47824655e6fd6dc19a4007ba21b71ced9b0fab372983280",
+    "src/features/payment-methods/PaymentMethods.tsx": "527faaa5cf316c042d9b4fe60b4a9500f4dce87170cfa07f9e5fada5fa0e9a41",
+    "src/features/payment-methods/model.ts": "a62892f541939e8be008cf946984c8eaecb96f3b04b209e215753406bce5d48b",
+    "src/features/payment-methods/payment-methods.css": "d4d15d4086e29bdf9a8e76b3cb50b1436d9f8d8cb6f5785098bad2bdd9cbb598"
+  }
+}

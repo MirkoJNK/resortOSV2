@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, Pencil, Plus, RotateCcw, RotateCw, Search, Trash2, X } from 'lucide-react'
 import { HEIGHT, WIDTH, GRID, boundedTablePosition, chairPositions, copy, inBounds, maxChairs, nextId, overlaps, readTables, snap, tableDimensions, writeTables } from './model'
 import type { DiningTable, Shape, TableConfiguration } from './model'
+import { useDiscardConfirmation } from '../../shared/useDiscardConfirmation'
 
 type Dialog = { kind: 'delete-table'; id: string } | { kind: 'delete-area'; area: string } | { kind: 'add-area' } | { kind: 'edit-table'; id: string } | { kind: 'add-table' }
 const controls = ['round','square','rectangle'] as const
@@ -84,6 +85,7 @@ function TableGraphic({table,selected,editing,onSelect,onMove}:{table:DiningTabl
 }
 const shapes:Shape[]=['round','square','rectangle']
 export function TablesManager({onDirtyChange}:{onDirtyChange?:(dirty:boolean)=>void}){
+  const {requestDiscard,discardDialog}=useDiscardConfirmation()
   const [initial]=useState(readTables)
   const [saved,setSaved]=useState<TableConfiguration>(()=>copy(initial.data))
   const [draft,setDraft]=useState<TableConfiguration>(()=>copy(initial.data))
@@ -96,10 +98,14 @@ export function TablesManager({onDirtyChange}:{onDirtyChange?:(dirty:boolean)=>v
   const [future,setFuture]=useState<TableConfiguration[]>([])
   const [dialog,setDialog]=useState<Dialog|null>(null)
   const [form,setForm]=useState<Partial<DiningTable>>({})
+  const formInitial=useRef<Partial<DiningTable>>({})
   const [areaInput,setAreaInput]=useState('')
   const [notice,setNotice]=useState(initial.error??'')
   const focusRef=useRef<HTMLButtonElement>(null)
-  const dirty=JSON.stringify(saved)!==JSON.stringify(draft)
+  const layoutDirty=JSON.stringify(saved)!==JSON.stringify(draft)
+  const formDirty=!!dialog && (dialog.kind==='add-area' ? Boolean(areaInput.trim()) :
+    dialog.kind==='add-table'||dialog.kind==='edit-table' ? JSON.stringify(form)!==JSON.stringify(formInitial.current) : false)
+  const dirty=layoutDirty||formDirty
   const active=draft.tables.find(t=>t.id===selected)??null
   const visible=useMemo(()=>draft.tables.filter(t=>t.area===area&&t.label.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())),[draft,area,query])
   const list=useMemo(()=>draft.tables.filter(t=>(area==='All areas'||t.area===area)&&t.label.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())),[draft,area,query])
@@ -109,13 +115,15 @@ export function TablesManager({onDirtyChange}:{onDirtyChange?:(dirty:boolean)=>v
   useEffect(()=>{onDirtyChange?.(dirty);return()=>onDirtyChange?.(false)},[dirty,onDirtyChange])
   useEffect(()=>{const warn=(e:BeforeUnloadEvent)=>{if(dirty){e.preventDefault();e.returnValue=''}};window.addEventListener('beforeunload',warn);return()=>window.removeEventListener('beforeunload',warn)},[dirty])
   useEffect(()=>{if(dialog){focusRef.current?.focus()}},[dialog])
-  const cancel=()=>{setDraft(copy(saved));setPast([]);setFuture([]);setSelected(null);setEditing(false);setNotice('')}
+  const cancelAccepted=()=>{setDraft(copy(saved));setPast([]);setFuture([]);setSelected(null);setEditing(false);setDialog(null);setNotice('')}
+  const cancel=()=>requestDiscard(dirty,cancelAccepted)
   const save=()=>{const result=writeTables(draft);if(!result.ok){setNotice(result.error??'Could not save');return}setSaved(copy(draft));setPast([]);setFuture([]);setEditing(false);setSelected(null);setNotice('Changes saved');window.dispatchEvent(new Event('resortos-feedback-saved'))}
   const undo=()=>{const previous=past.at(-1);if(!previous)return;setFuture(f=>[...f,copy(draft)]);setDraft(copy(previous));setPast(p=>p.slice(0,-1))}
   const redo=()=>{const next=future.at(-1);if(!next)return;setPast(p=>[...p,copy(draft)]);setDraft(copy(next));setFuture(f=>f.slice(0,-1))}
   const selectArea=(name:string)=>{if(name!==area){setArea(name);setSelected(null)}}
-  const edit=(id:string)=>{const t=draft.tables.find(v=>v.id===id);if(!t)return;setForm({...t});setDialog({kind:'edit-table',id})}
-  const editCreate=()=>{setForm({label:`Table ${draft.tables.length+1}`,shape:'round',chairs:4,area:area==='All areas'?draft.areas[0]:area,status:'active'});setDialog({kind:'add-table'})}
+  const edit=(id:string)=>{const t=draft.tables.find(v=>v.id===id);if(!t)return;formInitial.current={...t};setForm({...t});setDialog({kind:'edit-table',id})}
+  const editCreate=()=>{const initial={label:`Table ${draft.tables.length+1}`,shape:'round' as const,chairs:4,area:area==='All areas'?draft.areas[0]:area,status:'active' as const};formInitial.current={...initial};setForm(initial);setDialog({kind:'add-table'})}
+  const closeDialog=()=>requestDiscard(formDirty,()=>{setDialog(null);setNotice('')})
   const validateTable=(value:Partial<DiningTable>,excludeId?:string)=>{
     const label=value.label?.trim()??''
     if(!label||label.length>32)return 'Enter a table label (1–32 characters).'
@@ -195,13 +203,14 @@ export function TablesManager({onDirtyChange}:{onDirtyChange?:(dirty:boolean)=>v
         </svg></div></div>
         {!visible.length&&<div className="tm-empty tm-floor-empty"><h3>{query?'No matching tables':'No tables in this area'}</h3><Btn onClick={query?()=>setQuery(''):editCreate}>{query?'Clear search':'Add table'}</Btn></div>}
       </div></div>:<div className="tm-card tm-table-scroller">{list.length?<table className="tm-tablelist"><thead><tr>{['Table','Chairs','Area','Shape','Status','Manage'].map(n=><th key={n}>{n}</th>)}</tr></thead><tbody>{list.map(t=><tr key={t.id}><td data-label="Table"><strong>{t.label}</strong></td><td data-label="Chairs">{t.chairs}</td><td data-label="Area">{t.area}</td><td data-label="Shape">{t.shape==='rectangle'?'Rectangle':t.shape==='round'?'Round':'Square'}</td><td data-label="Status"><span className={`tm-table-status${t.status==='inactive'?' muted':''}`}>{t.status==='active'?'Active':'Inactive'}</span></td><td data-label="Manage"><Btn onClick={()=>edit(t.id)}>Edit</Btn></td></tr>)}</tbody></table>:<div className="tm-empty"><h3>{query?'No matching tables':'No tables configured'}</h3><Btn onClick={query?()=>setQuery(''):editCreate}>{query?'Clear search':'Add table'}</Btn></div>}</div>}
-    {dialog&&<div className="tm-overlay" onKeyDown={e=>{if(e.key==='Escape')e.stopPropagation();if(e.key==='Tab'){const nodes=Array.from(e.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), input,select'));const i=nodes.indexOf(document.activeElement as HTMLElement);if(e.shiftKey&&i===0){e.preventDefault();nodes.at(-1)?.focus()}else if(!e.shiftKey&&i===nodes.length-1){e.preventDefault();nodes[0]?.focus()}}}}><div role="dialog" aria-modal="true" aria-labelledby="tm-dialog-title" className="tm-dialog">
+    {dialog&&<div className="tm-overlay" onMouseDown={e=>{if(e.target===e.currentTarget)closeDialog()}} onKeyDown={e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closeDialog()}if(e.key==='Tab'){const nodes=Array.from(e.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), input,select'));const i=nodes.indexOf(document.activeElement as HTMLElement);if(e.shiftKey&&i===0){e.preventDefault();nodes.at(-1)?.focus()}else if(!e.shiftKey&&i===nodes.length-1){e.preventDefault();nodes[0]?.focus()}}}}><div role="dialog" aria-modal="true" aria-labelledby="tm-dialog-title" className="tm-dialog">
       <h2 id="tm-dialog-title">{dialog.kind==='delete-table'?`Permanently delete “${draft.tables.find(t=>t.id===dialog.id)?.label??'table'}”?`:dialog.kind==='delete-area'?`Delete “${dialog.area}”?`:dialog.kind==='add-area'?'Add restaurant area':dialog.kind==='add-table'?'Add table':'Edit table'}</h2>
       {dialog.kind==='delete-table'?<p>This removes the table and its chairs from your draft. The deletion becomes permanent when you save changes.</p>:dialog.kind==='delete-area'?<p>Only empty areas can be deleted. This change takes effect when you save.</p>:null}
       {dialog.kind==='add-area'&&<label className="tm-field">Area name<input autoFocus className="tm-input" value={areaInput} maxLength={48} onChange={e=>setAreaInput(e.target.value)}/></label>}
       {(dialog.kind==='add-table'||dialog.kind==='edit-table')&&<div className="tm-dialog-form"><label className="tm-field">Table label<input autoFocus className="tm-input" maxLength={32} value={form.label??''} onChange={e=>setForm(f=>({...f,label:e.target.value}))}/></label><label className="tm-field">Shape<select className="tm-select" value={form.shape??'round'} onChange={e=>{const shape=e.target.value as Shape;setForm(f=>({...f,shape,chairs:Math.min(f.chairs??4,maxChairs(shape))}))}}>{shapes.map(s=><option key={s} value={s}>{s==='rectangle'?'Rectangle':s==='round'?'Round':'Square'}</option>)}</select></label><label className="tm-field">Chairs<input className="tm-input" type="number" min={1} max={maxChairs(form.shape??'round')} value={form.chairs??4} onChange={e=>setForm(f=>({...f,chairs:Number(e.target.value)}))}/></label><label className="tm-field">Area<select className="tm-select" value={form.area??draft.areas[0]} onChange={e=>setForm(f=>({...f,area:e.target.value}))}>{draft.areas.map(a=><option key={a}>{a}</option>)}</select></label>{dialog.kind==='edit-table'&&<label className="tm-field">Status<select className="tm-select" value={form.status??'active'} onChange={e=>setForm(f=>({...f,status:e.target.value as DiningTable['status']}))}><option value="active">Active</option><option value="inactive">Inactive</option></select></label>}</div>}
-      <div className="tm-dialog-actions"><button ref={focusRef} type="button" className="tm-btn" onClick={()=>{setDialog(null);setNotice('')}}>Cancel</button><button type="button" className={`tm-btn ${dialog.kind.startsWith('delete')?' danger':' lime'}`} onClick={dialog.kind==='add-area'||dialog.kind.startsWith('delete')?confirm:submitForm}>{dialog.kind==='delete-table'?'Delete table':dialog.kind==='delete-area'?'Delete area':dialog.kind==='add-area'?'Add area':dialog.kind==='add-table'?'Add table':'Apply changes'}</button></div>
+      <div className="tm-dialog-actions"><button ref={focusRef} type="button" className="tm-btn" onClick={closeDialog}>Cancel</button><button type="button" className={`tm-btn ${dialog.kind.startsWith('delete')?' danger':' lime'}`} onClick={dialog.kind==='add-area'||dialog.kind.startsWith('delete')?confirm:submitForm}>{dialog.kind==='delete-table'?'Delete table':dialog.kind==='delete-area'?'Delete area':dialog.kind==='add-area'?'Add area':dialog.kind==='add-table'?'Add table':'Apply changes'}</button></div>
     </div></div>}
+    {discardDialog}
     <button type="button" className="tm-back" onClick={()=>{location.hash='systems'}}><ArrowLeft size={15}/> System Management</button>
   </section>
 }

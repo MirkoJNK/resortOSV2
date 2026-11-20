@@ -1,0 +1,44 @@
+{
+  "status": "Restaurant Orders integrated candidate, product-owner review pending",
+  "previousRelease": "RESTAURANT_TABLES_UI_HOTFIX_INTEGRITY.json",
+  "changes": {
+    "src/App.tsx": {
+      "before": "3292bfe72366858c9958515a63cb7ab5fdf7ff9b3c571cb58d39af13c5ab0c4b",
+      "after": "eadc897706c0cb4f9498863b1069bd1ca98d44b17fab26a630e8399f14ffae80"
+    },
+    "src/shell/navigation.ts": {
+      "before": "6c85ae2841d7123510f8506c53117c9b7a6defb12a7e759ed5e550451938eed3",
+      "after": "c3d7aeb10fcdfff5d6978f24d6afed1f352a75beec05cd6fb953d6501ea8da37"
+    },
+    "src/features/restaurant/RestaurantDashboard.tsx": {
+      "before": "13af0a726a0c5b172302cca432c11068c94f064acf812d3b90d688820fa5aed2",
+      "after": "a9d4bba21e24603fb8c95297e9dcc62422a20fa4c3f1b7aeec551a85600755c1"
+    },
+    "src/features/restaurant-tables/model.ts": {
+      "before": "9ff6eb408576f2494d588abb01d6b1053bbc9a16e1a260dd11793c0c9be781ab",
+      "after": "53a1fa3982f434a7dbce08636003f1b87dcda09a8abdcd7a891f9f236b8def0e"
+    },
+    "src/features/restaurant-tables/storage.ts": {
+      "before": "c7a24cf50163146e5612911ed2f3ff61da8d9fc91bc9ea4f92054421e160fe85",
+      "after": "7dce5b99d06d230aaec0f0e7119f79b4758ffafb3a07c688d5bd23e318cf7b27"
+    },
+    "src/features/restaurant-tables/OrderWorkspace.tsx": {
+      "before": "5d574954085757d93640782ca15e3a464084ef219d1b879343944a6bc86c4f88",
+      "after": "8ec54bc820922a144a1dc58f0367dacc48b124767a51d54a4ddb3a654f586c00"
+    },
+    "src/features/restaurant-tables/RestaurantTables.tsx": {
+      "before": "43bc88bbe17a1a824eb66a7d6557c4224f707ef458aafee6a78398227a4833ee",
+      "after": "30ea6a274ce6afbf0336d9f4c5e5e438c88dc938df1cf9e5e08b76b561748978"
+    },
+    "src/features/restaurant-tables/restaurant-tables.css": {
+      "before": "5b1114802dafc155f91a2e6d6bc58ec1b88330f0731bbc3c6074408c0953d4e4",
+      "after": "8ac6f66dd246e4c757a67b273fe1e2f2171e26bc98aa98e848b0a61435539f99"
+    }
+  },
+  "added": {
+    "src/features/restaurant-tables/DemoPaymentDialog.tsx": "f284a3c27bb68b58cc4f6bd3a0d443de1a3a956cce627816a1993e1bb6058550",
+    "src/features/restaurant-orders/RestaurantOrders.tsx": "702ed7d76ab68e3e0e004b2c442389b143db0a71e9738e36b47e4a7c5e3ca69c",
+    "src/features/restaurant-orders/restaurant-orders.css": "33b83b2df72f665a598bff7b27f8a6140fbce0b0e9abbf23dc1c6c2a9b7a2c56"
+  },
+  "note": "Retains every immutable predecessor manifest and pins the new Orders integration as a successor."
+}

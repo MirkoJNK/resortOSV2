@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowLeft, Image as ImageIcon, Minus, Plus, ReceiptText, Search, X } from 'lucide-react'
+import { Image as ImageIcon, Minus, Plus, ReceiptText, Search, X } from 'lucide-react'
 import type { DiningTable } from '../tables-manager/model'
 import type { MenuCategory } from '../menu-categories/model'
 import type { MenuItem } from '../menu-management/model'
@@ -13,9 +13,11 @@ import type { DiscountElection, FinanceConfig } from '../discount-management/mod
 import { calculateOrder } from '../discount-management/model'
 import { OrderDiscountDialog } from '../discount-management/OrderDiscountDialog'
 import { FinancialBreakdown } from '../discount-management/FinancialBreakdown'
+import { useDiscardConfirmation } from '../../shared/useDiscardConfirmation'
+import type { RestaurantPaymentInput } from './model'
 
 export function OrderWorkspace({ table, session, order, categories, items, imageUrls, busy, onRecord, onReady,
-  onCancel, onRemoveRecorded, onCancelRecorded, onPayment, onDiscounts, finance, eligibleRoomIds, onBack, onDirtyChange }: {
+  onCancel, onRemoveRecorded, canRemoveRecordedItems = false, onCancelRecorded, onPayment, onDiscounts, finance, eligibleRoomIds, onDirtyChange, onSavingChange }: {
   table: DiningTable; session: DiningSession; order?: RestaurantOrder
   finance:FinanceConfig; onDiscounts:(elections:DiscountElection[])=>Promise<boolean>
   categories: MenuCategory[]; items: MenuItem[]; imageUrls: Record<string, string>
@@ -24,11 +26,13 @@ export function OrderWorkspace({ table, session, order, categories, items, image
   onReady: () => Promise<void>
   onCancel: () => Promise<void>
   onRemoveRecorded: (lineId: string, quantity: number) => Promise<boolean>
+  canRemoveRecordedItems?: boolean
   onCancelRecorded: () => Promise<boolean>
-  onPayment: (method: 'cash' | 'room', roomId: string | null) => Promise<boolean>
-  onBack: () => void
+  onPayment: (method: 'restaurant' | 'room', roomId: string | null, payment?: RestaurantPaymentInput, directoryRevision?: number) => Promise<boolean>
   onDirtyChange: (dirty: boolean) => void
+  onSavingChange?: (saving:boolean)=>void
 }) {
+  const {requestDiscard,discardDialog} = useDiscardConfirmation()
   const [draft, setDraft] = useState<DraftLine[]>([])
   const [categoryId, setCategoryId] = useState('')
   const [query, setQuery] = useState('')
@@ -50,7 +54,8 @@ export function OrderWorkspace({ table, session, order, categories, items, image
       (query.trim() ? item.name.toLocaleLowerCase().includes(q) : !categoryId || item.categoryId === categoryId))
       .sort((a,b) => a.name.localeCompare(b.name, 'en', { numeric: true, sensitivity: 'base' }))
   }, [items, categoryId, query, activeCategories])
-  useEffect(() => { onDirtyChange(draft.length > 0 || !hasRecorded); return () => onDirtyChange(false) }, [draft.length, hasRecorded, onDirtyChange])
+  useEffect(() => { onDirtyChange(draft.length > 0); return () => onDirtyChange(false) }, [draft.length, onDirtyChange])
+  useEffect(() => {onSavingChange?.(saving);return()=>onSavingChange?.(false)},[saving,onSavingChange])
   useEffect(() => {
     if (!draft.length) return
     const handler = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = '' }
@@ -81,10 +86,9 @@ export function OrderWorkspace({ table, session, order, categories, items, image
     try { await onReady() } catch (e) { setError(e instanceof Error ? e.message : 'Could not update the session') }
   }
   const recordedTotal = order ? activeOrderTotal(order) : 0
-  const calculation = order ? calculateOrder(order,order.discountElections??[],finance.service) : null
+  const calculation = order ? calculateOrder(order,order.discountElections??[],finance.service,new Date().toISOString(),finance.taxMode) : null
   const draftTotal = lineTotal(draft)
   const total = (calculation?.payableCentavos ?? recordedTotal) + draftTotal
-  const safeToLeave = () => !draft.length || window.confirm('Discard unsaved order items?')
   const removeRecorded = async () => {
     if (!pendingRemoval || busyRef.current || busy || saving || !Number.isSafeInteger(removeQuantity) || removeQuantity < 1 || removeQuantity > pendingRemoval.quantity) return
     busyRef.current = true; setSaving(true); setError('')
@@ -105,7 +109,6 @@ export function OrderWorkspace({ table, session, order, categories, items, image
   }
   return <div className="rt-order-workspace">
     <div className="rt-order-top">
-      <button className="rt-back" type="button" onClick={() => { if (safeToLeave()) onBack() }}><ArrowLeft size={17} /> Tables</button>
       <div className="rt-order-table-label"><h1>{table.label}</h1><span className="rt-pill rt-pill-occupied">{session.phase === 'ready-to-pay' ? 'Ready to Pay' : 'Occupied'}</span></div>
     </div>
     <div className="rt-order-grid">
@@ -128,7 +131,7 @@ export function OrderWorkspace({ table, session, order, categories, items, image
         <div className="rt-summary-lines">
           {visibleRecorded.length > 0 && <div className="rt-recorded-lines">{visibleRecorded.map(line => <div className="rt-summary-line rt-recorded" key={line.id}>
             <div className="rt-summary-line-main"><strong>{line.nameSnapshot}</strong><span>{formatPrice(line.priceCentavos * line.quantity)}</span></div>
-            <div className="rt-summary-line-meta"><span>{line.quantity} × {formatPrice(line.priceCentavos)}</span><button type="button" className="rt-remove-line" aria-label={`Remove recorded ${line.nameSnapshot}`} disabled={busy || saving} onClick={() => { setRemoveQuantity(1); setPendingRemoval(line) }}><X size={16}/></button></div>
+            <div className="rt-summary-line-meta"><span>{line.quantity} × {formatPrice(line.priceCentavos)}</span><button type="button" className="rt-remove-line" aria-label={`Remove recorded ${line.nameSnapshot}`} title={canRemoveRecordedItems ? 'Remove recorded item' : 'Requires Remove Recorded Items permission'} disabled={busy || saving || !canRemoveRecordedItems} onClick={() => { setRemoveQuantity(1); setPendingRemoval(line) }}><X size={16}/></button></div>
             {line.note && <p className="rt-item-note">{line.note}</p>}
           </div>)}</div>}
           {draft.map(line => <div className="rt-summary-line rt-draft" key={line.id}>
@@ -140,21 +143,22 @@ export function OrderWorkspace({ table, session, order, categories, items, image
             </div><button type="button" className="rt-remove-line" aria-label={`Remove ${line.nameSnapshot}`} disabled={busy || saving} onClick={() => setDraft(old => old.filter(l => l.id !== line.id))}><X size={16}/></button></div>
             <input aria-label={`Notes for ${line.nameSnapshot}`} className="rt-item-note-input" maxLength={280} placeholder="Item note (optional)" value={line.note} onChange={e => changeNote(line.id, e.target.value)} disabled={busy || saving}/>
           </div>)}
+          {visibleRecorded.length > 0 && !canRemoveRecordedItems && <p className="fd-charge-hint">Removing recorded items requires manager permission</p>}
           {visibleRecorded.length === 0 && draft.length === 0 && <div className="rt-summary-empty"><ReceiptText size={27}/><span>No items yet</span></div>}
         </div>
         <div className="rt-summary-bottom">
           {order&&recordedTotal>0&&<div className="dm-order-pricing">
             <button type="button" className="rt-btn dm-apply-discount" disabled={busy||saving} onClick={()=>setDiscountOpen(true)}>{order.discountElections?.length?'Manage Discount':'Apply Discount'}</button>
             {order.discountReviewRequired&&<p className="rt-alert rt-alert-error" role="alert">Discount allocation changed. Review and confirm the discount selection before payment.</p>}
-            {calculation&&(calculation.discounts.length>0||calculation.serviceRateBasisPoints>0)&&<FinancialBreakdown calculation={calculation} compact/>}
+            {calculation&&<FinancialBreakdown calculation={calculation} compact/>}
           </div>}
           <div className="rt-total-line"><span>Current total</span><strong>{formatPrice(total)}</strong></div>
           {error && <div className="rt-alert rt-alert-error" role="alert">{error}</div>}
           {!hasRecorded ? <div className="rt-summary-actions">
-            <button className="rt-btn rt-btn-primary" type="button" disabled={busy || saving || !draft.length} onClick={record}>{saving ? 'Recording…' : 'Record Order'}</button>
-            <button className="rt-btn" type="button" disabled={busy || saving} onClick={() => { if (safeToLeave()) void onCancel() }}>Cancel</button>
+            <button className="rt-btn rt-btn-primary" type="button" disabled={busy || saving || !draft.length} onClick={record}>{saving ? 'Recording…' : 'Place Order'}</button>
+            <button className="rt-btn" type="button" disabled={busy || saving} onClick={() => requestDiscard(draft.length > 0, () => void onCancel(), busy || saving)}>Cancel</button>
           </div> : <div className="rt-summary-actions">
-            <button className="rt-btn rt-btn-primary" type="button" disabled={busy || saving || !draft.length} onClick={record}>{saving ? 'Recording…' : 'Record Order'}</button>
+            <button className="rt-btn rt-btn-primary" type="button" disabled={busy || saving || !draft.length} onClick={record}>{saving ? 'Recording…' : 'Place Order'}</button>
             {session.phase === 'ready-to-pay' ? <button className="rt-btn" type="button" disabled={busy || saving} onClick={() => {
               if (draft.length) { setError('Record or discard new draft items before payment'); return }
               if (order.discountReviewRequired) {setError('Review discount selections before payment');return}
@@ -165,7 +169,7 @@ export function OrderWorkspace({ table, session, order, categories, items, image
         </div>
       </section>
     </div>
-    {paymentOpen && order && <DemoPaymentDialog tableName={table.label} reference={orderReference(order.id, order.displayNumber)} amountCentavos={calculation?.payableCentavos ?? recordedTotal} eligibleRoomIds={eligibleRoomIds}
+    {paymentOpen && order && <DemoPaymentDialog tableName={table.label} reference={orderReference(order.id, order.displayNumber)} amountCentavos={calculation?.payableCentavos ?? recordedTotal} calculation={calculation ?? undefined} eligibleRoomIds={eligibleRoomIds}
       busy={busy || saving} onClose={() => setPaymentOpen(false)} onConfirm={onPayment}/>}
     {discountOpen&&order&&<OrderDiscountDialog order={order} finance={finance} items={items} categories={categories} busy={busy||saving}
       onSave={onDiscounts} onClose={()=>setDiscountOpen(false)}/>}
@@ -187,5 +191,6 @@ export function OrderWorkspace({ table, session, order, categories, items, image
         <button type="button" className="rt-btn rt-btn-danger" disabled={busy || saving} onClick={() => void cancelRecorded()}>{saving ? 'Canceling…' : 'Cancel Order'}</button>
       </div>
     </DialogFrame>}
+    {discardDialog}
   </div>
 }

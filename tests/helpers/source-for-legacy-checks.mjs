@@ -41,6 +41,13 @@ function readFileSync(file, ...args) {
         // the explicit, current Rooms Manager approval manifest.
         const approved = JSON.parse(fs.readFileSync(path.join(root, 'SERVICE_CATALOG_APPROVED.json'), 'utf8'))
         if (typescriptSemanticHash(absolute) !== approved.domainTypesHash) throw Error('Unapproved Area type modification')
+      } else if (relative === 'src/features/dashboard/Dashboard.tsx') {
+        const { successorHash } = require('../../scripts/front-desk-successor.cjs')
+        const original = path.join(root, 'resortOS_v066', relative)
+        const crypto = require('node:crypto')
+        const oldDigest = crypto.createHash('sha256').update(fs.readFileSync(original)).digest('hex')
+        const currentDigest = crypto.createHash('sha256').update(fs.readFileSync(absolute)).digest('hex')
+        if (currentDigest !== successorHash(relative, oldDigest)) throw Error('Unauthorized Dashboard change')
       } else if (typescriptSemanticHash(absolute) !== approvedTypeScriptHash(relative)) {
         throw new Error(`Legacy fixture cannot be used: ${relative} has changed syntax. Update its tests.`)
       }

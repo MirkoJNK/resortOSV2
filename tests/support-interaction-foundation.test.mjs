@@ -202,7 +202,7 @@ test('tabs support Left/Right/Home/End keyboard navigation while retaining three
 test('Admin conversation milestone does not add ticket creation or external delivery',()=>{
  assert.doesNotMatch(src,/New ticket|Create ticket|createTicket\(/)
  assert.match(src,/function addAdminReply\(/)
- assert.match(srcTight,/author:demoActor,initials:'DA',role:'Admin'/)
+ assert.match(srcTight,/author:demoActor,initials:'AD',role:'Admin'/)
  assert.match(src,/<SupportTicketDetails[\s\S]*?ticket=\{ticket\}[\s\S]*?onChange=\{onChange\}/)
  assert.match(src,/<SupportActivity\s+ticket=\{ticket\}/)
 })
@@ -272,7 +272,7 @@ test('assignment stays optional; no team notification is created',()=>{
  h.click(tabName('Activity'))
  assert.match(selectedText(h),/Assignment updated/)
  assert.match(selectedText(h),/IT support/)
- assert.match(selectedText(h),/Demo Administrator · Admin \(local demo\)/)
+ assert.match(selectedText(h),/Administrator · Admin/)
 })
 
 test('Admin can reopen Closed tickets, preserving messages and previous activity',()=>{
@@ -293,7 +293,7 @@ test('Admin can reopen Closed tickets, preserving messages and previous activity
  assert.match(activity,/Ticket closed/)
  assert.doesNotMatch(activity,/Escalated by Front Office/)
  assert.match(activity,/Created by Sarah Kim/)
- assert.equal((activity.match(/Demo Administrator · Admin \(local demo\)/g)||[]).length,2)
+ assert.equal((activity.match(/Administrator · Admin/g)||[]).length,2)
 })
 
 test('no-op choices do not create activity or change the last-update timestamp',()=>{
@@ -307,7 +307,7 @@ test('no-op choices do not create activity or change the last-update timestamp',
  h.click(n=>n.type==='button'&&n.props['aria-label']==='Change assigned team: Maintenance team')
  assert.match(selectedText(h),/Updated 14m ago/)
  h.click(tabName('Activity'))
- assert.doesNotMatch(selectedText(h),/Demo Administrator · Admin \(local demo\)/)
+ assert.doesNotMatch(selectedText(h),/Administrator · Admin/)
 })
 
 test('status changes update queues but retain the current ticket in the right pane',()=>{
@@ -451,7 +451,7 @@ test('Admin can send a trimmed local reply and sees authentic demo identity and 
  h.click(replyButton)
  assert.equal(conversationMessages(h).length,initial+1)
  const last=conversationMessages(h).at(-1)
- assert.match(h.textOf(last),/Demo Administrator/)
+ assert.match(h.textOf(last),/Administrator/)
  assert.match(h.textOf(last),/Admin/)
  assert.match(h.textOf(last),/Maintenance has been contacted about the room lock\./)
  assert.doesNotMatch(h.textOf(last),/   Maintenance/)
@@ -530,10 +530,10 @@ test('Already Closed sample ticket always opens read-only; other ticket remains 
  assert.equal(h.find(replyInput).props.disabled,false)
 })
 
-test('Example reply attributed to Demo Administrator, not an unlogged Maintenance account',()=>{
+test('Example reply attributed to Administrator, not an unlogged Maintenance account',()=>{
  const h=createHarness('In progress')
  const messages=conversationMessages(h).map(n=>h.textOf(n))
- assert.ok(messages.some(m=>m.includes('Demo Administrator')))
+ assert.ok(messages.some(m=>m.includes('Administrator')))
  assert.ok(messages.every(m=>!m.includes('Maintenance team10m ago')))
 })
 
@@ -578,7 +578,7 @@ test('status, urgency and assignment actions automatically create newest-first a
   assert.ok(node.props.title?.length>0)
   assert.match(h.textOf(node),/\d{1,2}:\d{2} [AP]M/)
  }
- for(const row of entries.slice(0,3))assert.match(h.textOf(row),/Demo Administrator · Admin \(local demo\)/)
+ for(const row of entries.slice(0,3))assert.match(h.textOf(row),/Administrator · Admin/)
 })
 
 test('reopening preserves the original closure event and never fabricates events for other tickets',()=>{
@@ -633,7 +633,7 @@ test('structured Admin event contains immutable before/after, ticket ID, actor, 
  assert.equal(record.next,'Closed')
  assert.equal(record.recordedAt,at.toISOString())
  assert.equal(record.time,'2:39 PM')
- assert.deepEqual(record.actor,{id:'demo-administrator',name:'Demo Administrator',role:'Admin'})
+ assert.deepEqual(record.actor,{id:'demo-administrator',name:'Administrator',role:'Admin'})
  assert.equal(next[0].messages[0].text,'Existing message')
  const noChange=h.updateSupportTicket(next,'test-101',{field:'status',value:'Closed'},new Date('2026-10-29T07:00:00.000Z'))
  assert.strictEqual(noChange[0],next[0])

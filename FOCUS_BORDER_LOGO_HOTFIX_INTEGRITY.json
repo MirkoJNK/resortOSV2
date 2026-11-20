@@ -1,0 +1,2173 @@
+{
+  "modified_or_added": [
+    "src/shell/Sidebar.tsx",
+    "src/shell/WorkspaceTransitionOverlay.tsx",
+    "src/styles/app.css",
+    "public/assets/resortos-brand-balanced.svg"
+  ],
+  "predecessor": "resortOS_LogoQuality_BuildFix_Integrated_Candidate.zip",
+  "release": "FOCUS_BORDER_LOGO_TYPOGRAPHY_HOTFIX",
+  "source_count": 540,
+  "tracked": {
+    ".editorconfig": {
+      "current": "f3b037b140074f4fd0d256e2e21173de06251d1020839fd5ad655d050ca01610",
+      "previous": "f3b037b140074f4fd0d256e2e21173de06251d1020839fd5ad655d050ca01610"
+    },
+    ".gitignore": {
+      "current": "1d195fe3266f1e90f6937582fba27e62e6a145eeee10f3111e4e69d89d6d106f",
+      "previous": "1d195fe3266f1e90f6937582fba27e62e6a145eeee10f3111e4e69d89d6d106f"
+    },
+    ".prettierignore": {
+      "current": "f020883f178d133ff7265a768b2c9041246bcc2d3de6d4cc30a1c1036d1a91c9",
+      "previous": "f020883f178d133ff7265a768b2c9041246bcc2d3de6d4cc30a1c1036d1a91c9"
+    },
+    ".prettierrc.json": {
+      "current": "cbaee7a0626014f653d0c3b481c3f8669826a968a7e5359de1b4b3f5747734da",
+      "previous": "cbaee7a0626014f653d0c3b481c3f8669826a968a7e5359de1b4b3f5747734da"
+    },
+    "ACTIVITY_PRESERVATION_MANIFEST.json": {
+      "current": "973e53a8ed73b48e860fcd1a0e9e315bfb2caccdba28c6d4a53d0b64fe0f089f",
+      "previous": "973e53a8ed73b48e860fcd1a0e9e315bfb2caccdba28c6d4a53d0b64fe0f089f"
+    },
+    "FOUNDATION_LOCK.json": {
+      "current": "1eb3a99c750c49e2f6f68a9b24972c87b47194bacc4f4120eb372d73711e6e4a",
+      "previous": "1eb3a99c750c49e2f6f68a9b24972c87b47194bacc4f4120eb372d73711e6e4a"
+    },
+    "FRONT_DESK_CHANGED_FILES.md": {
+      "current": "c59c4d2444726631c138c4f0c79e5c2418c6bfd30933d7034769928e837b9bc7",
+      "previous": "c59c4d2444726631c138c4f0c79e5c2418c6bfd30933d7034769928e837b9bc7"
+    },
+    "FRONT_DESK_CHARGES_CHANGED_FILES.md": {
+      "current": "ba134732aa8e99072d03a0817ff904527069fd7ad1918be618af8dd12bf4306f",
+      "previous": "ba134732aa8e99072d03a0817ff904527069fd7ad1918be618af8dd12bf4306f"
+    },
+    "FRONT_DESK_CHARGES_CHANGELOG.md": {
+      "current": "ca0b475fad46ab88dcc2c4e85798b47404216e55283ff17159d25423f03aa5f1",
+      "previous": "ca0b475fad46ab88dcc2c4e85798b47404216e55283ff17159d25423f03aa5f1"
+    },
+    "FRONT_DESK_CHARGES_DATA_COMPATIBILITY.md": {
+      "current": "2856c07316cd048ee4c93c56a476334e2d663015ea106a74358d28cab57eb794",
+      "previous": "2856c07316cd048ee4c93c56a476334e2d663015ea106a74358d28cab57eb794"
+    },
+    "FRONT_DESK_CHARGES_INTEGRITY.json": {
+      "current": "e7a0d2da35a4e1c0d11447507c80bd18e94baa4dc4007d351ef9c1e5918c9c5d",
+      "previous": "e7a0d2da35a4e1c0d11447507c80bd18e94baa4dc4007d351ef9c1e5918c9c5d"
+    },
+    "FRONT_DESK_CHARGES_README.md": {
+      "current": "02ae40ca9e1ec8dd5d608aad2ea4940ef6dbe7843b53c63d3dfc12eef637ad5d",
+      "previous": "02ae40ca9e1ec8dd5d608aad2ea4940ef6dbe7843b53c63d3dfc12eef637ad5d"
+    },
+    "FRONT_DESK_CHARGES_SQA_REPORT.md": {
+      "current": "1c5d35255e9f6102472ba49526501ce234a88b944963ed5a461202ddce9730af",
+      "previous": "1c5d35255e9f6102472ba49526501ce234a88b944963ed5a461202ddce9730af"
+    },
+    "FRONT_DESK_CHECKOUT_CHANGED_FILES.md": {
+      "current": "57460e981c8a70b1b735df28ec9fbe8a3d5b634b6acf82f742585fe7ec91a928",
+      "previous": "57460e981c8a70b1b735df28ec9fbe8a3d5b634b6acf82f742585fe7ec91a928"
+    },
+    "FRONT_DESK_CHECKOUT_CHANGELOG.md": {
+      "current": "fdeda3da3a6ebed1d51dd020be2c1ad68c5145d1fa154099b334c35447759401",
+      "previous": "fdeda3da3a6ebed1d51dd020be2c1ad68c5145d1fa154099b334c35447759401"
+    },
+    "FRONT_DESK_CHECKOUT_DATA_COMPATIBILITY.md": {
+      "current": "b8cf76188d70a29d1a372bd5103e9a14010bf533045dd50c128c2e18fd0514f3",
+      "previous": "b8cf76188d70a29d1a372bd5103e9a14010bf533045dd50c128c2e18fd0514f3"
+    },
+    "FRONT_DESK_CHECKOUT_INTEGRITY.json": {
+      "current": "9ba3d4f66659e862ae27d4460a077195ef0e778667695a8ca1bb07fc143d3576",
+      "previous": "9ba3d4f66659e862ae27d4460a077195ef0e778667695a8ca1bb07fc143d3576"
+    },
+    "FRONT_DESK_CHECKOUT_SQA_REPORT.md": {
+      "current": "e0a9cbb0a64188462be4b5873a9733da6520f1ac622f76565b41fe86145eb44d",
+      "previous": "e0a9cbb0a64188462be4b5873a9733da6520f1ac622f76565b41fe86145eb44d"
+    },
+    "FRONT_DESK_CHECKOUT_START_HERE.md": {
+      "current": "1a5aa01ba4fec471ea9f87e8e25519c8c6320586436d4abcbff10abcb920db7f",
+      "previous": "1a5aa01ba4fec471ea9f87e8e25519c8c6320586436d4abcbff10abcb920db7f"
+    },
+    "FRONT_DESK_DASHBOARD_CANDIDATE_INTEGRITY.json": {
+      "current": "96b2c64ba3a1d9316f422dcaafed913060212a1fca32914cef576981d0059097",
+      "previous": "96b2c64ba3a1d9316f422dcaafed913060212a1fca32914cef576981d0059097"
+    },
+    "FRONT_DESK_IMPLEMENTATION_CHANGELOG.md": {
+      "current": "e11fa827ea20c7371da2d0282dd1a92bc951cc1b3d2e2e0622575778c3cec8c6",
+      "previous": "e11fa827ea20c7371da2d0282dd1a92bc951cc1b3d2e2e0622575778c3cec8c6"
+    },
+    "FRONT_DESK_ROOMS_CHANGED_FILES.md": {
+      "current": "2334183446d98c8cd05c6b0aaa791fad5399d745bb2fd59fff71359f6e52a44e",
+      "previous": "2334183446d98c8cd05c6b0aaa791fad5399d745bb2fd59fff71359f6e52a44e"
+    },
+    "FRONT_DESK_ROOMS_CHANGELOG.md": {
+      "current": "66642c3b5a1636de8ccdbfbdd480c63f76289fde30fe98aa54e8768802e5a4ba",
+      "previous": "66642c3b5a1636de8ccdbfbdd480c63f76289fde30fe98aa54e8768802e5a4ba"
+    },
+    "FRONT_DESK_ROOMS_DATA_COMPATIBILITY.md": {
+      "current": "46cb99bca11d3e56f56e999dc2e2b33258c0a30cf878e8002a51a3f95cb172a2",
+      "previous": "46cb99bca11d3e56f56e999dc2e2b33258c0a30cf878e8002a51a3f95cb172a2"
+    },
+    "FRONT_DESK_ROOMS_INTEGRITY.json": {
+      "current": "7fb057b9ab5367d64bb8456117e6ccc10d1c7612dae69adee4fb3fbe66150fe2",
+      "previous": "7fb057b9ab5367d64bb8456117e6ccc10d1c7612dae69adee4fb3fbe66150fe2"
+    },
+    "FRONT_DESK_ROOMS_SQA_REPORT.md": {
+      "current": "324d2c36a34bc84ace82f822a016884cefae14cb22be4b1533609d524cdb726b",
+      "previous": "324d2c36a34bc84ace82f822a016884cefae14cb22be4b1533609d524cdb726b"
+    },
+    "FRONT_DESK_ROOMS_START_HERE.md": {
+      "current": "405e3ae1cc1be713a39aa0e895aa4dec4ce7860fbc1d09c4044e9a2532793a40",
+      "previous": "405e3ae1cc1be713a39aa0e895aa4dec4ce7860fbc1d09c4044e9a2532793a40"
+    },
+    "FRONT_DESK_SQA_REPORT.md": {
+      "current": "bd8f7c0a5e48ca62d3f39acd40a92d6683899585af7f8c7e957f40336284a50a",
+      "previous": "bd8f7c0a5e48ca62d3f39acd40a92d6683899585af7f8c7e957f40336284a50a"
+    },
+    "FRONT_DESK_START_HERE.md": {
+      "current": "e18a29d349953a100124c05521a788aeda32436cbc236dfb59ba840fe39d7e2e",
+      "previous": "e18a29d349953a100124c05521a788aeda32436cbc236dfb59ba840fe39d7e2e"
+    },
+    "GLOBAL_UI_HOTFIX_APPROVED.json": {
+      "current": "3b65a4fb1aeedea1328bf9440894ac1b6686c44381a0ba2edd008adee11e9cd5",
+      "previous": "3b65a4fb1aeedea1328bf9440894ac1b6686c44381a0ba2edd008adee11e9cd5"
+    },
+    "GLOBAL_UI_HOTFIX_CHANGELOG.md": {
+      "current": "f155dfba58eb904973a1922517b4d937200422a8a0298e97fb92f2874cfd427f",
+      "previous": "f155dfba58eb904973a1922517b4d937200422a8a0298e97fb92f2874cfd427f"
+    },
+    "GLOBAL_UI_HOTFIX_RELEASE_READINESS.md": {
+      "current": "be7d86cafaec52d5e5574ab1d9d9ac61a8b5abc82a47bda050032451ac08bb18",
+      "previous": "be7d86cafaec52d5e5574ab1d9d9ac61a8b5abc82a47bda050032451ac08bb18"
+    },
+    "GLOBAL_UI_HOTFIX_SOURCE_DIFF.json": {
+      "current": "fddcce16b29f7ee35872db003faa6ca1b723adb5b993dbc0021ae73b3bb4e2ad",
+      "previous": "fddcce16b29f7ee35872db003faa6ca1b723adb5b993dbc0021ae73b3bb4e2ad"
+    },
+    "GLOBAL_UI_HOTFIX_SQA_REPORT.md": {
+      "current": "f6eab05a97aab865870f50565ba413ab879944025018f4f75212b818dc127d04",
+      "previous": "f6eab05a97aab865870f50565ba413ab879944025018f4f75212b818dc127d04"
+    },
+    "GLOBAL_UI_HOTFIX_VISUAL_COMPARISON.md": {
+      "current": "aae109e8c73f31c885f3194d461d1c75711d6eaa0dfb2c88139a9f157b8ef347",
+      "previous": "aae109e8c73f31c885f3194d461d1c75711d6eaa0dfb2c88139a9f157b8ef347"
+    },
+    "LOGO_QUALITY_BUILD_FIX_CHANGED_FILES.md": {
+      "current": "77e66d60e16cf700aa1b664dce047cc45991e7afea075c586c6303e906090794",
+      "previous": "77e66d60e16cf700aa1b664dce047cc45991e7afea075c586c6303e906090794"
+    },
+    "LOGO_QUALITY_BUILD_FIX_CHANGELOG.md": {
+      "current": "8ea7adc539ac6d00108d18ddc46f064888197f6eb494c20bb21f7eeb59af7b48",
+      "previous": "8ea7adc539ac6d00108d18ddc46f064888197f6eb494c20bb21f7eeb59af7b48"
+    },
+    "LOGO_QUALITY_BUILD_FIX_INTEGRITY.json": {
+      "current": "6537be3df8c1e33ea4754208907d541d0376940e807d9ac02a7223ba8ad79496",
+      "previous": "6537be3df8c1e33ea4754208907d541d0376940e807d9ac02a7223ba8ad79496"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/brand-before-after.png": {
+      "current": "c6d751d4bae5c7199a568c41f8c07344ec55e725e6ec952a10fe81b9ab329f12",
+      "previous": "c6d751d4bae5c7199a568c41f8c07344ec55e725e6ec952a10fe81b9ab329f12"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/build.log": {
+      "current": "c5f06e02e4dc7c9c9363c04a2427dc7fdec316f2e51ea3ee6e57e94f3cb09581",
+      "previous": "c5f06e02e4dc7c9c9363c04a2427dc7fdec316f2e51ea3ee6e57e94f3cb09581"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/format-typescript-check.log": {
+      "current": "c866d23f662ab9befa272a2fa48a3f49d255c1a743c7da65b1cbfcac3a70ab28",
+      "previous": "c866d23f662ab9befa272a2fa48a3f49d255c1a743c7da65b1cbfcac3a70ab28"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/full-test-predecessor.log": {
+      "current": "fe5469b89e15c05fcd3dc5578d3cfa9538ca53ceba4341f7151b3f2670f902ed",
+      "previous": "fe5469b89e15c05fcd3dc5578d3cfa9538ca53ceba4341f7151b3f2670f902ed"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/full-test-updated.log": {
+      "current": "01c781b5bc2abdea25cdcaa748788eb7597894c010b634c1013c24d4a6347f9c",
+      "previous": "01c781b5bc2abdea25cdcaa748788eb7597894c010b634c1013c24d4a6347f9c"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/isolated-aria-hidden-typecheck.ts": {
+      "current": "f1cf5f376db559e2b5282e6e6ddee787791cfc2899e2c5086b87a56a8bf581de",
+      "previous": "f1cf5f376db559e2b5282e6e6ddee787791cfc2899e2c5086b87a56a8bf581de"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/lint.log": {
+      "current": "ba8ace411ab0622596e6692f8be9da90a65008057f6ff662d1c97ace7cb10410",
+      "previous": "ba8ace411ab0622596e6692f8be9da90a65008057f6ff662d1c97ace7cb10410"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/loader-desktop-1440.png": {
+      "current": "512ea7382ba8b5d681e101a8d2b3c0cda81e3e625208093ae58ce85ef70652ff",
+      "previous": "512ea7382ba8b5d681e101a8d2b3c0cda81e3e625208093ae58ce85ef70652ff"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/loader-desktop-1858.png": {
+      "current": "fbc1e165721d4ad8d6b4ab8ae158d4a1ddbc452dd8d793baa2ba763dcbc488d7",
+      "previous": "fbc1e165721d4ad8d6b4ab8ae158d4a1ddbc452dd8d793baa2ba763dcbc488d7"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/loader-mobile-390.png": {
+      "current": "3df627d246d955c9821fb2a99ca8e12ccb0edee7535ddbddb5c611163bf2c7fb",
+      "previous": "3df627d246d955c9821fb2a99ca8e12ccb0edee7535ddbddb5c611163bf2c7fb"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/loader-tablet-1024.png": {
+      "current": "717c4ae34d211d3c7f2b7dc15e85a46d5eebb448214f8be215f331e29dc1d826",
+      "previous": "717c4ae34d211d3c7f2b7dc15e85a46d5eebb448214f8be215f331e29dc1d826"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/npm-dependencies.log": {
+      "current": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "previous": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/sidebar-display-size-preview.png": {
+      "current": "6f71eec34333b6ffc7a4cc394e68657279dfd2316b2e3caedb7ca1ef19eddca9",
+      "previous": "6f71eec34333b6ffc7a4cc394e68657279dfd2316b2e3caedb7ca1ef19eddca9"
+    },
+    "LOGO_QUALITY_BUILD_FIX_QA_EVIDENCE/typecheck.log": {
+      "current": "ef0f23ae3f0e16f299195578fe7260ed55f3b221dcfeef724a9235dc825a34b0",
+      "previous": "ef0f23ae3f0e16f299195578fe7260ed55f3b221dcfeef724a9235dc825a34b0"
+    },
+    "LOGO_QUALITY_BUILD_FIX_SQA_REPORT.md": {
+      "current": "2ee97b974530c4476c57db68ebc146c8c188cc67c75b2acef3a18074d3f51770",
+      "previous": "2ee97b974530c4476c57db68ebc146c8c188cc67c75b2acef3a18074d3f51770"
+    },
+    "LOGO_QUALITY_BUILD_FIX_START_HERE.md": {
+      "current": "4465cbb0f7db76ed3b000ed287b942892780a187c790fb8830c85c96b3b61913",
+      "previous": "4465cbb0f7db76ed3b000ed287b942892780a187c790fb8830c85c96b3b61913"
+    },
+    "MENU_CATEGORIES_APPROVED.json": {
+      "current": "1d51a61e21e61c47f77f6d242c4f53e224d89b9804cba9e1c68ba4daa55f10ec",
+      "previous": "1d51a61e21e61c47f77f6d242c4f53e224d89b9804cba9e1c68ba4daa55f10ec"
+    },
+    "MENU_CATEGORIES_CHANGELOG.md": {
+      "current": "e462156aba5437e74c5e454270ee480e9b1fbf6c7448a9390926ddb0900d3e8a",
+      "previous": "e462156aba5437e74c5e454270ee480e9b1fbf6c7448a9390926ddb0900d3e8a"
+    },
+    "MENU_CATEGORIES_RELEASE_READINESS.md": {
+      "current": "d5a16a2abcba820efcbc4a2b784c1a8a8d830194791657cca521d573866a72f7",
+      "previous": "d5a16a2abcba820efcbc4a2b784c1a8a8d830194791657cca521d573866a72f7"
+    },
+    "MENU_CATEGORIES_SOURCE_DIFF.json": {
+      "current": "7724f4e9c23a2528bcf16af3205299ec8430b0e777428ce87b55e1e12c1e518d",
+      "previous": "7724f4e9c23a2528bcf16af3205299ec8430b0e777428ce87b55e1e12c1e518d"
+    },
+    "MENU_CATEGORIES_SQA_REPORT.md": {
+      "current": "ba724d9fa53954e2d419e1370b5b848ebe7711a55fa716b6ec99dedf8a5c1b15",
+      "previous": "ba724d9fa53954e2d419e1370b5b848ebe7711a55fa716b6ec99dedf8a5c1b15"
+    },
+    "MENU_CATEGORIES_START_HERE.md": {
+      "current": "f12cbcdaaa136476937fd5830b72d25d74bdf072fb512c3d1b2d375467fb579e",
+      "previous": "f12cbcdaaa136476937fd5830b72d25d74bdf072fb512c3d1b2d375467fb579e"
+    },
+    "MENU_CATEGORIES_VISUAL_CONSISTENCY.md": {
+      "current": "37c56b0f734dc8edd44485fe6ab19bf03c74f86a8a88abe1b48506c295e30ef4",
+      "previous": "37c56b0f734dc8edd44485fe6ab19bf03c74f86a8a88abe1b48506c295e30ef4"
+    },
+    "MENU_MANAGEMENT_CANDIDATE_INTEGRITY.json": {
+      "current": "a5ac7b0b1268bf197ef1f93c081a7b7d945afcd730875d881d1038efe5a6abb8",
+      "previous": "a5ac7b0b1268bf197ef1f93c081a7b7d945afcd730875d881d1038efe5a6abb8"
+    },
+    "MENU_MANAGEMENT_CHANGED_FILES.md": {
+      "current": "fe7c17b91a11c65852c6ccc0ffd575fbc3cfecf7465105423eb0466d733a7438",
+      "previous": "fe7c17b91a11c65852c6ccc0ffd575fbc3cfecf7465105423eb0466d733a7438"
+    },
+    "MENU_MANAGEMENT_CHANGELOG.md": {
+      "current": "f7d460bdec9b9648baaa1ecb0f3a068f773e0c45502b214e57534abe46e8bb1f",
+      "previous": "f7d460bdec9b9648baaa1ecb0f3a068f773e0c45502b214e57534abe46e8bb1f"
+    },
+    "MENU_MANAGEMENT_SQA_REPORT.md": {
+      "current": "71ccebf1270fda52394420901d1b7c7fb5ce8ecd4339635af6c307fe5eea0ebd",
+      "previous": "71ccebf1270fda52394420901d1b7c7fb5ce8ecd4339635af6c307fe5eea0ebd"
+    },
+    "MENU_MANAGEMENT_START_HERE.md": {
+      "current": "6ce8c9a7751908ddb28aa7f5ec7c8396d49acc93217b44b01bcc09f9ecab3a47",
+      "previous": "6ce8c9a7751908ddb28aa7f5ec7c8396d49acc93217b44b01bcc09f9ecab3a47"
+    },
+    "MULTI_FEATURE_CHANGED_FILES.md": {
+      "current": "fa7b49451737beeba70bf63f000d9a38ce58fbec5e1060df7945c6a3b8adf970",
+      "previous": "fa7b49451737beeba70bf63f000d9a38ce58fbec5e1060df7945c6a3b8adf970"
+    },
+    "MULTI_FEATURE_CHANGELOG.md": {
+      "current": "76840d451edb5dd59752aba7e9519ac1d8824778befc47a1c14f78a661d3eb29",
+      "previous": "76840d451edb5dd59752aba7e9519ac1d8824778befc47a1c14f78a661d3eb29"
+    },
+    "MULTI_FEATURE_DATA_COMPATIBILITY.md": {
+      "current": "6b79faa73bdc0b092b9961386d5c09b48b9bf639e77a90ef2b369f52b082b631",
+      "previous": "6b79faa73bdc0b092b9961386d5c09b48b9bf639e77a90ef2b369f52b082b631"
+    },
+    "MULTI_FEATURE_REFINEMENTS_INTEGRITY.json": {
+      "current": "c578fe636c7685dc99eff6cfb90b82b618c2dccb35a28856efb69fbb2f461ee8",
+      "previous": "c578fe636c7685dc99eff6cfb90b82b618c2dccb35a28856efb69fbb2f461ee8"
+    },
+    "MULTI_FEATURE_SQA_REPORT.md": {
+      "current": "941f944791be6807628ce40a4e506c598f4be467bbd4510bb92ffcd907eac82c",
+      "previous": "941f944791be6807628ce40a4e506c598f4be467bbd4510bb92ffcd907eac82c"
+    },
+    "MULTI_FEATURE_START_HERE.md": {
+      "current": "5d6e839e12a28b8f0024ec9f3aed56443fbd8419d3a6c27cec699dbe56fc1da3",
+      "previous": "5d6e839e12a28b8f0024ec9f3aed56443fbd8419d3a6c27cec699dbe56fc1da3"
+    },
+    "PAYMENT_METHODS_CHANGED_FILES.md": {
+      "current": "ceacd841ce573d134b713078988001bfbb04c4d271a987e55e1e704df357b520",
+      "previous": "ceacd841ce573d134b713078988001bfbb04c4d271a987e55e1e704df357b520"
+    },
+    "PAYMENT_METHODS_CHANGELOG.md": {
+      "current": "ab09ec69e82c7501c086a50a0319f2a66cd2000f4a34b60a05a371e29fad134f",
+      "previous": "ab09ec69e82c7501c086a50a0319f2a66cd2000f4a34b60a05a371e29fad134f"
+    },
+    "PAYMENT_METHODS_COMPATIBILITY.md": {
+      "current": "07e21ca44e3a195510e83ddfc2a26c64e68c1760f70381e72bf75ba567103b09",
+      "previous": "07e21ca44e3a195510e83ddfc2a26c64e68c1760f70381e72bf75ba567103b09"
+    },
+    "PAYMENT_METHODS_INTEGRITY.json": {
+      "current": "50ffea57806339d2cb08c984e10fbdac74b7bf2bdb01625577d5964e5c411e4b",
+      "previous": "50ffea57806339d2cb08c984e10fbdac74b7bf2bdb01625577d5964e5c411e4b"
+    },
+    "PAYMENT_METHODS_SQA_REPORT.md": {
+      "current": "4b57b9c6ca10a33f6a815b4b3d675fc02a1dda4f271ac4ce10b30cedf5655b23",
+      "previous": "4b57b9c6ca10a33f6a815b4b3d675fc02a1dda4f271ac4ce10b30cedf5655b23"
+    },
+    "PAYMENT_METHODS_START_HERE.md": {
+      "current": "2ddb7ae44d7a4144da956e21ac038900958a4ace3fe2b75481afd0dcae90825a",
+      "previous": "2ddb7ae44d7a4144da956e21ac038900958a4ace3fe2b75481afd0dcae90825a"
+    },
+    "PREMIUM_ANTI_SLOP_AUDIT.md": {
+      "current": "fe845a64bf1d870d12702d36db6eda2debccddfebe7d1252569d32a6e89fb4c4",
+      "previous": "fe845a64bf1d870d12702d36db6eda2debccddfebe7d1252569d32a6e89fb4c4"
+    },
+    "PREMIUM_DASHBOARD_DATA_REPORT.md": {
+      "current": "4fd99f22849e8a2b76905b0b83aa508bdff61e61bf4097f39bad7567cd3cf995",
+      "previous": "4fd99f22849e8a2b76905b0b83aa508bdff61e61bf4097f39bad7567cd3cf995"
+    },
+    "PREMIUM_EXPERIENCE_CHANGELOG.md": {
+      "current": "d84de5ff9ba2ec6936083fe64952a9720a2e5b75e24995bf5017e15963b8470c",
+      "previous": "d84de5ff9ba2ec6936083fe64952a9720a2e5b75e24995bf5017e15963b8470c"
+    },
+    "PREMIUM_EXPERIENCE_INTEGRITY.json": {
+      "current": "20b8809b385f21858e7f239b767563a33d5fd3059333bb24ad875a4c5126dadb",
+      "previous": "20b8809b385f21858e7f239b767563a33d5fd3059333bb24ad875a4c5126dadb"
+    },
+    "PREMIUM_EXPERIENCE_SQA_REPORT.md": {
+      "current": "13cb2d89cf4013d6c29a4802f86a8a2be184b60930c41fd2bba77588e5df4ebd",
+      "previous": "13cb2d89cf4013d6c29a4802f86a8a2be184b60930c41fd2bba77588e5df4ebd"
+    },
+    "PREMIUM_INTERACTION_SPEC.md": {
+      "current": "4ee7ac2bf8e9dfd1f7520d5c703275b79bffb3ecbe12af9816e8d66670ecb691",
+      "previous": "4ee7ac2bf8e9dfd1f7520d5c703275b79bffb3ecbe12af9816e8d66670ecb691"
+    },
+    "PREMIUM_PERFORMANCE_REPORT.md": {
+      "current": "e62b2e04957233c20a9eab40090941c6a745c26ebbef6d0dd2b3b78c9f764f78",
+      "previous": "e62b2e04957233c20a9eab40090941c6a745c26ebbef6d0dd2b3b78c9f764f78"
+    },
+    "QA_EVIDENCE/READ_ME_FIRST.txt": {
+      "current": "098986a40fe88f346e2f6d8878b40d907046e88dd69c507897923b5365cfa844",
+      "previous": "098986a40fe88f346e2f6d8878b40d907046e88dd69c507897923b5365cfa844"
+    },
+    "QA_EVIDENCE/css-dialog-desktop-fixture.png": {
+      "current": "83633d2abc13f08396e71c293e6fd6cfc8fcb6a7ce1ae5a6eab85a25013bead8",
+      "previous": "83633d2abc13f08396e71c293e6fd6cfc8fcb6a7ce1ae5a6eab85a25013bead8"
+    },
+    "QA_EVIDENCE/css-dialog-mobile-fixture.png": {
+      "current": "3b5a9ac7fbbd737773c01bf4a0954de1776c6d11513d009aa0f56828f485038e",
+      "previous": "3b5a9ac7fbbd737773c01bf4a0954de1776c6d11513d009aa0f56828f485038e"
+    },
+    "README.md": {
+      "current": "df000b19d862bbc170d9ce0afa7c706d1d0c4a048745f1723bb7b3d436d8fc73",
+      "previous": "df000b19d862bbc170d9ce0afa7c706d1d0c4a048745f1723bb7b3d436d8fc73"
+    },
+    "README_RESTAURANT_STAGE1.md": {
+      "current": "707516676f592dd3abfd16ef647584040ed7fa93092b3d8b44566ef57ed7b3f8",
+      "previous": "707516676f592dd3abfd16ef647584040ed7fa93092b3d8b44566ef57ed7b3f8"
+    },
+    "REGRESSION_RECOVERY_CHANGED_FILES.md": {
+      "current": "75a32587bca688cf035949a6cbe41cb6ea28804747f28e098394755c1c16ba4b",
+      "previous": "75a32587bca688cf035949a6cbe41cb6ea28804747f28e098394755c1c16ba4b"
+    },
+    "REGRESSION_RECOVERY_CHANGELOG.md": {
+      "current": "091a0f694551da9d34d101df2190d672ce6e472f1ceb106ce9fad1261ce8ca48",
+      "previous": "091a0f694551da9d34d101df2190d672ce6e472f1ceb106ce9fad1261ce8ca48"
+    },
+    "REGRESSION_RECOVERY_INTEGRITY.json": {
+      "current": "21343b6475dfc438c86437e9f70d49de7bfbdad54cd157ff04b609b32f144423",
+      "previous": "21343b6475dfc438c86437e9f70d49de7bfbdad54cd157ff04b609b32f144423"
+    },
+    "REGRESSION_RECOVERY_LEGACY_FAILURES.md": {
+      "current": "f3f96d34172c466d3a7217678eb4e51f392a8a1f28618e876e9ee5cb68ba4f11",
+      "previous": "f3f96d34172c466d3a7217678eb4e51f392a8a1f28618e876e9ee5cb68ba4f11"
+    },
+    "REGRESSION_RECOVERY_MENU.md": {
+      "current": "65e5838de12896795207041d2d53837b838c1ce27c02c2d22620c970a9ee528b",
+      "previous": "65e5838de12896795207041d2d53837b838c1ce27c02c2d22620c970a9ee528b"
+    },
+    "REGRESSION_RECOVERY_MOTION.md": {
+      "current": "495495420308ff80ba1209f9d8c781cc8370874b289207ddac50d8a7ef8ffc1a",
+      "previous": "495495420308ff80ba1209f9d8c781cc8370874b289207ddac50d8a7ef8ffc1a"
+    },
+    "REGRESSION_RECOVERY_SQA.md": {
+      "current": "69311ad7bb4c4fefcad9b85857492c64b6d491aaa9e7059a062dc78d601bbaae",
+      "previous": "69311ad7bb4c4fefcad9b85857492c64b6d491aaa9e7059a062dc78d601bbaae"
+    },
+    "REGRESSION_RECOVERY_START_HERE.md": {
+      "current": "ba0ecb7ce77cb107bde3a001218e319c09b3358cbf233a10d0ffa8526e38e857",
+      "previous": "ba0ecb7ce77cb107bde3a001218e319c09b3358cbf233a10d0ffa8526e38e857"
+    },
+    "RESTAURANT_ORDERS_CHANGED_FILES.md": {
+      "current": "c5b8e1000919fafb171f27481d4ecbb34a423fae970860a190b3bf7c737f39c6",
+      "previous": "c5b8e1000919fafb171f27481d4ecbb34a423fae970860a190b3bf7c737f39c6"
+    },
+    "RESTAURANT_ORDERS_CHANGELOG.md": {
+      "current": "955861b617c929d4894368e7fef68f78aac4c6a6cd5d71428ce97f04e66284d9",
+      "previous": "955861b617c929d4894368e7fef68f78aac4c6a6cd5d71428ce97f04e66284d9"
+    },
+    "RESTAURANT_ORDERS_INTEGRATION_INTEGRITY.json": {
+      "current": "3733f8cfc2c783e12d8f5d300dbb99024d6d7b237a8c9c3d3a144a6a3c039072",
+      "previous": "3733f8cfc2c783e12d8f5d300dbb99024d6d7b237a8c9c3d3a144a6a3c039072"
+    },
+    "RESTAURANT_ORDERS_LIMITATIONS.md": {
+      "current": "f2bec6e0179c1df928910c9fe5b43c074d6f46044a8256a3aeddeb41e887f4a1",
+      "previous": "f2bec6e0179c1df928910c9fe5b43c074d6f46044a8256a3aeddeb41e887f4a1"
+    },
+    "RESTAURANT_ORDERS_SQA_REPORT.md": {
+      "current": "fdec95aab195a3b1cbcbb37400aa66314f7ddc85db8db9614d4dd0dd3eb2d1bc",
+      "previous": "fdec95aab195a3b1cbcbb37400aa66314f7ddc85db8db9614d4dd0dd3eb2d1bc"
+    },
+    "RESTAURANT_ORDERS_START_HERE.md": {
+      "current": "c1695c36721e5cf5db61ff0c4684c4e73e61c24ff1635cbe647c0cfedb4824a9",
+      "previous": "c1695c36721e5cf5db61ff0c4684c4e73e61c24ff1635cbe647c0cfedb4824a9"
+    },
+    "RESTAURANT_ORDERS_STYLING_HOTFIX_CHANGED_FILES.md": {
+      "current": "f91c33822c25786d586ee0bc29c26e1814d83369c32ce49ef60351d33cea437d",
+      "previous": "f91c33822c25786d586ee0bc29c26e1814d83369c32ce49ef60351d33cea437d"
+    },
+    "RESTAURANT_ORDERS_STYLING_HOTFIX_CHANGELOG.md": {
+      "current": "b2d5fd164cc236df8e3f8a3b34a0eb8fc0f35b56a737be38cd225c7c973d3f64",
+      "previous": "b2d5fd164cc236df8e3f8a3b34a0eb8fc0f35b56a737be38cd225c7c973d3f64"
+    },
+    "RESTAURANT_ORDERS_STYLING_HOTFIX_INTEGRITY.json": {
+      "current": "6d16a7e89707ce5104d139d28d345c69220f538dfbc3c1ac4bf334a4be19c2d8",
+      "previous": "6d16a7e89707ce5104d139d28d345c69220f538dfbc3c1ac4bf334a4be19c2d8"
+    },
+    "RESTAURANT_ORDERS_STYLING_HOTFIX_SQA_REPORT.md": {
+      "current": "4d73e479bedf9fae4aa154201001117d95e1cc68ab2e5bd19e8f5a31daa3b9c0",
+      "previous": "4d73e479bedf9fae4aa154201001117d95e1cc68ab2e5bd19e8f5a31daa3b9c0"
+    },
+    "RESTAURANT_ORDERS_STYLING_HOTFIX_START_HERE.md": {
+      "current": "540c93abd29d093151357d3b60667d94ef8fc63e55ef155e11e5fb92a2b9a33b",
+      "previous": "540c93abd29d093151357d3b60667d94ef8fc63e55ef155e11e5fb92a2b9a33b"
+    },
+    "RESTAURANT_STAGE1_APPROVED.json": {
+      "current": "76c75c201070bfac7f48b7746db0ad18c22f6c1d4d6109963b36e4ca0a62edeb",
+      "previous": "76c75c201070bfac7f48b7746db0ad18c22f6c1d4d6109963b36e4ca0a62edeb"
+    },
+    "RESTAURANT_STAGE1_BASELINE_HASHES.json": {
+      "current": "49aa6eae02905909efe1f736c037f7ae2d699106639c86b1ea7d8c73af1e64fb",
+      "previous": "49aa6eae02905909efe1f736c037f7ae2d699106639c86b1ea7d8c73af1e64fb"
+    },
+    "RESTAURANT_STAGE1_CHANGELOG.md": {
+      "current": "fe7671a015b9196148ffdfdf0182462a29d3c573894fea2bd20d7526ec90f2d3",
+      "previous": "fe7671a015b9196148ffdfdf0182462a29d3c573894fea2bd20d7526ec90f2d3"
+    },
+    "RESTAURANT_STAGE1_RELEASE_READINESS.md": {
+      "current": "d4c4a6d0ad2d3a5676078b49be9d96489817fe15e15517f2fccf23bb87b8de05",
+      "previous": "d4c4a6d0ad2d3a5676078b49be9d96489817fe15e15517f2fccf23bb87b8de05"
+    },
+    "RESTAURANT_STAGE1_SOURCE_DIFF.json": {
+      "current": "b3a1b75dfd6f354aa7bde24d014a0d1358911fb9e378982b7cdd7270bb3414c1",
+      "previous": "b3a1b75dfd6f354aa7bde24d014a0d1358911fb9e378982b7cdd7270bb3414c1"
+    },
+    "RESTAURANT_STAGE1_SQA_REPORT.md": {
+      "current": "09b7881c901717bff1e77fe16beace8f1f39ea02d53c85194ceb58ad1dc44d11",
+      "previous": "09b7881c901717bff1e77fe16beace8f1f39ea02d53c85194ceb58ad1dc44d11"
+    },
+    "RESTAURANT_STAGE1_VISUAL_COMPARISON.md": {
+      "current": "dfafb4e7455dc397cf3979791057587e7ac660afd798489e093c74e651be4c5e",
+      "previous": "dfafb4e7455dc397cf3979791057587e7ac660afd798489e093c74e651be4c5e"
+    },
+    "RESTAURANT_TABLES_CHANGED_FILES.md": {
+      "current": "e94390e55af64c2d65fb5b6a4efbbc430ef5d8cd45e30f944dc75a6c2b813c90",
+      "previous": "e94390e55af64c2d65fb5b6a4efbbc430ef5d8cd45e30f944dc75a6c2b813c90"
+    },
+    "RESTAURANT_TABLES_CHANGELOG.md": {
+      "current": "5ecccd8e73700100102cbe78f1966c11e6ef15d7012db97b64156dbf22402758",
+      "previous": "5ecccd8e73700100102cbe78f1966c11e6ef15d7012db97b64156dbf22402758"
+    },
+    "RESTAURANT_TABLES_KNOWN_LIMITATIONS.md": {
+      "current": "3b553b3238a7e5596c110501d158a425727edc7198e603f5506912933de3cf22",
+      "previous": "3b553b3238a7e5596c110501d158a425727edc7198e603f5506912933de3cf22"
+    },
+    "RESTAURANT_TABLES_PRODUCTION_INTEGRITY.json": {
+      "current": "267e29a7693b7fbbf5c52c9c34b38a44539dddfa476503402a1691ec2f651b94",
+      "previous": "267e29a7693b7fbbf5c52c9c34b38a44539dddfa476503402a1691ec2f651b94"
+    },
+    "RESTAURANT_TABLES_SQA_REPORT.md": {
+      "current": "55696f700dd79250b1f61f03e71963927e18bf2d0ca25daebf5fff3f185bda3b",
+      "previous": "55696f700dd79250b1f61f03e71963927e18bf2d0ca25daebf5fff3f185bda3b"
+    },
+    "RESTAURANT_TABLES_START_HERE.md": {
+      "current": "b3697cea8eae17094a03aa967cf8a82e65c9bbcf6cec63d7b718dd2d77eedb2e",
+      "previous": "b3697cea8eae17094a03aa967cf8a82e65c9bbcf6cec63d7b718dd2d77eedb2e"
+    },
+    "RESTAURANT_TABLES_UI_HOTFIX_CHANGELOG.md": {
+      "current": "fbd9b9f9f031a2baa5ae84ab0635c5f944c107048ea5ca2f325e3f0831fe83b1",
+      "previous": "fbd9b9f9f031a2baa5ae84ab0635c5f944c107048ea5ca2f325e3f0831fe83b1"
+    },
+    "RESTAURANT_TABLES_UI_HOTFIX_INTEGRITY.json": {
+      "current": "155ed08fa4eb45b5517af8023c3364fbbb058fbf11ab51748f2819e4ca63f401",
+      "previous": "155ed08fa4eb45b5517af8023c3364fbbb058fbf11ab51748f2819e4ca63f401"
+    },
+    "RESTAURANT_TABLES_UI_HOTFIX_SQA.md": {
+      "current": "179ea3b54aa8deafcdc487605bd21a7bf7785ef084bc5601da07d507c5a80329",
+      "previous": "179ea3b54aa8deafcdc487605bd21a7bf7785ef084bc5601da07d507c5a80329"
+    },
+    "ROOMS_MANAGER_APPROVED.json": {
+      "current": "28988d5182f8106d0824b8c7cf253877d1ffc77d3ce8328076fe77572f04f351",
+      "previous": "28988d5182f8106d0824b8c7cf253877d1ffc77d3ce8328076fe77572f04f351"
+    },
+    "ROOMS_MANAGER_CHANGELOG.md": {
+      "current": "1aa8491da491ed4264112c83b17e2d3215c84ec3ef0659cc8ec7d3e1c3d8d057",
+      "previous": "1aa8491da491ed4264112c83b17e2d3215c84ec3ef0659cc8ec7d3e1c3d8d057"
+    },
+    "ROOMS_MANAGER_SOURCE_DIFF.json": {
+      "current": "629289a72185a5072e9d542ffc47b17e8b02c05bd378a0512ca748bd99c0ee33",
+      "previous": "629289a72185a5072e9d542ffc47b17e8b02c05bd378a0512ca748bd99c0ee33"
+    },
+    "ROOMS_MANAGER_SQA_REPORT.md": {
+      "current": "6a832433f49d97a50438b2b1505fc62b80e6449d30e2ad3823c45fcc317d80c4",
+      "previous": "6a832433f49d97a50438b2b1505fc62b80e6449d30e2ad3823c45fcc317d80c4"
+    },
+    "ROOMS_MANAGER_START_HERE.md": {
+      "current": "7182a7c4ad31a5e8a08b0b0c0964b7affd458261c92c95837b187d617f63bd79",
+      "previous": "7182a7c4ad31a5e8a08b0b0c0964b7affd458261c92c95837b187d617f63bd79"
+    },
+    "ROOMS_MANAGER_VISUAL_COMPARISON.md": {
+      "current": "3663c649099b4817c64f2c97bac7de457dbf8430ee2d97bf7450f1df899f0eb4",
+      "previous": "3663c649099b4817c64f2c97bac7de457dbf8430ee2d97bf7450f1df899f0eb4"
+    },
+    "RUN_RESORTOS_WINDOWS.bat": {
+      "current": "3bd49008c4f7d45b4cadec1ca012f324d7febdc0e981931a1ff9d504fb910027",
+      "previous": "3bd49008c4f7d45b4cadec1ca012f324d7febdc0e981931a1ff9d504fb910027"
+    },
+    "SERVICE_CATALOG_APPROVED.json": {
+      "current": "0f4e85df09a8532a2a65799e72112cfa54354e4ad1d10be705dfc17d0751ff80",
+      "previous": "0f4e85df09a8532a2a65799e72112cfa54354e4ad1d10be705dfc17d0751ff80"
+    },
+    "SERVICE_CATALOG_CHANGELOG.md": {
+      "current": "8c66c7109e963939868b21417cee3af08ed7fe272044f539c58e4ce67e9a8850",
+      "previous": "8c66c7109e963939868b21417cee3af08ed7fe272044f539c58e4ce67e9a8850"
+    },
+    "SERVICE_CATALOG_SOURCE_DIFF.json": {
+      "current": "ba76351181f130b622b9aeee2de2ee2bb589e286e4e388f60f5021a34fdf20e7",
+      "previous": "ba76351181f130b622b9aeee2de2ee2bb589e286e4e388f60f5021a34fdf20e7"
+    },
+    "SERVICE_CATALOG_SQA_REPORT.md": {
+      "current": "78e0395be7702d704c29491a8f9f4684f8d6cb3ba907c67c30496b457b537574",
+      "previous": "78e0395be7702d704c29491a8f9f4684f8d6cb3ba907c67c30496b457b537574"
+    },
+    "SERVICE_CATALOG_START_HERE.md": {
+      "current": "ff7f11e9316f8425a97317aade964b3b86863646c991bddf15c69d50c9831bbd",
+      "previous": "ff7f11e9316f8425a97317aade964b3b86863646c991bddf15c69d50c9831bbd"
+    },
+    "SERVICE_CATALOG_VISUAL_COMPARISON.md": {
+      "current": "9d3729f4ab4841d73b53071a29ef2107dc33af75443ff215e3c7e26bf17bcd75",
+      "previous": "9d3729f4ab4841d73b53071a29ef2107dc33af75443ff215e3c7e26bf17bcd75"
+    },
+    "STAGE2_CHANGELOG.md": {
+      "current": "3a0055ec8ecb8485e27dd3f5e8ad07e316f7eeb82163d6f02972ea56f63409b8",
+      "previous": "3a0055ec8ecb8485e27dd3f5e8ad07e316f7eeb82163d6f02972ea56f63409b8"
+    },
+    "STAGE2_SOURCE_DIFF.json": {
+      "current": "d182a2eb616d5c0e2436cf32a10c68ed52311deadb7c6d0e6f9f0acf3e32b765",
+      "previous": "d182a2eb616d5c0e2436cf32a10c68ed52311deadb7c6d0e6f9f0acf3e32b765"
+    },
+    "STAGE2_SQA_REPORT.md": {
+      "current": "77e64459c1d100f33109fa1ee73f1e55712ba817355488cacc22ebed0cba59c0",
+      "previous": "77e64459c1d100f33109fa1ee73f1e55712ba817355488cacc22ebed0cba59c0"
+    },
+    "STAGE2_START_HERE.md": {
+      "current": "b267a8b31cad715dd7a7b6b5dddfd88d3b27cc96897751c8382149ee89bbdc43",
+      "previous": "b267a8b31cad715dd7a7b6b5dddfd88d3b27cc96897751c8382149ee89bbdc43"
+    },
+    "STAGE2_VISUAL_VALIDATION.md": {
+      "current": "26ea49737aea44e4003c668739f1e3051cb78abcef6b4fec1f45def05b6ba031",
+      "previous": "26ea49737aea44e4003c668739f1e3051cb78abcef6b4fec1f45def05b6ba031"
+    },
+    "START_HERE_SEARCH_FIX.md": {
+      "current": "143d8dcc2fbdd7b2e7af6ade478626153314c377872497270e02f08adb6d311d",
+      "previous": "143d8dcc2fbdd7b2e7af6ade478626153314c377872497270e02f08adb6d311d"
+    },
+    "SYSTEM_MANAGEMENT_HOVER_COUNTER_CHANGELOG.md": {
+      "current": "d9d09144e2664b99f4f22bb143e65e822c9e6c04dadcd1142154cf0a5b9e1555",
+      "previous": "d9d09144e2664b99f4f22bb143e65e822c9e6c04dadcd1142154cf0a5b9e1555"
+    },
+    "SYSTEM_MANAGEMENT_HOVER_COUNTER_SQA.md": {
+      "current": "e37e6b1c1f8ed0994275d840b996e1a08076e7f3fd7d12d5da0f1da92cbd48ab",
+      "previous": "e37e6b1c1f8ed0994275d840b996e1a08076e7f3fd7d12d5da0f1da92cbd48ab"
+    },
+    "SYSTEM_MANAGEMENT_SEARCH_FIX_CHANGESET.json": {
+      "current": "733ac469e80388e5090d5c6314c273632edc26c994e76d08d3485f0faedc5026",
+      "previous": "733ac469e80388e5090d5c6314c273632edc26c994e76d08d3485f0faedc5026"
+    },
+    "SYSTEM_MANAGEMENT_SEARCH_FIX_CHECK_SOURCE_LOG.txt": {
+      "current": "f589dd3bbdf5b98b6f63349ada5d69f776f6418a456be366fa2b55fa80f75244",
+      "previous": "f589dd3bbdf5b98b6f63349ada5d69f776f6418a456be366fa2b55fa80f75244"
+    },
+    "SYSTEM_MANAGEMENT_SEARCH_FIX_RELEASE.md": {
+      "current": "cab63663908a37917807bc0c81800b3b5d318ff7e61d5842200718963fd77245",
+      "previous": "cab63663908a37917807bc0c81800b3b5d318ff7e61d5842200718963fd77245"
+    },
+    "SYSTEM_MANAGEMENT_SEARCH_FIX_SQA.md": {
+      "current": "4b7f1ba5b8e17fa4af77b2543d22db517f84f87ef8ff6b9a9c52699141119886",
+      "previous": "4b7f1ba5b8e17fa4af77b2543d22db517f84f87ef8ff6b9a9c52699141119886"
+    },
+    "SYSTEM_MANAGEMENT_SEARCH_FIX_TEST_LOG.txt": {
+      "current": "b45f11eb9d70fb5ec525d4a40775a5dba053028e1c00edd9d28fd8b6f5c5caac",
+      "previous": "b45f11eb9d70fb5ec525d4a40775a5dba053028e1c00edd9d28fd8b6f5c5caac"
+    },
+    "SYSTEM_MANAGEMENT_V2_APPROVED.json": {
+      "current": "1e7b3353f7e2a50453dd1bf941719d414fb1f1cc5260cf2952c40389af716dfc",
+      "previous": "1e7b3353f7e2a50453dd1bf941719d414fb1f1cc5260cf2952c40389af716dfc"
+    },
+    "SYSTEM_MANAGEMENT_V2_INTEGRATION_RELEASE_NOTES.md": {
+      "current": "969d766c28c38798e7f5a4128b33a0453238b320aac3bbcd214c5a2741cf0dea",
+      "previous": "969d766c28c38798e7f5a4128b33a0453238b320aac3bbcd214c5a2741cf0dea"
+    },
+    "TABLES_MANAGER_APPROVED.json": {
+      "current": "ab2aaabb8e58a3397f4b065179e1839d22019bd8a0b1a7ec2a511b6c0ec370f5",
+      "previous": "ab2aaabb8e58a3397f4b065179e1839d22019bd8a0b1a7ec2a511b6c0ec370f5"
+    },
+    "TABLES_MANAGER_CHANGELOG.md": {
+      "current": "e58ddf7589a4ae3adec839cbb2df484d41489829d278fc77f36291cbca008e55",
+      "previous": "e58ddf7589a4ae3adec839cbb2df484d41489829d278fc77f36291cbca008e55"
+    },
+    "TABLES_MANAGER_DRAG_HOTFIX_CHANGELOG.md": {
+      "current": "afcef05f578f980e7dcaee4edc0440c68fb91b2348717a0fc2ff57445317c445",
+      "previous": "afcef05f578f980e7dcaee4edc0440c68fb91b2348717a0fc2ff57445317c445"
+    },
+    "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/baseline-test.log": {
+      "current": "2d796994814f8c5125d5e285e65b8ff267db6bb8f1df9eb32a8227fea7dc0609",
+      "previous": "2d796994814f8c5125d5e285e65b8ff267db6bb8f1df9eb32a8227fea7dc0609"
+    },
+    "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/build.log": {
+      "current": "c5f06e02e4dc7c9c9363c04a2427dc7fdec316f2e51ea3ee6e57e94f3cb09581",
+      "previous": "c5f06e02e4dc7c9c9363c04a2427dc7fdec316f2e51ea3ee6e57e94f3cb09581"
+    },
+    "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/final-test.log": {
+      "current": "4ec7c871a35fc76a14d26388c8d7328a586209c46aa3bcc1520a8566ea0afdc3",
+      "previous": "4ec7c871a35fc76a14d26388c8d7328a586209c46aa3bcc1520a8566ea0afdc3"
+    },
+    "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/format-css-check.log": {
+      "current": "beaf77cc1537958a49c7b8239a003586e7442607b55c436e2f4ef804b9385601",
+      "previous": "beaf77cc1537958a49c7b8239a003586e7442607b55c436e2f4ef804b9385601"
+    },
+    "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/format-typescript-check.log": {
+      "current": "c866d23f662ab9befa272a2fa48a3f49d255c1a743c7da65b1cbfcac3a70ab28",
+      "previous": "c866d23f662ab9befa272a2fa48a3f49d255c1a743c7da65b1cbfcac3a70ab28"
+    },
+    "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/lint.log": {
+      "current": "ba8ace411ab0622596e6692f8be9da90a65008057f6ff662d1c97ace7cb10410",
+      "previous": "ba8ace411ab0622596e6692f8be9da90a65008057f6ff662d1c97ace7cb10410"
+    },
+    "TABLES_MANAGER_DRAG_HOTFIX_EVIDENCE/typecheck.log": {
+      "current": "ef0f23ae3f0e16f299195578fe7260ed55f3b221dcfeef724a9235dc825a34b0",
+      "previous": "ef0f23ae3f0e16f299195578fe7260ed55f3b221dcfeef724a9235dc825a34b0"
+    },
+    "TABLES_MANAGER_DRAG_HOTFIX_SOURCE_DIFF.json": {
+      "current": "e1d9b1fc5268e2120b43d5e1ec95cd34eff7be9cb797bc5e21d291c6b41cbca7",
+      "previous": "e1d9b1fc5268e2120b43d5e1ec95cd34eff7be9cb797bc5e21d291c6b41cbca7"
+    },
+    "TABLES_MANAGER_DRAG_HOTFIX_SQA.md": {
+      "current": "a549c1cd57363ae31d19c175dce3b7fb76f0fdd73d7ee2d2c4f6b2973c06cb9b",
+      "previous": "a549c1cd57363ae31d19c175dce3b7fb76f0fdd73d7ee2d2c4f6b2973c06cb9b"
+    },
+    "TABLES_MANAGER_DRAG_HOTFIX_START_HERE.md": {
+      "current": "4b6b0d64864409def8b568c2dea0b57638e3fae67484179276f7e73fbfb039c1",
+      "previous": "4b6b0d64864409def8b568c2dea0b57638e3fae67484179276f7e73fbfb039c1"
+    },
+    "TABLES_MANAGER_SOURCE_DIFF.json": {
+      "current": "27e4e9b22d6f3684b59e04d40bc912444d7367517c5a1175c5a37a502b70afe2",
+      "previous": "27e4e9b22d6f3684b59e04d40bc912444d7367517c5a1175c5a37a502b70afe2"
+    },
+    "TABLES_MANAGER_SQA_REPORT.md": {
+      "current": "ebc21f66d24c1cf78da8d88d6fcd8f72b5a92e9c0b4adae4c3d8e20497473b87",
+      "previous": "ebc21f66d24c1cf78da8d88d6fcd8f72b5a92e9c0b4adae4c3d8e20497473b87"
+    },
+    "TABLES_MANAGER_START_HERE.md": {
+      "current": "d66e83c217925a23b0ee1a6b7e9809969425ffef065536a44417ad36b0d250f2",
+      "previous": "d66e83c217925a23b0ee1a6b7e9809969425ffef065536a44417ad36b0d250f2"
+    },
+    "V06611_APPROVED_CHANGES.json": {
+      "current": "d50c73767e5902b7dbcace93e1010bb6227ae08c413ed1e8ae942eddc5ca0b26",
+      "previous": "d50c73767e5902b7dbcace93e1010bb6227ae08c413ed1e8ae942eddc5ca0b26"
+    },
+    "V0_6_2_SOURCE_SCOPE.json": {
+      "current": "a24a77b8da82ad7b4f966c254f4d78cf5c48b62410d47d46bec337958d347f2c",
+      "previous": "a24a77b8da82ad7b4f966c254f4d78cf5c48b62410d47d46bec337958d347f2c"
+    },
+    "V0_6_2_SUPPORT_LAYOUT_RELEASE_NOTES.md": {
+      "current": "200edeb860be19d382d01dffb352cd38930e82515318ce0a101010f16736a66f",
+      "previous": "200edeb860be19d382d01dffb352cd38930e82515318ce0a101010f16736a66f"
+    },
+    "V0_6_6_1_HOTFIX1_QA_REPORT.md": {
+      "current": "bd6111934dca1986cf963b6a322939ad8b99a3fa1ef9c1f71c6e7563c763ced6",
+      "previous": "bd6111934dca1986cf963b6a322939ad8b99a3fa1ef9c1f71c6e7563c763ced6"
+    },
+    "V0_6_6_1_SUPPORT_BANNER_RELEASE.md": {
+      "current": "1284d2f1d4bd81dcb0b694d8af6107741e278e2ef67b516ca06ca8c5865d3939",
+      "previous": "1284d2f1d4bd81dcb0b694d8af6107741e278e2ef67b516ca06ca8c5865d3939"
+    },
+    "WINDOWS_BASELINE_FIX.md": {
+      "current": "d28e73d92e12cb934aa121d61cb36ecde95531f267c5c1fe0425ab008942d672",
+      "previous": "d28e73d92e12cb934aa121d61cb36ecde95531f267c5c1fe0425ab008942d672"
+    },
+    "WINDOWS_QA_FIX.md": {
+      "current": "49eab64fc0d9a3b023d261d34ec109efa896dae5dd0750199b7d70dfa863d64b",
+      "previous": "49eab64fc0d9a3b023d261d34ec109efa896dae5dd0750199b7d70dfa863d64b"
+    },
+    "WORKSPACE_TRANSITION_CSS_QA.md": {
+      "current": "58bafacf3b84567de4d2a8d860c13db1442f72b5f1d2ebfb2f54802925146af1",
+      "previous": "58bafacf3b84567de4d2a8d860c13db1442f72b5f1d2ebfb2f54802925146af1"
+    },
+    "WORKSPACE_TRANSITION_HOTFIX_CHANGED_FILES.md": {
+      "current": "96ca808b8951873e0d3493f1cba93fe8348a36fab47b4dbc708849cd1a31e8ae",
+      "previous": "96ca808b8951873e0d3493f1cba93fe8348a36fab47b4dbc708849cd1a31e8ae"
+    },
+    "WORKSPACE_TRANSITION_HOTFIX_CHANGELOG.md": {
+      "current": "5ea4a42952bf0019c9be7b15057a3d830696cb00437c8e5082e49b76a61bd8ad",
+      "previous": "5ea4a42952bf0019c9be7b15057a3d830696cb00437c8e5082e49b76a61bd8ad"
+    },
+    "WORKSPACE_TRANSITION_HOTFIX_INTEGRITY.json": {
+      "current": "5b63b07012c43fc961572087af2a623fe7524000c6ff2aa76e32f689717b30e0",
+      "previous": "5b63b07012c43fc961572087af2a623fe7524000c6ff2aa76e32f689717b30e0"
+    },
+    "WORKSPACE_TRANSITION_HOTFIX_SQA_REPORT.md": {
+      "current": "82e2567d3091df0af4b01877a2023c7a2931cdd687ebbdc6d80acb46462eef63",
+      "previous": "82e2567d3091df0af4b01877a2023c7a2931cdd687ebbdc6d80acb46462eef63"
+    },
+    "WORKSPACE_TRANSITION_HOTFIX_START_HERE.md": {
+      "current": "83c23282dfeeedf16cb74d6c49b72cc8b631ba25ed157eb679364dcb4e8f8509",
+      "previous": "83c23282dfeeedf16cb74d6c49b72cc8b631ba25ed157eb679364dcb4e8f8509"
+    },
+    "WORKSPACE_TRANSITION_LEGACY_FAILURES.md": {
+      "current": "51ddae02c9a06900fc1c73c1fa84364bcce813bb9312d76963bc7b4fa6d12de5",
+      "previous": "51ddae02c9a06900fc1c73c1fa84364bcce813bb9312d76963bc7b4fa6d12de5"
+    },
+    "docs/ARCHITECTURE_DASHBOARD_v0.6.6.md": {
+      "current": "232d79807311772597e052b68c5b8c52fb2a3ebe7af3a47f5396e4d6ed7291de",
+      "previous": "232d79807311772597e052b68c5b8c52fb2a3ebe7af3a47f5396e4d6ed7291de"
+    },
+    "docs/ARCHITECTURE_SHELL_v0.6.5.md": {
+      "current": "5ad4495810cfebbf4b17a3264ecfa27f5a134813976fb2a786b207c0c821637f",
+      "previous": "5ad4495810cfebbf4b17a3264ecfa27f5a134813976fb2a786b207c0c821637f"
+    },
+    "docs/CODE_QUALITY_FOUNDATION_v0.6.3.md": {
+      "current": "100b37679555fe8ba70572a45e66855987b40722b9807419efcb676e3b1d0efe",
+      "previous": "100b37679555fe8ba70572a45e66855987b40722b9807419efcb676e3b1d0efe"
+    },
+    "docs/CODE_READABILITY_v0.6.4.md": {
+      "current": "978be2dd58d65567e65ab3456625918d32cd4771b5a9fb497063ebc7e8119d63",
+      "previous": "978be2dd58d65567e65ab3456625918d32cd4771b5a9fb497063ebc7e8119d63"
+    },
+    "eslint.config.mjs": {
+      "current": "b681abe341e2d8cd7727cde891a28076b6881119477db52c71a1d14fd265c614",
+      "previous": "b681abe341e2d8cd7727cde891a28076b6881119477db52c71a1d14fd265c614"
+    },
+    "index.html": {
+      "current": "919218ff4cfe8e661b88f78e89036ec55e30bc44b5a5bfe8f613511abbf765e4",
+      "previous": "919218ff4cfe8e661b88f78e89036ec55e30bc44b5a5bfe8f613511abbf765e4"
+    },
+    "package.json": {
+      "current": "b5da24fd98813eb6eab2152a47ae306912d259f4959c295534ac3b2ea3bcdf34",
+      "previous": "b5da24fd98813eb6eab2152a47ae306912d259f4959c295534ac3b2ea3bcdf34"
+    },
+    "public/assets/resort-illustration.png": {
+      "current": "8ecfcd238e1a7b588a8814f654d49298a50557225a0e3dce6a0fefed37368d82",
+      "previous": "8ecfcd238e1a7b588a8814f654d49298a50557225a0e3dce6a0fefed37368d82"
+    },
+    "public/assets/resort-shore.png": {
+      "current": "a310175391db5c527554ecd146ccedf4cd2df4281bf7d34eb9d829d5375e1467",
+      "previous": "a310175391db5c527554ecd146ccedf4cd2df4281bf7d34eb9d829d5375e1467"
+    },
+    "public/assets/resortos-brand-balanced.svg": {
+      "current": "88de02cb9a9ccee79664fd7eb570da6c3dcf609b90080323195b0788736db52e",
+      "previous": null
+    },
+    "public/assets/resortos-brand-single-trunk.svg": {
+      "current": "154cb945c2ce4f55f0c14fe1980f9c61c74d9073c3fbb8191e6d0c85d7e60592",
+      "previous": "154cb945c2ce4f55f0c14fe1980f9c61c74d9073c3fbb8191e6d0c85d7e60592"
+    },
+    "public/assets/sidebar-brand-approved-v058.png": {
+      "current": "6a8cd52613f4146b38e106250ab4347384fa3be99f787a248e18c94344edd94b",
+      "previous": "6a8cd52613f4146b38e106250ab4347384fa3be99f787a248e18c94344edd94b"
+    },
+    "public/assets/sidebar-coastal-approved-v058.png": {
+      "current": "89c81bbba4be707fc9007a1239d35f8117b738e5597b940129ecdb0236c9a30c",
+      "previous": "89c81bbba4be707fc9007a1239d35f8117b738e5597b940129ecdb0236c9a30c"
+    },
+    "public/assets/sidebar-icon-audit-approved-v058.png": {
+      "current": "b416dc982f2cf08113a3cf6bf97f545ce2708c4c20eee0248757b66d4967cf96",
+      "previous": "b416dc982f2cf08113a3cf6bf97f545ce2708c4c20eee0248757b66d4967cf96"
+    },
+    "public/assets/sidebar-icon-dashboard-approved-v058.png": {
+      "current": "bbb6f0eff255867ee8c0b9021c7710f9ed785680aeb4d7f94418480f5328411a",
+      "previous": "bbb6f0eff255867ee8c0b9021c7710f9ed785680aeb4d7f94418480f5328411a"
+    },
+    "public/assets/sidebar-icon-support-approved-v058.png": {
+      "current": "078df1b76c2eab1d09651675a4b6e832286ab1f8879db4aafba6e3cb0e65d8d9",
+      "previous": "078df1b76c2eab1d09651675a4b6e832286ab1f8879db4aafba6e3cb0e65d8d9"
+    },
+    "public/assets/sidebar-icon-systems-approved-v058.png": {
+      "current": "fb19130aeee75b5153babcdcdb0d06d7993d225f5cd0a47e59944ff31c2999f5",
+      "previous": "fb19130aeee75b5153babcdcdb0d06d7993d225f5cd0a47e59944ff31c2999f5"
+    },
+    "public/assets/sidebar-tropical-clean-original.png": {
+      "current": "7f87de462009ae0de4b669554d2400af023dd54b0ae109b3c0514a5162e57bd3",
+      "previous": "7f87de462009ae0de4b669554d2400af023dd54b0ae109b3c0514a5162e57bd3"
+    },
+    "public/assets/sidebar-tropical-clean.png": {
+      "current": "3512ab56ca125f094ef1f6b734e23adf3ccaa6f11499a1c9b25c6b592ccfbefb",
+      "previous": "3512ab56ca125f094ef1f6b734e23adf3ccaa6f11499a1c9b25c6b592ccfbefb"
+    },
+    "public/assets/sidebar-tropical.png": {
+      "current": "13f3a4e03810b779faf2e989896dbf258480520a51d52729aa25ea7c1c12953d",
+      "previous": "13f3a4e03810b779faf2e989896dbf258480520a51d52729aa25ea7c1c12953d"
+    },
+    "public/assets/support-coastal-panorama-v0661.png": {
+      "current": "3033b43d83b638a38b24819f96143bbe886768fa9edbe538d8d670d71ea759d8",
+      "previous": "3033b43d83b638a38b24819f96143bbe886768fa9edbe538d8d670d71ea759d8"
+    },
+    "public/assets/support-painterly-banner.png": {
+      "current": "163e84e7ab3c5f0495ba13b995bbd4a4eb4f33e62def6c31de8a83aa65a112c3",
+      "previous": "163e84e7ab3c5f0495ba13b995bbd4a4eb4f33e62def6c31de8a83aa65a112c3"
+    },
+    "qa-evidence/untouched-regression.log": {
+      "current": "41b593ecceda0c327683cadd153b5f3976b7ac33c119f6ecd02a86b311af9087",
+      "previous": "41b593ecceda0c327683cadd153b5f3976b7ac33c119f6ecd02a86b311af9087"
+    },
+    "qa-evidence/updated-regression.log": {
+      "current": "9c2f008ca91263ac52dad25f88da1e59af57cf82494f188b85284bdb298b34b1",
+      "previous": "9c2f008ca91263ac52dad25f88da1e59af57cf82494f188b85284bdb298b34b1"
+    },
+    "qa-evidence/workspace-loader-css-desktop.png": {
+      "current": "ce8f5f6caef3c591bea29cd97966c1112182c80b23eda58ad852d4db30230669",
+      "previous": "ce8f5f6caef3c591bea29cd97966c1112182c80b23eda58ad852d4db30230669"
+    },
+    "qa-evidence/workspace-loader-css-mobile.png": {
+      "current": "365dd09836630c16e8b3eb9a12e163325605965591b76826731471dda3d251b7",
+      "previous": "365dd09836630c16e8b3eb9a12e163325605965591b76826731471dda3d251b7"
+    },
+    "qa-evidence/workspace-targeted.log": {
+      "current": "93b676eaeb9b9fc2ed26480f89032f2fa7f3a957a43ff7f653c3b7c40e83741e",
+      "previous": "93b676eaeb9b9fc2ed26480f89032f2fa7f3a957a43ff7f653c3b7c40e83741e"
+    },
+    "resortOS_v066/.editorconfig": {
+      "current": "f3b037b140074f4fd0d256e2e21173de06251d1020839fd5ad655d050ca01610",
+      "previous": "f3b037b140074f4fd0d256e2e21173de06251d1020839fd5ad655d050ca01610"
+    },
+    "resortOS_v066/.gitignore": {
+      "current": "1d195fe3266f1e90f6937582fba27e62e6a145eeee10f3111e4e69d89d6d106f",
+      "previous": "1d195fe3266f1e90f6937582fba27e62e6a145eeee10f3111e4e69d89d6d106f"
+    },
+    "resortOS_v066/.prettierignore": {
+      "current": "f020883f178d133ff7265a768b2c9041246bcc2d3de6d4cc30a1c1036d1a91c9",
+      "previous": "f020883f178d133ff7265a768b2c9041246bcc2d3de6d4cc30a1c1036d1a91c9"
+    },
+    "resortOS_v066/.prettierrc.json": {
+      "current": "cbaee7a0626014f653d0c3b481c3f8669826a968a7e5359de1b4b3f5747734da",
+      "previous": "cbaee7a0626014f653d0c3b481c3f8669826a968a7e5359de1b4b3f5747734da"
+    },
+    "resortOS_v066/ACTIVITY_PRESERVATION_MANIFEST.json": {
+      "current": "973e53a8ed73b48e860fcd1a0e9e315bfb2caccdba28c6d4a53d0b64fe0f089f",
+      "previous": "973e53a8ed73b48e860fcd1a0e9e315bfb2caccdba28c6d4a53d0b64fe0f089f"
+    },
+    "resortOS_v066/FOUNDATION_LOCK.json": {
+      "current": "1eb3a99c750c49e2f6f68a9b24972c87b47194bacc4f4120eb372d73711e6e4a",
+      "previous": "1eb3a99c750c49e2f6f68a9b24972c87b47194bacc4f4120eb372d73711e6e4a"
+    },
+    "resortOS_v066/README.md": {
+      "current": "0af9232c14599afee7f79e708e9914bef76cb8d60c6615164f7e09c6795b537f",
+      "previous": "0af9232c14599afee7f79e708e9914bef76cb8d60c6615164f7e09c6795b537f"
+    },
+    "resortOS_v066/RUN_RESORTOS_WINDOWS.bat": {
+      "current": "776ae469bf0b82e92cce63f5f75a95f412b7f3c3056d3e781aeafe888ac881bc",
+      "previous": "776ae469bf0b82e92cce63f5f75a95f412b7f3c3056d3e781aeafe888ac881bc"
+    },
+    "resortOS_v066/V0_6_2_SOURCE_SCOPE.json": {
+      "current": "a24a77b8da82ad7b4f966c254f4d78cf5c48b62410d47d46bec337958d347f2c",
+      "previous": "a24a77b8da82ad7b4f966c254f4d78cf5c48b62410d47d46bec337958d347f2c"
+    },
+    "resortOS_v066/V0_6_2_SUPPORT_LAYOUT_RELEASE_NOTES.md": {
+      "current": "200edeb860be19d382d01dffb352cd38930e82515318ce0a101010f16736a66f",
+      "previous": "200edeb860be19d382d01dffb352cd38930e82515318ce0a101010f16736a66f"
+    },
+    "resortOS_v066/WINDOWS_BASELINE_FIX.md": {
+      "current": "d28e73d92e12cb934aa121d61cb36ecde95531f267c5c1fe0425ab008942d672",
+      "previous": "d28e73d92e12cb934aa121d61cb36ecde95531f267c5c1fe0425ab008942d672"
+    },
+    "resortOS_v066/WINDOWS_QA_FIX.md": {
+      "current": "49eab64fc0d9a3b023d261d34ec109efa896dae5dd0750199b7d70dfa863d64b",
+      "previous": "49eab64fc0d9a3b023d261d34ec109efa896dae5dd0750199b7d70dfa863d64b"
+    },
+    "resortOS_v066/docs/ARCHITECTURE_DASHBOARD_v0.6.6.md": {
+      "current": "232d79807311772597e052b68c5b8c52fb2a3ebe7af3a47f5396e4d6ed7291de",
+      "previous": "232d79807311772597e052b68c5b8c52fb2a3ebe7af3a47f5396e4d6ed7291de"
+    },
+    "resortOS_v066/docs/ARCHITECTURE_SHELL_v0.6.5.md": {
+      "current": "5ad4495810cfebbf4b17a3264ecfa27f5a134813976fb2a786b207c0c821637f",
+      "previous": "5ad4495810cfebbf4b17a3264ecfa27f5a134813976fb2a786b207c0c821637f"
+    },
+    "resortOS_v066/docs/CODE_QUALITY_FOUNDATION_v0.6.3.md": {
+      "current": "100b37679555fe8ba70572a45e66855987b40722b9807419efcb676e3b1d0efe",
+      "previous": "100b37679555fe8ba70572a45e66855987b40722b9807419efcb676e3b1d0efe"
+    },
+    "resortOS_v066/docs/CODE_READABILITY_v0.6.4.md": {
+      "current": "978be2dd58d65567e65ab3456625918d32cd4771b5a9fb497063ebc7e8119d63",
+      "previous": "978be2dd58d65567e65ab3456625918d32cd4771b5a9fb497063ebc7e8119d63"
+    },
+    "resortOS_v066/docs/qa/VERIFICATION_v0.6.3.md": {
+      "current": "6972a0aa35777877271f01c36209e87f8f15a2d43c1061417624a296cdaa984a",
+      "previous": "6972a0aa35777877271f01c36209e87f8f15a2d43c1061417624a296cdaa984a"
+    },
+    "resortOS_v066/docs/qa/v0.6.3_support_static_1440x900.png": {
+      "current": "67334772db9e70ff3689c7ef57c7b88cc0efc0844f612249e32849024f327090",
+      "previous": "67334772db9e70ff3689c7ef57c7b88cc0efc0844f612249e32849024f327090"
+    },
+    "resortOS_v066/docs/qa/v0.6.4_support_static_1440x900.png": {
+      "current": "c79c34430510e0114b055e7bfeff6d559a4ce8db561e9b7872f0597ac996da26",
+      "previous": "c79c34430510e0114b055e7bfeff6d559a4ce8db561e9b7872f0597ac996da26"
+    },
+    "resortOS_v066/docs/qa/v0.6.5_source_diff.json": {
+      "current": "02b58488ff64a5dca04058807c2c6d5e694f9071cda93ba81af5cf08371809be",
+      "previous": "02b58488ff64a5dca04058807c2c6d5e694f9071cda93ba81af5cf08371809be"
+    },
+    "resortOS_v066/docs/qa/v0.6.5_support_1440x900.png": {
+      "current": "aacd379f08f1dd5f6df8a1c1b8fc7aacf487586a611b03bae575d5fdd46a418c",
+      "previous": "aacd379f08f1dd5f6df8a1c1b8fc7aacf487586a611b03bae575d5fdd46a418c"
+    },
+    "resortOS_v066/docs/qa/v0.6.6_dashboard_1440x900.png": {
+      "current": "160c6e642d4ba6b0c1e3ceeb71552e2cc34897826cce4c3bd547c566710ea16b",
+      "previous": "160c6e642d4ba6b0c1e3ceeb71552e2cc34897826cce4c3bd547c566710ea16b"
+    },
+    "resortOS_v066/eslint.config.mjs": {
+      "current": "b681abe341e2d8cd7727cde891a28076b6881119477db52c71a1d14fd265c614",
+      "previous": "b681abe341e2d8cd7727cde891a28076b6881119477db52c71a1d14fd265c614"
+    },
+    "resortOS_v066/index.html": {
+      "current": "919218ff4cfe8e661b88f78e89036ec55e30bc44b5a5bfe8f613511abbf765e4",
+      "previous": "919218ff4cfe8e661b88f78e89036ec55e30bc44b5a5bfe8f613511abbf765e4"
+    },
+    "resortOS_v066/package.json": {
+      "current": "bfa7a45b313d5c0725d58298b9cb318e666e1ee0b868e6d7b21349d8da62047f",
+      "previous": "bfa7a45b313d5c0725d58298b9cb318e666e1ee0b868e6d7b21349d8da62047f"
+    },
+    "resortOS_v066/public/assets/resort-illustration.png": {
+      "current": "8ecfcd238e1a7b588a8814f654d49298a50557225a0e3dce6a0fefed37368d82",
+      "previous": "8ecfcd238e1a7b588a8814f654d49298a50557225a0e3dce6a0fefed37368d82"
+    },
+    "resortOS_v066/public/assets/resort-shore.png": {
+      "current": "a310175391db5c527554ecd146ccedf4cd2df4281bf7d34eb9d829d5375e1467",
+      "previous": "a310175391db5c527554ecd146ccedf4cd2df4281bf7d34eb9d829d5375e1467"
+    },
+    "resortOS_v066/public/assets/sidebar-brand-approved-v058.png": {
+      "current": "eeced18e7024ed4bf87c6f9178ccd3433bd5872a72ceb94ee396a700c3d11799",
+      "previous": "eeced18e7024ed4bf87c6f9178ccd3433bd5872a72ceb94ee396a700c3d11799"
+    },
+    "resortOS_v066/public/assets/sidebar-coastal-approved-v058.png": {
+      "current": "89c81bbba4be707fc9007a1239d35f8117b738e5597b940129ecdb0236c9a30c",
+      "previous": "89c81bbba4be707fc9007a1239d35f8117b738e5597b940129ecdb0236c9a30c"
+    },
+    "resortOS_v066/public/assets/sidebar-icon-audit-approved-v058.png": {
+      "current": "b416dc982f2cf08113a3cf6bf97f545ce2708c4c20eee0248757b66d4967cf96",
+      "previous": "b416dc982f2cf08113a3cf6bf97f545ce2708c4c20eee0248757b66d4967cf96"
+    },
+    "resortOS_v066/public/assets/sidebar-icon-dashboard-approved-v058.png": {
+      "current": "bbb6f0eff255867ee8c0b9021c7710f9ed785680aeb4d7f94418480f5328411a",
+      "previous": "bbb6f0eff255867ee8c0b9021c7710f9ed785680aeb4d7f94418480f5328411a"
+    },
+    "resortOS_v066/public/assets/sidebar-icon-support-approved-v058.png": {
+      "current": "078df1b76c2eab1d09651675a4b6e832286ab1f8879db4aafba6e3cb0e65d8d9",
+      "previous": "078df1b76c2eab1d09651675a4b6e832286ab1f8879db4aafba6e3cb0e65d8d9"
+    },
+    "resortOS_v066/public/assets/sidebar-icon-systems-approved-v058.png": {
+      "current": "fb19130aeee75b5153babcdcdb0d06d7993d225f5cd0a47e59944ff31c2999f5",
+      "previous": "fb19130aeee75b5153babcdcdb0d06d7993d225f5cd0a47e59944ff31c2999f5"
+    },
+    "resortOS_v066/public/assets/sidebar-tropical-clean-original.png": {
+      "current": "7f87de462009ae0de4b669554d2400af023dd54b0ae109b3c0514a5162e57bd3",
+      "previous": "7f87de462009ae0de4b669554d2400af023dd54b0ae109b3c0514a5162e57bd3"
+    },
+    "resortOS_v066/public/assets/sidebar-tropical-clean.png": {
+      "current": "3512ab56ca125f094ef1f6b734e23adf3ccaa6f11499a1c9b25c6b592ccfbefb",
+      "previous": "3512ab56ca125f094ef1f6b734e23adf3ccaa6f11499a1c9b25c6b592ccfbefb"
+    },
+    "resortOS_v066/public/assets/sidebar-tropical.png": {
+      "current": "13f3a4e03810b779faf2e989896dbf258480520a51d52729aa25ea7c1c12953d",
+      "previous": "13f3a4e03810b779faf2e989896dbf258480520a51d52729aa25ea7c1c12953d"
+    },
+    "resortOS_v066/public/assets/support-painterly-banner.png": {
+      "current": "163e84e7ab3c5f0495ba13b995bbd4a4eb4f33e62def6c31de8a83aa65a112c3",
+      "previous": "163e84e7ab3c5f0495ba13b995bbd4a4eb4f33e62def6c31de8a83aa65a112c3"
+    },
+    "resortOS_v066/scripts/check-typescript-syntax.cjs": {
+      "current": "1e65b7830566e96d28729ad54dee00c00611bb9454ff1acb35ce08ff23d82a83",
+      "previous": "1e65b7830566e96d28729ad54dee00c00611bb9454ff1acb35ce08ff23d82a83"
+    },
+    "resortOS_v066/scripts/css-semantic.cjs": {
+      "current": "50f94bddd5e74f02e6a55a286e5043dedaec86d833c582ac3dc964f7779b645b",
+      "previous": "50f94bddd5e74f02e6a55a286e5043dedaec86d833c582ac3dc964f7779b645b"
+    },
+    "resortOS_v066/scripts/format-css.cjs": {
+      "current": "318305387433412911af9c4765fb5f105e82352f8f27c6a27132c105a9fd130e",
+      "previous": "318305387433412911af9c4765fb5f105e82352f8f27c6a27132c105a9fd130e"
+    },
+    "resortOS_v066/scripts/typescript-semantic.cjs": {
+      "current": "05c58b294cc6f8ecd85baf39d9b82606600c1f80db39ba554ba447256a578622",
+      "previous": "05c58b294cc6f8ecd85baf39d9b82606600c1f80db39ba554ba447256a578622"
+    },
+    "resortOS_v066/scripts/verify-approved-baseline.cjs": {
+      "current": "bd8a689273632adf390aeb52a6ae6dabed2c485eac304dee617ace1238090768",
+      "previous": "bd8a689273632adf390aeb52a6ae6dabed2c485eac304dee617ace1238090768"
+    },
+    "resortOS_v066/scripts/verify-shell-extraction.cjs": {
+      "current": "c13c1b377199c1d841e4fb45132009bf18c159af5a94361114212561ef0bb118",
+      "previous": "c13c1b377199c1d841e4fb45132009bf18c159af5a94361114212561ef0bb118"
+    },
+    "resortOS_v066/src/App.tsx": {
+      "current": "1ec328fc7ca99194e005c8d47d572f382c66499eff1de4f7a5f54e6eecb60bf4",
+      "previous": "1ec328fc7ca99194e005c8d47d572f382c66499eff1de4f7a5f54e6eecb60bf4"
+    },
+    "resortOS_v066/src/components/Charts.tsx": {
+      "current": "bc51a481dff688d29d006f2e4bb7dd74dd38015ac5ec9c0fdfcd1678b0c11628",
+      "previous": "bc51a481dff688d29d006f2e4bb7dd74dd38015ac5ec9c0fdfcd1678b0c11628"
+    },
+    "resortOS_v066/src/components/SupportWorkspace.tsx": {
+      "current": "a848e0556520c94ff60f95bc7d79ca59538fcd14879dd15609f313eba9cd3e13",
+      "previous": "a848e0556520c94ff60f95bc7d79ca59538fcd14879dd15609f313eba9cd3e13"
+    },
+    "resortOS_v066/src/components/Ui.tsx": {
+      "current": "5d0272afba0f2f0a77dea2d84ea7c9a7b1b9ed2acc6cb1fed694632f424e33e0",
+      "previous": "5d0272afba0f2f0a77dea2d84ea7c9a7b1b9ed2acc6cb1fed694632f424e33e0"
+    },
+    "resortOS_v066/src/data/demo.ts": {
+      "current": "b818c595cd06e2171a41b7587e875fa3b11961a3874c68394de1314798e2193c",
+      "previous": "b818c595cd06e2171a41b7587e875fa3b11961a3874c68394de1314798e2193c"
+    },
+    "resortOS_v066/src/data/qualityFixtures.ts": {
+      "current": "27acbedfde3ead3b47818b9672bae759d3d7c709249f0b1ae047faa1d164496b",
+      "previous": "27acbedfde3ead3b47818b9672bae759d3d7c709249f0b1ae047faa1d164496b"
+    },
+    "resortOS_v066/src/domain/store.ts": {
+      "current": "7f8728bda01416a25fe1b3b7783d781d7f68428d2943d064cc30aecd117d0939",
+      "previous": "7f8728bda01416a25fe1b3b7783d781d7f68428d2943d064cc30aecd117d0939"
+    },
+    "resortOS_v066/src/domain/supportNavigation.ts": {
+      "current": "9b602423f4337260808c1f501c06d34a5b851a1773653838019e215015b90211",
+      "previous": "9b602423f4337260808c1f501c06d34a5b851a1773653838019e215015b90211"
+    },
+    "resortOS_v066/src/domain/types.ts": {
+      "current": "1566705036a61869b2d2107b32b8ea48dbfdc55996fc6361192e557b72a9f8ee",
+      "previous": "1566705036a61869b2d2107b32b8ea48dbfdc55996fc6361192e557b72a9f8ee"
+    },
+    "resortOS_v066/src/features/dashboard/Dashboard.tsx": {
+      "current": "0f205055d64b91f7c7de531399abe581fe1ad4f1268b95db0f0e723a43ef9556",
+      "previous": "0f205055d64b91f7c7de531399abe581fe1ad4f1268b95db0f0e723a43ef9556"
+    },
+    "resortOS_v066/src/main.tsx": {
+      "current": "f1a39368f49f10d45c5a9f6c2dc8e04fb6a9d24ddc3b82ca8deda164f3f2a23e",
+      "previous": "f1a39368f49f10d45c5a9f6c2dc8e04fb6a9d24ddc3b82ca8deda164f3f2a23e"
+    },
+    "resortOS_v066/src/shell/GlobalSearch.tsx": {
+      "current": "ccf3b7152e8c9e18f8eb61c538de680d38c49fe0bc7ab66243474cdc2883ee39",
+      "previous": "ccf3b7152e8c9e18f8eb61c538de680d38c49fe0bc7ab66243474cdc2883ee39"
+    },
+    "resortOS_v066/src/shell/Sidebar.tsx": {
+      "current": "16d4eca8df0a35e3f42c4999f3151da9055bb7bee98a1333a791f9940aac5f22",
+      "previous": "16d4eca8df0a35e3f42c4999f3151da9055bb7bee98a1333a791f9940aac5f22"
+    },
+    "resortOS_v066/src/shell/Topbar.tsx": {
+      "current": "3ef3d1da4c59de94df540273c5ce6bee9bb86e42fd27e7b9daaa55c8982c1f58",
+      "previous": "3ef3d1da4c59de94df540273c5ce6bee9bb86e42fd27e7b9daaa55c8982c1f58"
+    },
+    "resortOS_v066/src/shell/navigation.ts": {
+      "current": "06fbaf2d8d51e6ec5c16b0c098c8d94ccc754723340d6c1b8d4a244a7ceb281f",
+      "previous": "06fbaf2d8d51e6ec5c16b0c098c8d94ccc754723340d6c1b8d4a244a7ceb281f"
+    },
+    "resortOS_v066/src/styles/app.css": {
+      "current": "9445b404878548158de03fa77ab669f059855ec305b8d4f8c99c9f0dfa62afdd",
+      "previous": "9445b404878548158de03fa77ab669f059855ec305b8d4f8c99c9f0dfa62afdd"
+    },
+    "resortOS_v066/src/styles/components.css": {
+      "current": "d875c0656c3b31b3c34cb7f6b8ac41163e3f379a604df67be01e256b5493cb6c",
+      "previous": "d875c0656c3b31b3c34cb7f6b8ac41163e3f379a604df67be01e256b5493cb6c"
+    },
+    "resortOS_v066/src/styles/layout-integration-v062.css": {
+      "current": "8e589975509fc89339cd8bc1689fdf7765a44c3f8b3f62597d8cc38f17d5625a",
+      "previous": "8e589975509fc89339cd8bc1689fdf7765a44c3f8b3f62597d8cc38f17d5625a"
+    },
+    "resortOS_v066/src/styles/light-sidebar-v058.css": {
+      "current": "2867cdf444826f830dbdfb5eb1972b806094b82d1e22a7c9a4f83b600042172c",
+      "previous": "2867cdf444826f830dbdfb5eb1972b806094b82d1e22a7c9a4f83b600042172c"
+    },
+    "resortOS_v066/src/styles/motion.css": {
+      "current": "da81d9bcb990c2c506fc3749e58aceb404863c1d980ee4d4ca3afef060c51075",
+      "previous": "da81d9bcb990c2c506fc3749e58aceb404863c1d980ee4d4ca3afef060c51075"
+    },
+    "resortOS_v066/src/styles/navigation-cleanup.css": {
+      "current": "20445959c87a5ca6e4df865580eae00eea2974f4fff3a2d5b89fc40be21ac7c8",
+      "previous": "20445959c87a5ca6e4df865580eae00eea2974f4fff3a2d5b89fc40be21ac7c8"
+    },
+    "resortOS_v066/src/styles/responsive.css": {
+      "current": "960f9fcf9947dd6eb19a22574fe4f2d6c880482338e6f0d71f4651ec5efa1313",
+      "previous": "960f9fcf9947dd6eb19a22574fe4f2d6c880482338e6f0d71f4651ec5efa1313"
+    },
+    "resortOS_v066/src/styles/sidebar-story.css": {
+      "current": "230fd41b4820ffbc8cc418a254c82f60b7127796e0d4084d2acd6dfec65738da",
+      "previous": "230fd41b4820ffbc8cc418a254c82f60b7127796e0d4084d2acd6dfec65738da"
+    },
+    "resortOS_v066/src/styles/support-motion.css": {
+      "current": "6c413baffe3050d10788b6f7288bee1ef99f1d03f1fd4b3f5251bc8355436c38",
+      "previous": "6c413baffe3050d10788b6f7288bee1ef99f1d03f1fd4b3f5251bc8355436c38"
+    },
+    "resortOS_v066/src/styles/support.css": {
+      "current": "132597b5013cb751df5ce31e7991f6a2a4d1ae4fa57e3fdc5e24f91db7a096b7",
+      "previous": "132597b5013cb751df5ce31e7991f6a2a4d1ae4fa57e3fdc5e24f91db7a096b7"
+    },
+    "resortOS_v066/src/styles/tokens.css": {
+      "current": "98af423a6e0175e3c118fc82411997590519518a2bbeb8b3f8e3b48dde67cdf4",
+      "previous": "98af423a6e0175e3c118fc82411997590519518a2bbeb8b3f8e3b48dde67cdf4"
+    },
+    "resortOS_v066/src/styles/typography.css": {
+      "current": "2c300a09b34e79fb9c2b657088744304c1555e72bd899c5c6058509d27628162",
+      "previous": "2c300a09b34e79fb9c2b657088744304c1555e72bd899c5c6058509d27628162"
+    },
+    "resortOS_v066/tests/admin-navigation-cleanup.test.mjs": {
+      "current": "4749d8c7642fc7b6b4444ed79d651ac27e7aa898fa024b8446f07644c985e642",
+      "previous": "4749d8c7642fc7b6b4444ed79d651ac27e7aa898fa024b8446f07644c985e642"
+    },
+    "resortOS_v066/tests/application-shell-v065.test.mjs": {
+      "current": "47b7b9f2a30e4db358f55bfad5bab5346f67ebbb83d96c605e6e2993609fc8d8",
+      "previous": "47b7b9f2a30e4db358f55bfad5bab5346f67ebbb83d96c605e6e2993609fc8d8"
+    },
+    "resortOS_v066/tests/chart-refinement.test.mjs": {
+      "current": "4ed5c2119fcb4c2d48fff9008ff16a461932c191ed0effebbc2c6413231dad30",
+      "previous": "4ed5c2119fcb4c2d48fff9008ff16a461932c191ed0effebbc2c6413231dad30"
+    },
+    "resortOS_v066/tests/code-quality-foundation.test.mjs": {
+      "current": "fc29259f7a8d7342842c29621f4a95d1ad571deb6c3325f4e354d73bde1f6ce4",
+      "previous": "fc29259f7a8d7342842c29621f4a95d1ad571deb6c3325f4e354d73bde1f6ce4"
+    },
+    "resortOS_v066/tests/control-refinement.test.mjs": {
+      "current": "65ca4934d54dec82831e73c07ef71cf21ffa35637e4ae0fc58f341ad88f9f7e4",
+      "previous": "65ca4934d54dec82831e73c07ef71cf21ffa35637e4ae0fc58f341ad88f9f7e4"
+    },
+    "resortOS_v066/tests/dashboard-cleanup.test.mjs": {
+      "current": "507f0a8658a1f3fa058fdb55c0b20e9d24619308bd285613e3723c755ccb9880",
+      "previous": "507f0a8658a1f3fa058fdb55c0b20e9d24619308bd285613e3723c755ccb9880"
+    },
+    "resortOS_v066/tests/dashboard-extraction-v066.test.mjs": {
+      "current": "1cbef4a8687cc7a13be5c35b2fd4ea349e18d4aac240992c4146baa8a03ee992",
+      "previous": "1cbef4a8687cc7a13be5c35b2fd4ea349e18d4aac240992c4146baa8a03ee992"
+    },
+    "resortOS_v066/tests/dashboard-quality.test.mjs": {
+      "current": "1ceca004081099d1b5a127bf6e363ea7cfee2a8ae361e3510487430f7a35f2a4",
+      "previous": "1ceca004081099d1b5a127bf6e363ea7cfee2a8ae361e3510487430f7a35f2a4"
+    },
+    "resortOS_v066/tests/fixtures/approved-v064-source/src/App.tsx": {
+      "current": "379711f81477100e828a127f9e27cab1d4baaf846447ec75dc5917a5198b1e23",
+      "previous": "379711f81477100e828a127f9e27cab1d4baaf846447ec75dc5917a5198b1e23"
+    },
+    "resortOS_v066/tests/fixtures/approved-v064-source/src/components/Charts.tsx": {
+      "current": "bc51a481dff688d29d006f2e4bb7dd74dd38015ac5ec9c0fdfcd1678b0c11628",
+      "previous": "bc51a481dff688d29d006f2e4bb7dd74dd38015ac5ec9c0fdfcd1678b0c11628"
+    },
+    "resortOS_v066/tests/fixtures/approved-v064-source/src/components/SupportWorkspace.tsx": {
+      "current": "a848e0556520c94ff60f95bc7d79ca59538fcd14879dd15609f313eba9cd3e13",
+      "previous": "a848e0556520c94ff60f95bc7d79ca59538fcd14879dd15609f313eba9cd3e13"
+    },
+    "resortOS_v066/tests/fixtures/approved-v064-source/src/components/Ui.tsx": {
+      "current": "5d0272afba0f2f0a77dea2d84ea7c9a7b1b9ed2acc6cb1fed694632f424e33e0",
+      "previous": "5d0272afba0f2f0a77dea2d84ea7c9a7b1b9ed2acc6cb1fed694632f424e33e0"
+    },
+    "resortOS_v066/tests/fixtures/approved-v064-source/src/data/demo.ts": {
+      "current": "b818c595cd06e2171a41b7587e875fa3b11961a3874c68394de1314798e2193c",
+      "previous": "b818c595cd06e2171a41b7587e875fa3b11961a3874c68394de1314798e2193c"
+    },
+    "resortOS_v066/tests/fixtures/approved-v064-source/src/data/qualityFixtures.ts": {
+      "current": "27acbedfde3ead3b47818b9672bae759d3d7c709249f0b1ae047faa1d164496b",
+      "previous": "27acbedfde3ead3b47818b9672bae759d3d7c709249f0b1ae047faa1d164496b"
+    },
+    "resortOS_v066/tests/fixtures/approved-v064-source/src/domain/store.ts": {
+      "current": "7f8728bda01416a25fe1b3b7783d781d7f68428d2943d064cc30aecd117d0939",
+      "previous": "7f8728bda01416a25fe1b3b7783d781d7f68428d2943d064cc30aecd117d0939"
+    },
+    "resortOS_v066/tests/fixtures/approved-v064-source/src/domain/supportNavigation.ts": {
+      "current": "9b602423f4337260808c1f501c06d34a5b851a1773653838019e215015b90211",
+      "previous": "9b602423f4337260808c1f501c06d34a5b851a1773653838019e215015b90211"
+    },
+    "resortOS_v066/tests/fixtures/approved-v064-source/src/domain/types.ts": {
+      "current": "1566705036a61869b2d2107b32b8ea48dbfdc55996fc6361192e557b72a9f8ee",
+      "previous": "1566705036a61869b2d2107b32b8ea48dbfdc55996fc6361192e557b72a9f8ee"
+    },
+    "resortOS_v066/tests/fixtures/approved-v064-source/src/main.tsx": {
+      "current": "f1a39368f49f10d45c5a9f6c2dc8e04fb6a9d24ddc3b82ca8deda164f3f2a23e",
+      "previous": "f1a39368f49f10d45c5a9f6c2dc8e04fb6a9d24ddc3b82ca8deda164f3f2a23e"
+    },
+    "resortOS_v066/tests/fixtures/approved-v064-source/vite.config.ts": {
+      "current": "2e22169dcf47cfa4b5ed63f65ff54d622a6f8d6927e2950e216ada60ae1d1566",
+      "previous": "2e22169dcf47cfa4b5ed63f65ff54d622a6f8d6927e2950e216ada60ae1d1566"
+    },
+    "resortOS_v066/tests/fixtures/legacy-v063-source/src/App.tsx": {
+      "current": "fdd4dab29bae7edbb4755b7f45dc8c1d2ae322d5c22e7e657ead7f15aaaaa669",
+      "previous": "fdd4dab29bae7edbb4755b7f45dc8c1d2ae322d5c22e7e657ead7f15aaaaa669"
+    },
+    "resortOS_v066/tests/fixtures/legacy-v063-source/src/components/Charts.tsx": {
+      "current": "508de5ac7d73a6b40896d249658b5d5fe933e5dc3afd144b345cdad9cfd5b439",
+      "previous": "508de5ac7d73a6b40896d249658b5d5fe933e5dc3afd144b345cdad9cfd5b439"
+    },
+    "resortOS_v066/tests/fixtures/legacy-v063-source/src/components/SupportWorkspace.tsx": {
+      "current": "633d55f7d536e1c2f032c0486a0fe0a146336baf7e4db0bd88859f32d7f7dc8d",
+      "previous": "633d55f7d536e1c2f032c0486a0fe0a146336baf7e4db0bd88859f32d7f7dc8d"
+    },
+    "resortOS_v066/tests/fixtures/legacy-v063-source/src/components/Ui.tsx": {
+      "current": "85d15bf2692a507942953a7d65f3f7c0e2090470a7e094d1ee6d102928467129",
+      "previous": "85d15bf2692a507942953a7d65f3f7c0e2090470a7e094d1ee6d102928467129"
+    },
+    "resortOS_v066/tests/fixtures/legacy-v063-source/src/data/demo.ts": {
+      "current": "08750ecd7a857af03245595ac4ac97f417db7528ea20fb48eb3e985a68ebf8b3",
+      "previous": "08750ecd7a857af03245595ac4ac97f417db7528ea20fb48eb3e985a68ebf8b3"
+    },
+    "resortOS_v066/tests/fixtures/legacy-v063-source/src/data/qualityFixtures.ts": {
+      "current": "e6623541fca852d45d526845c21caa6c8ad24e255e03e32aedf2396e0d2a5651",
+      "previous": "e6623541fca852d45d526845c21caa6c8ad24e255e03e32aedf2396e0d2a5651"
+    },
+    "resortOS_v066/tests/fixtures/legacy-v063-source/src/domain/store.ts": {
+      "current": "85b7a032b501b6c80cfa6b6bc912f31343300d4fbf734e48abfbbaf76415715f",
+      "previous": "85b7a032b501b6c80cfa6b6bc912f31343300d4fbf734e48abfbbaf76415715f"
+    },
+    "resortOS_v066/tests/fixtures/legacy-v063-source/src/domain/supportNavigation.ts": {
+      "current": "661ed7df35a2198c55424dd23df7180aa9ecb07ba89b4306973648150ffb2d8d",
+      "previous": "661ed7df35a2198c55424dd23df7180aa9ecb07ba89b4306973648150ffb2d8d"
+    },
+    "resortOS_v066/tests/fixtures/legacy-v063-source/src/domain/types.ts": {
+      "current": "6b0a40850d0c5a35ed8d47cadb83ee56be12bdf8e315fe8f18b58ba5b4b62cbd",
+      "previous": "6b0a40850d0c5a35ed8d47cadb83ee56be12bdf8e315fe8f18b58ba5b4b62cbd"
+    },
+    "resortOS_v066/tests/fixtures/legacy-v063-source/src/main.tsx": {
+      "current": "e8a7526c68d631f4bf81157ace28d1e90b82c4fa8d649ba36aa35ad8804cf777",
+      "previous": "e8a7526c68d631f4bf81157ace28d1e90b82c4fa8d649ba36aa35ad8804cf777"
+    },
+    "resortOS_v066/tests/fixtures/legacy-v063-source/vite.config.ts": {
+      "current": "111dbdab18db74de3329cd4e21fc96d5456f1ce05fe2901892bc5a20f3cde325",
+      "previous": "111dbdab18db74de3329cd4e21fc96d5456f1ce05fe2901892bc5a20f3cde325"
+    },
+    "resortOS_v066/tests/fixtures/v062-approved-baseline.json": {
+      "current": "742b66d9f471519c7886dad50d7f16b7f6de22348c34682d15c51e06561585b9",
+      "previous": "742b66d9f471519c7886dad50d7f16b7f6de22348c34682d15c51e06561585b9"
+    },
+    "resortOS_v066/tests/fixtures/v065-untouched-during-dashboard.json": {
+      "current": "32d04d6a7df5d250c89da95763078bd0d55e96762c08dbb5103f55892b283dcf",
+      "previous": "32d04d6a7df5d250c89da95763078bd0d55e96762c08dbb5103f55892b283dcf"
+    },
+    "resortOS_v066/tests/foundation.test.mjs": {
+      "current": "c3f1602a71c48a65a0b113a7b806f6049c17330b5aa4d581940c387cc30d872e",
+      "previous": "c3f1602a71c48a65a0b113a7b806f6049c17330b5aa4d581940c387cc30d872e"
+    },
+    "resortOS_v066/tests/global-pages-search.test.mjs": {
+      "current": "db9fcddb03b9a6249731301d8cb5b91198e09ff5f49295ed231f34806e5023f0",
+      "previous": "db9fcddb03b9a6249731301d8cb5b91198e09ff5f49295ed231f34806e5023f0"
+    },
+    "resortOS_v066/tests/helpers/css-for-legacy-checks.mjs": {
+      "current": "8c32ce55ada40a0af5991b853b1e530fac8d7b5ab2a89fc8d44cc19ecb789a81",
+      "previous": "8c32ce55ada40a0af5991b853b1e530fac8d7b5ab2a89fc8d44cc19ecb789a81"
+    },
+    "resortOS_v066/tests/helpers/source-for-legacy-checks.mjs": {
+      "current": "f8b4615c7f6ba485244affa3b02e6566cf831fc74cd62768dd26d5c915efe1fe",
+      "previous": "f8b4615c7f6ba485244affa3b02e6566cf831fc74cd62768dd26d5c915efe1fe"
+    },
+    "resortOS_v066/tests/layout-refinement.test.mjs": {
+      "current": "0a6ca49589b71554d4a16158df36e782b096700a52ef8a3f1e049027966d8086",
+      "previous": "0a6ca49589b71554d4a16158df36e782b096700a52ef8a3f1e049027966d8086"
+    },
+    "resortOS_v066/tests/motion-refinement.test.mjs": {
+      "current": "dff78148bbcb4d0773b12b079c70db2abd30ad375e29d430824d8bb79d07bb97",
+      "previous": "dff78148bbcb4d0773b12b079c70db2abd30ad375e29d430824d8bb79d07bb97"
+    },
+    "resortOS_v066/tests/quality-fixtures-runtime.test.mjs": {
+      "current": "9c7ae6666a2d83dfbea259b7c1d51084df1238d599d56800859cefb3e5e824cf",
+      "previous": "9c7ae6666a2d83dfbea259b7c1d51084df1238d599d56800859cefb3e5e824cf"
+    },
+    "resortOS_v066/tests/responsive-refinement.test.mjs": {
+      "current": "8135be8c39741a70c9f216fef8cdda7f29ca684c1b9f1108408c1c7cd7b02cc6",
+      "previous": "8135be8c39741a70c9f216fef8cdda7f29ca684c1b9f1108408c1c7cd7b02cc6"
+    },
+    "resortOS_v066/tests/shared-ticket-integration.test.mjs": {
+      "current": "911c847d68dad00a9bbe96b1414081406022b1408081edb3df820ceeac0fdc68",
+      "previous": "911c847d68dad00a9bbe96b1414081406022b1408081edb3df820ceeac0fdc68"
+    },
+    "resortOS_v066/tests/shortcut-refinement.test.mjs": {
+      "current": "f9c155a2a102f57ccb5a85094173f3cc6bb686305eb70145ce25717d2f9e4bcd",
+      "previous": "f9c155a2a102f57ccb5a85094173f3cc6bb686305eb70145ce25717d2f9e4bcd"
+    },
+    "resortOS_v066/tests/sidebar-v058-acceptance.test.mjs": {
+      "current": "1c91451ce578f8792eebb392f3403ffa12841cf32ac802e6c1070653855a03e3",
+      "previous": "1c91451ce578f8792eebb392f3403ffa12841cf32ac802e6c1070653855a03e3"
+    },
+    "resortOS_v066/tests/sidebar-v059-composition.test.mjs": {
+      "current": "fd75abab9a62344b1d188048aa08e0a734c502a9bc01bcc4e6bb1df308846d9e",
+      "previous": "fd75abab9a62344b1d188048aa08e0a734c502a9bc01bcc4e6bb1df308846d9e"
+    },
+    "resortOS_v066/tests/sidebar-v060-height-refinement.test.mjs": {
+      "current": "6c014fb149faeebe002c3c6aeec0948c7c733286609aade8982217828400a298",
+      "previous": "6c014fb149faeebe002c3c6aeec0948c7c733286609aade8982217828400a298"
+    },
+    "resortOS_v066/tests/support-activity-timeline.test.mjs": {
+      "current": "a57bcf249b5eae75aa339c84ac0bc3aa2ad32631e2f5481483625b962f4b9e02",
+      "previous": "a57bcf249b5eae75aa339c84ac0bc3aa2ad32631e2f5481483625b962f4b9e02"
+    },
+    "resortOS_v066/tests/support-details-design.test.mjs": {
+      "current": "e1df12eeb9b84b7c08e2260798133544c250892535a6e53186c1fed98be38c7f",
+      "previous": "e1df12eeb9b84b7c08e2260798133544c250892535a6e53186c1fed98be38c7f"
+    },
+    "resortOS_v066/tests/support-inbox.test.mjs": {
+      "current": "fe15c250e844386578fff6c686f941427f36f111caa4cab5e0d3fa863c258066",
+      "previous": "fe15c250e844386578fff6c686f941427f36f111caa4cab5e0d3fa863c258066"
+    },
+    "resortOS_v066/tests/support-interaction-foundation.test.mjs": {
+      "current": "d17383b2554681958188ea6cf9d3a75177920cb53688cf805b5b2d949795b77c",
+      "previous": "d17383b2554681958188ea6cf9d3a75177920cb53688cf805b5b2d949795b77c"
+    },
+    "resortOS_v066/tests/support-layout-v062.test.mjs": {
+      "current": "2862bc9a0cb8dda91bc19e96596541008b9089136c2308d39cb05767eae64e95",
+      "previous": "2862bc9a0cb8dda91bc19e96596541008b9089136c2308d39cb05767eae64e95"
+    },
+    "resortOS_v066/tests/support-motion-polish.test.mjs": {
+      "current": "5b9952de28d7395c1af3244cde62456203b351c79e7ca57d0cf88efb5b714634",
+      "previous": "5b9952de28d7395c1af3244cde62456203b351c79e7ca57d0cf88efb5b714634"
+    },
+    "resortOS_v066/tests/support-structure.test.mjs": {
+      "current": "ac7ead661bb4bb40a8457933b95234938defcd0648bb324127ef02a90270a9af",
+      "previous": "ac7ead661bb4bb40a8457933b95234938defcd0648bb324127ef02a90270a9af"
+    },
+    "resortOS_v066/tests/support-tabs-and-promo.test.mjs": {
+      "current": "f9d48f55adf26faae731b63220f9dd4f81e4ba34408d1eb7d3cdf683ca0cbe3a",
+      "previous": "f9d48f55adf26faae731b63220f9dd4f81e4ba34408d1eb7d3cdf683ca0cbe3a"
+    },
+    "resortOS_v066/tests/typescript-readability-v064.test.mjs": {
+      "current": "966b763f8bff44a6065b040f79e450a5b30c7591be86a26ee6900b2cc7e9d773",
+      "previous": "966b763f8bff44a6065b040f79e450a5b30c7591be86a26ee6900b2cc7e9d773"
+    },
+    "resortOS_v066/tests/typography-refinement.test.mjs": {
+      "current": "4117f0d0000542033c8a7766c5e4468bb537ed78a66200287c44bfa6eaa03af7",
+      "previous": "4117f0d0000542033c8a7766c5e4468bb537ed78a66200287c44bfa6eaa03af7"
+    },
+    "resortOS_v066/tools-render-preview.cjs": {
+      "current": "ea3afac12fcd23008061503385bbd943d9232b88c5d748863e8aac8d4f9afb18",
+      "previous": "ea3afac12fcd23008061503385bbd943d9232b88c5d748863e8aac8d4f9afb18"
+    },
+    "resortOS_v066/tools-render-support.cjs": {
+      "current": "f2cf272bda988c575edef40dec41f1707f1d57c836dcc3ec121bbb1a825f88ee",
+      "previous": "f2cf272bda988c575edef40dec41f1707f1d57c836dcc3ec121bbb1a825f88ee"
+    },
+    "resortOS_v066/tsconfig.json": {
+      "current": "3520a98e7b36269f80bd3c1605dbbd43fff80cd775415aecd471d39da9b86e47",
+      "previous": "3520a98e7b36269f80bd3c1605dbbd43fff80cd775415aecd471d39da9b86e47"
+    },
+    "resortOS_v066/vite.config.ts": {
+      "current": "2e22169dcf47cfa4b5ed63f65ff54d622a6f8d6927e2950e216ada60ae1d1566",
+      "previous": "2e22169dcf47cfa4b5ed63f65ff54d622a6f8d6927e2950e216ada60ae1d1566"
+    },
+    "scripts/check-typescript-syntax.cjs": {
+      "current": "1e65b7830566e96d28729ad54dee00c00611bb9454ff1acb35ce08ff23d82a83",
+      "previous": "1e65b7830566e96d28729ad54dee00c00611bb9454ff1acb35ce08ff23d82a83"
+    },
+    "scripts/css-semantic.cjs": {
+      "current": "50f94bddd5e74f02e6a55a286e5043dedaec86d833c582ac3dc964f7779b645b",
+      "previous": "50f94bddd5e74f02e6a55a286e5043dedaec86d833c582ac3dc964f7779b645b"
+    },
+    "scripts/format-css.cjs": {
+      "current": "318305387433412911af9c4765fb5f105e82352f8f27c6a27132c105a9fd130e",
+      "previous": "318305387433412911af9c4765fb5f105e82352f8f27c6a27132c105a9fd130e"
+    },
+    "scripts/front-desk-successor.cjs": {
+      "current": "e178c1f91ebecf48f512ee69a693c1da16f91bbf86f9e57b5189452c9f15e904",
+      "previous": "e178c1f91ebecf48f512ee69a693c1da16f91bbf86f9e57b5189452c9f15e904"
+    },
+    "scripts/qa-menu-categories-live.mjs": {
+      "current": "4b20f1f56a1d7299419799e74b872dde90b33b70dd961ceeefe7af6a2bddd77d",
+      "previous": "4b20f1f56a1d7299419799e74b872dde90b33b70dd961ceeefe7af6a2bddd77d"
+    },
+    "scripts/qa-polling.mjs": {
+      "current": "5bb8f2d8d403878752766315585de60822697f08c8c96c0ef3eed5f4dca8ee71",
+      "previous": "5bb8f2d8d403878752766315585de60822697f08c8c96c0ef3eed5f4dca8ee71"
+    },
+    "scripts/qa-restaurant-live.mjs": {
+      "current": "ce4646cb7cb8c785d9aff6f15d97ce8d953648518b4843fbb61d9d725b501a0c",
+      "previous": "ce4646cb7cb8c785d9aff6f15d97ce8d953648518b4843fbb61d9d725b501a0c"
+    },
+    "scripts/qa-rooms-manager-live.mjs": {
+      "current": "e951349591ba75e9fde4741576b126dc373db498ad355c2350bbc21a65562ddc",
+      "previous": "e951349591ba75e9fde4741576b126dc373db498ad355c2350bbc21a65562ddc"
+    },
+    "scripts/qa-service-catalog-live.mjs": {
+      "current": "1d3208656cc761cb8a16651a5e3b512680f8e373d52ea3b2690c562fb0bf16a3",
+      "previous": "1d3208656cc761cb8a16651a5e3b512680f8e373d52ea3b2690c562fb0bf16a3"
+    },
+    "scripts/qa-stage2-live.mjs": {
+      "current": "bf97ac6187442942a571196313cd1d4f0a66a8c309c929c4818801eca25dbcf9",
+      "previous": "bf97ac6187442942a571196313cd1d4f0a66a8c309c929c4818801eca25dbcf9"
+    },
+    "scripts/qa-system-management-live.mjs": {
+      "current": "daede415e732e88c1a11c234b10245397d000c5726df2daf987d2549fd5cf2fb",
+      "previous": "daede415e732e88c1a11c234b10245397d000c5726df2daf987d2549fd5cf2fb"
+    },
+    "scripts/qa-tables-drag-live.mjs": {
+      "current": "52f070cf92de686d7042691d5d28f2bb6c87bc8125e45e57bab2e8f0c910c3ac",
+      "previous": "52f070cf92de686d7042691d5d28f2bb6c87bc8125e45e57bab2e8f0c910c3ac"
+    },
+    "scripts/qa-tables-manager-live.mjs": {
+      "current": "71274e9054222d6ab944c41ee8f784fbcd1a7e244b31a300e00290e90aa1d951",
+      "previous": "71274e9054222d6ab944c41ee8f784fbcd1a7e244b31a300e00290e90aa1d951"
+    },
+    "scripts/typescript-semantic.cjs": {
+      "current": "05c58b294cc6f8ecd85baf39d9b82606600c1f80db39ba554ba447256a578622",
+      "previous": "05c58b294cc6f8ecd85baf39d9b82606600c1f80db39ba554ba447256a578622"
+    },
+    "scripts/verify-approved-baseline.cjs": {
+      "current": "c8adde6b8ebe63e01c1e8cae46f8670bed18711fb102e9711ec3c0b4b706578c",
+      "previous": "c8adde6b8ebe63e01c1e8cae46f8670bed18711fb102e9711ec3c0b4b706578c"
+    },
+    "scripts/verify-global-ui-hotfix.cjs": {
+      "current": "ce1a67296432eec3de0a5935e881397165cf74bb4498aba14ad191181ee567f8",
+      "previous": "ce1a67296432eec3de0a5935e881397165cf74bb4498aba14ad191181ee567f8"
+    },
+    "scripts/verify-logo-quality-build-fix.cjs": {
+      "current": "a2e07094bc2518aec2e414aee02b9e7d3e7d1941011c19c07b939729c3c8693a",
+      "previous": "a2e07094bc2518aec2e414aee02b9e7d3e7d1941011c19c07b939729c3c8693a"
+    },
+    "scripts/verify-premium-integrity.cjs": {
+      "current": "457b9d044c5a42d7e29f2ede5d654425e135d8c93926867f09d578a0d1b0723c",
+      "previous": "457b9d044c5a42d7e29f2ede5d654425e135d8c93926867f09d578a0d1b0723c"
+    },
+    "scripts/verify-recovery-integrity.cjs": {
+      "current": "aa7e607f3aff6c8d082718fdf8e73ae41a763c451833a2b785ec7e6475345734",
+      "previous": "aa7e607f3aff6c8d082718fdf8e73ae41a763c451833a2b785ec7e6475345734"
+    },
+    "scripts/verify-shell-extraction.cjs": {
+      "current": "f09fe650f2452abef22970c475ed9e348d33c3cb08a63196354a4d5d06c9f213",
+      "previous": "f09fe650f2452abef22970c475ed9e348d33c3cb08a63196354a4d5d06c9f213"
+    },
+    "scripts/verify-system-management-entrypoint.cjs": {
+      "current": "51ab5dfa54f1521cffce88744097d9075d03518c846328f823d26297e468a904",
+      "previous": "51ab5dfa54f1521cffce88744097d9075d03518c846328f823d26297e468a904"
+    },
+    "scripts/verify-workspace-transition-integrity.cjs": {
+      "current": "2fafa23a45ce1acc175bb5efc2e46b96fb609c27076af6b8a3d46fbe7b700138",
+      "previous": "2fafa23a45ce1acc175bb5efc2e46b96fb609c27076af6b8a3d46fbe7b700138"
+    },
+    "src/App.tsx": {
+      "current": "e6fadb0035dc92f8f7e43c473857ba1cb9cbf80f47f3d3289f6457cfba5e103a",
+      "previous": "e6fadb0035dc92f8f7e43c473857ba1cb9cbf80f47f3d3289f6457cfba5e103a"
+    },
+    "src/components/Charts.tsx": {
+      "current": "bc51a481dff688d29d006f2e4bb7dd74dd38015ac5ec9c0fdfcd1678b0c11628",
+      "previous": "bc51a481dff688d29d006f2e4bb7dd74dd38015ac5ec9c0fdfcd1678b0c11628"
+    },
+    "src/components/SupportWorkspace.tsx": {
+      "current": "69778d965efefc0a822f3d30f9578d34a5ff8fdf03dce27cb49cf7005422d7dc",
+      "previous": "69778d965efefc0a822f3d30f9578d34a5ff8fdf03dce27cb49cf7005422d7dc"
+    },
+    "src/components/Ui.tsx": {
+      "current": "5d0272afba0f2f0a77dea2d84ea7c9a7b1b9ed2acc6cb1fed694632f424e33e0",
+      "previous": "5d0272afba0f2f0a77dea2d84ea7c9a7b1b9ed2acc6cb1fed694632f424e33e0"
+    },
+    "src/data/demo.ts": {
+      "current": "b818c595cd06e2171a41b7587e875fa3b11961a3874c68394de1314798e2193c",
+      "previous": "b818c595cd06e2171a41b7587e875fa3b11961a3874c68394de1314798e2193c"
+    },
+    "src/data/qualityFixtures.ts": {
+      "current": "27acbedfde3ead3b47818b9672bae759d3d7c709249f0b1ae047faa1d164496b",
+      "previous": "27acbedfde3ead3b47818b9672bae759d3d7c709249f0b1ae047faa1d164496b"
+    },
+    "src/domain/store.ts": {
+      "current": "7f8728bda01416a25fe1b3b7783d781d7f68428d2943d064cc30aecd117d0939",
+      "previous": "7f8728bda01416a25fe1b3b7783d781d7f68428d2943d064cc30aecd117d0939"
+    },
+    "src/domain/supportNavigation.ts": {
+      "current": "9b602423f4337260808c1f501c06d34a5b851a1773653838019e215015b90211",
+      "previous": "9b602423f4337260808c1f501c06d34a5b851a1773653838019e215015b90211"
+    },
+    "src/domain/types.ts": {
+      "current": "d2f849b10b3dbe865aadae77343cef5384f5955d4702e26e1e960947ef59b0d2",
+      "previous": "d2f849b10b3dbe865aadae77343cef5384f5955d4702e26e1e960947ef59b0d2"
+    },
+    "src/features/dashboard/Dashboard.tsx": {
+      "current": "4ed9c1066fc273250c2c643e8c2e402767c4b803ec56f426ffbf9fa6a5e60151",
+      "previous": "4ed9c1066fc273250c2c643e8c2e402767c4b803ec56f426ffbf9fa6a5e60151"
+    },
+    "src/features/front-desk/FrontDeskCharges.tsx": {
+      "current": "fc053a8b71356dec282c87f631e6a762a680eb2be1875314f6ef9b21ec67c281",
+      "previous": "fc053a8b71356dec282c87f631e6a762a680eb2be1875314f6ef9b21ec67c281"
+    },
+    "src/features/front-desk/FrontDeskCheckout.tsx": {
+      "current": "4db0166539a9a658d9a22f9eff413c03c2eeecd5a018d0bc4dd76b3486a21b18",
+      "previous": "4db0166539a9a658d9a22f9eff413c03c2eeecd5a018d0bc4dd76b3486a21b18"
+    },
+    "src/features/front-desk/FrontDeskDashboard.tsx": {
+      "current": "686cca38258b8a4bb30734f350cd088fc5d196f8f3cbedf0007ad1dba63d3622",
+      "previous": "686cca38258b8a4bb30734f350cd088fc5d196f8f3cbedf0007ad1dba63d3622"
+    },
+    "src/features/front-desk/FrontDeskRooms.tsx": {
+      "current": "83b38e29220faf674329c8f55b912b2cf8c5ba93f4b4cf3a172a71642a06e22b",
+      "previous": "83b38e29220faf674329c8f55b912b2cf8c5ba93f4b4cf3a172a71642a06e22b"
+    },
+    "src/features/front-desk/charges.ts": {
+      "current": "0bdcac8e9f230a9b85cc368079d8c69681ce75ea09b1368f180a37305b8eba11",
+      "previous": "0bdcac8e9f230a9b85cc368079d8c69681ce75ea09b1368f180a37305b8eba11"
+    },
+    "src/features/front-desk/checkout.ts": {
+      "current": "171f01d8306f4e2c882f4644961fc07a7192d82280f8a2e75f95c7d2787ea3d5",
+      "previous": "171f01d8306f4e2c882f4644961fc07a7192d82280f8a2e75f95c7d2787ea3d5"
+    },
+    "src/features/front-desk/dashboardMetrics.ts": {
+      "current": "2ec85c3cf86221a58c62c16ae26f0f350b0b45b86881e02b466760111c8eb4f3",
+      "previous": "2ec85c3cf86221a58c62c16ae26f0f350b0b45b86881e02b466760111c8eb4f3"
+    },
+    "src/features/front-desk/front-desk-charges.css": {
+      "current": "964d93395090c8afeab69f0fec3ebcffa5eb76811faee652ca22fb20a16c4fba",
+      "previous": "964d93395090c8afeab69f0fec3ebcffa5eb76811faee652ca22fb20a16c4fba"
+    },
+    "src/features/front-desk/front-desk-checkout.css": {
+      "current": "0fd5cef821298bc8f4ec46ba808597d882b295933772e145079d2d9fe46fff7b",
+      "previous": "0fd5cef821298bc8f4ec46ba808597d882b295933772e145079d2d9fe46fff7b"
+    },
+    "src/features/front-desk/front-desk-rooms.css": {
+      "current": "da6864b16d77296af5a2903550ffe4eb5454c73543931a12f1e4fb8a5471afa2",
+      "previous": "da6864b16d77296af5a2903550ffe4eb5454c73543931a12f1e4fb8a5471afa2"
+    },
+    "src/features/front-desk/roomMetrics.ts": {
+      "current": "e7d55c3e408c6ac66bb137487facb789cabdcac53f549f9326a2c3a6a2e4fb54",
+      "previous": "e7d55c3e408c6ac66bb137487facb789cabdcac53f549f9326a2c3a6a2e4fb54"
+    },
+    "src/features/front-desk/stays.ts": {
+      "current": "35abf3a328de441ce12a3c52aa5718796155f1cd7914967bccff40fba755a2c9",
+      "previous": "35abf3a328de441ce12a3c52aa5718796155f1cd7914967bccff40fba755a2c9"
+    },
+    "src/features/menu-categories/MenuCategories.tsx": {
+      "current": "0f136441856b58f1e491bdcc1e6b69a776e8824a319fd49fae9aa5c5f1fa0121",
+      "previous": "0f136441856b58f1e491bdcc1e6b69a776e8824a319fd49fae9aa5c5f1fa0121"
+    },
+    "src/features/menu-categories/images.ts": {
+      "current": "52e3cbf49a8f154a220604f5dd60901172dc161ca8d20115a2a50dde144b02ec",
+      "previous": "52e3cbf49a8f154a220604f5dd60901172dc161ca8d20115a2a50dde144b02ec"
+    },
+    "src/features/menu-categories/menu-categories.css": {
+      "current": "6ce8992204b325776a7f5427df673214929fad7c087b963ed73f7b5b86d8b7f3",
+      "previous": "6ce8992204b325776a7f5427df673214929fad7c087b963ed73f7b5b86d8b7f3"
+    },
+    "src/features/menu-categories/model.ts": {
+      "current": "c7fd99006196dd3b59a1a87c68f07624e08d5822cfd4ddddd44ff19d51aded56",
+      "previous": "c7fd99006196dd3b59a1a87c68f07624e08d5822cfd4ddddd44ff19d51aded56"
+    },
+    "src/features/menu-categories/storage.ts": {
+      "current": "d9f88b023629f38f78b21531c47ca7b119f6fba98bfda05af23490a13257fecd",
+      "previous": "d9f88b023629f38f78b21531c47ca7b119f6fba98bfda05af23490a13257fecd"
+    },
+    "src/features/menu-management/MenuManagement.tsx": {
+      "current": "13fc6e7bf46da53b9834fdf0ccfd9fa7f79cf622390293e167308560454bddc2",
+      "previous": "13fc6e7bf46da53b9834fdf0ccfd9fa7f79cf622390293e167308560454bddc2"
+    },
+    "src/features/menu-management/menu-management.css": {
+      "current": "bb95d427016a020554ec74b2da5e536e17cc8a9ef7a6383584db77c91311cfeb",
+      "previous": "bb95d427016a020554ec74b2da5e536e17cc8a9ef7a6383584db77c91311cfeb"
+    },
+    "src/features/menu-management/model.ts": {
+      "current": "ed4b313af176fd136e19bf12a8811afbcbd53bf53e7a4de8d44c74a717d73efa",
+      "previous": "ed4b313af176fd136e19bf12a8811afbcbd53bf53e7a4de8d44c74a717d73efa"
+    },
+    "src/features/menu-management/storage.ts": {
+      "current": "858b355f3c96efd10382081b74a0f273611c231316a2edf562b9210454264ef6",
+      "previous": "858b355f3c96efd10382081b74a0f273611c231316a2edf562b9210454264ef6"
+    },
+    "src/features/payment-methods/PaymentMethodSelect.tsx": {
+      "current": "2a79a5e3544dcc14e47824655e6fd6dc19a4007ba21b71ced9b0fab372983280",
+      "previous": "2a79a5e3544dcc14e47824655e6fd6dc19a4007ba21b71ced9b0fab372983280"
+    },
+    "src/features/payment-methods/PaymentMethods.tsx": {
+      "current": "527faaa5cf316c042d9b4fe60b4a9500f4dce87170cfa07f9e5fada5fa0e9a41",
+      "previous": "527faaa5cf316c042d9b4fe60b4a9500f4dce87170cfa07f9e5fada5fa0e9a41"
+    },
+    "src/features/payment-methods/model.ts": {
+      "current": "a62892f541939e8be008cf946984c8eaecb96f3b04b209e215753406bce5d48b",
+      "previous": "a62892f541939e8be008cf946984c8eaecb96f3b04b209e215753406bce5d48b"
+    },
+    "src/features/payment-methods/payment-methods.css": {
+      "current": "d4d15d4086e29bdf9a8e76b3cb50b1436d9f8d8cb6f5785098bad2bdd9cbb598",
+      "previous": "d4d15d4086e29bdf9a8e76b3cb50b1436d9f8d8cb6f5785098bad2bdd9cbb598"
+    },
+    "src/features/restaurant-orders/RestaurantOrders.tsx": {
+      "current": "79169d770aba50e05139979df3f83d740accc3b1c509a582221bfd777e771378",
+      "previous": "79169d770aba50e05139979df3f83d740accc3b1c509a582221bfd777e771378"
+    },
+    "src/features/restaurant-orders/restaurant-orders.css": {
+      "current": "6bd0a899a00860ee8837d73f1c8d85504fa3cb5e9b1b714b6b03bc8c5086f608",
+      "previous": "6bd0a899a00860ee8837d73f1c8d85504fa3cb5e9b1b714b6b03bc8c5086f608"
+    },
+    "src/features/restaurant-tables/DemoPaymentDialog.tsx": {
+      "current": "d0ceb06bd9c850cf54fd8a0e0be9a181c24ddd720b6b5694f4ef321f7e3e92a0",
+      "previous": "d0ceb06bd9c850cf54fd8a0e0be9a181c24ddd720b6b5694f4ef321f7e3e92a0"
+    },
+    "src/features/restaurant-tables/DialogFrame.tsx": {
+      "current": "8995bea6e47be5d38c2a0e09349dd55c2ad8efb47a2a47883751e46a18616bfa",
+      "previous": "8995bea6e47be5d38c2a0e09349dd55c2ad8efb47a2a47883751e46a18616bfa"
+    },
+    "src/features/restaurant-tables/OrderWorkspace.tsx": {
+      "current": "cec74f871211b1df219550b751097310bb91f39819a935f403392ec877a2b10a",
+      "previous": "cec74f871211b1df219550b751097310bb91f39819a935f403392ec877a2b10a"
+    },
+    "src/features/restaurant-tables/Reservations.tsx": {
+      "current": "2152957aeb35df892ea147317f60f23766e635be0355610bc8c82605c4d52b6f",
+      "previous": "2152957aeb35df892ea147317f60f23766e635be0355610bc8c82605c4d52b6f"
+    },
+    "src/features/restaurant-tables/RestaurantTables.tsx": {
+      "current": "43bd0b9f0144d7c5621b187d4c092ffb3fbe7195062f7bb46642bec604033514",
+      "previous": "43bd0b9f0144d7c5621b187d4c092ffb3fbe7195062f7bb46642bec604033514"
+    },
+    "src/features/restaurant-tables/TableOverviews.tsx": {
+      "current": "f4bbd9f6f72cd075d6664cafbf76daaf8549337c25932553e004168144fcd5cc",
+      "previous": "f4bbd9f6f72cd075d6664cafbf76daaf8549337c25932553e004168144fcd5cc"
+    },
+    "src/features/restaurant-tables/model.ts": {
+      "current": "ff7a7ec3eab4447bfaf488259001b8a7188c6b979ffbe7dcbf7f1655d5d4a378",
+      "previous": "ff7a7ec3eab4447bfaf488259001b8a7188c6b979ffbe7dcbf7f1655d5d4a378"
+    },
+    "src/features/restaurant-tables/restaurant-tables.css": {
+      "current": "2b073979a44f1b69e012ffa031e1507af149aaa3b0a2bd2f284079c2b63cdd88",
+      "previous": "2b073979a44f1b69e012ffa031e1507af149aaa3b0a2bd2f284079c2b63cdd88"
+    },
+    "src/features/restaurant-tables/storage.ts": {
+      "current": "12205a2f3cf35e263fdaa1c33ded2f50bb2c60aac56d3f241868a8496c0c0cbe",
+      "previous": "12205a2f3cf35e263fdaa1c33ded2f50bb2c60aac56d3f241868a8496c0c0cbe"
+    },
+    "src/features/restaurant/RestaurantDashboard.tsx": {
+      "current": "a4627d2bec39193fd4cd98e8a542d092d95fad644f7f39f470362a767f6a6c2b",
+      "previous": "a4627d2bec39193fd4cd98e8a542d092d95fad644f7f39f470362a767f6a6c2b"
+    },
+    "src/features/restaurant/dashboardMetrics.ts": {
+      "current": "fbc1e8597a46773fc7f50daefa845fd54aba963386fd4d7fa086cc4f2126788e",
+      "previous": "fbc1e8597a46773fc7f50daefa845fd54aba963386fd4d7fa086cc4f2126788e"
+    },
+    "src/features/restaurant/restaurant-dashboard.css": {
+      "current": "f6ada5ab9b767663ff230a762f6b328fdac0542eeac213c394ca038ce30d514f",
+      "previous": "f6ada5ab9b767663ff230a762f6b328fdac0542eeac213c394ca038ce30d514f"
+    },
+    "src/features/rooms-manager/RoomsManager.tsx": {
+      "current": "f000bcd46d442e348a0a00db9580fadd454af19c7c6d329bc092f7335f9c857b",
+      "previous": "f000bcd46d442e348a0a00db9580fadd454af19c7c6d329bc092f7335f9c857b"
+    },
+    "src/features/rooms-manager/model.ts": {
+      "current": "7342728a39db8e8085f731eb521da6daef8fa1b31280e77a864f959b02cb2eb5",
+      "previous": "7342728a39db8e8085f731eb521da6daef8fa1b31280e77a864f959b02cb2eb5"
+    },
+    "src/features/rooms-manager/rooms-manager.css": {
+      "current": "f21b647a985fda15a7b65ba4dfa624ba81db2068a1e5cfe747c937ca7366dfd9",
+      "previous": "f21b647a985fda15a7b65ba4dfa624ba81db2068a1e5cfe747c937ca7366dfd9"
+    },
+    "src/features/service-catalog/ServiceCatalog.tsx": {
+      "current": "c64a03dffa92b1c54e7293728e9d3227fa6c8d7e20369296d0eb45f266b9ae2a",
+      "previous": "c64a03dffa92b1c54e7293728e9d3227fa6c8d7e20369296d0eb45f266b9ae2a"
+    },
+    "src/features/service-catalog/model.ts": {
+      "current": "55f6d30f091d335fc042fb688d96dfe48da7b32bf0fdf498767c706e520fa533",
+      "previous": "55f6d30f091d335fc042fb688d96dfe48da7b32bf0fdf498767c706e520fa533"
+    },
+    "src/features/service-catalog/service-catalog.css": {
+      "current": "baf8359963026df9f6b1c71ccf830b2110171d859ab8593b32c245d4bceda74a",
+      "previous": "baf8359963026df9f6b1c71ccf830b2110171d859ab8593b32c245d4bceda74a"
+    },
+    "src/features/system-management/SystemManagement.tsx": {
+      "current": "b3d6eaa3a801af468c535e5f5c063992da39ad1ab52ef814dce7da60bb5c8a7b",
+      "previous": "b3d6eaa3a801af468c535e5f5c063992da39ad1ab52ef814dce7da60bb5c8a7b"
+    },
+    "src/features/tables-manager/TablesManager.tsx": {
+      "current": "b20bb2bac286010ce09595c4d6001c9d2af0a45b6abfbe6bfb6ad7e2f4929ca5",
+      "previous": "b20bb2bac286010ce09595c4d6001c9d2af0a45b6abfbe6bfb6ad7e2f4929ca5"
+    },
+    "src/features/tables-manager/model.ts": {
+      "current": "ba3cca90dfe176bfc962d4931da2793baa8f1807684eb0578de1716f0c67a94b",
+      "previous": "ba3cca90dfe176bfc962d4931da2793baa8f1807684eb0578de1716f0c67a94b"
+    },
+    "src/features/tables-manager/tables-manager.css": {
+      "current": "4ab04047ab42712dbbe64a98de9387d94af56d78f052c9f262894eb9c1d26b48",
+      "previous": "4ab04047ab42712dbbe64a98de9387d94af56d78f052c9f262894eb9c1d26b48"
+    },
+    "src/main.tsx": {
+      "current": "a81c5341e79cbdc7bb47d2f26c5762513ce63955250aba2ada6a121da7bcf0c9",
+      "previous": "a81c5341e79cbdc7bb47d2f26c5762513ce63955250aba2ada6a121da7bcf0c9"
+    },
+    "src/shell/GlobalSearch.tsx": {
+      "current": "768dc66c1325b68e491246679b9dfd30fda4bb83632d80cc8803bec72632801f",
+      "previous": "768dc66c1325b68e491246679b9dfd30fda4bb83632d80cc8803bec72632801f"
+    },
+    "src/shell/Sidebar.tsx": {
+      "current": "4b5805fe5679fbde7c8ca626cd48a9bc11f4b846a134fb0539e176621423c341",
+      "previous": "9654b0e2bb004f8e84ef68ab9ff79d7cbf846c790c1178b04bb8927cd3b399a6"
+    },
+    "src/shell/Topbar.tsx": {
+      "current": "4325bc1d36eb9c156f6997b7b77133ee493df8ef648e32f6b2cfeae0fba909b9",
+      "previous": "4325bc1d36eb9c156f6997b7b77133ee493df8ef648e32f6b2cfeae0fba909b9"
+    },
+    "src/shell/WorkspaceSwitcher.tsx": {
+      "current": "c51b963105625362fc788c8427f1e3a32b168e38d42d3a054426f4927223b7b2",
+      "previous": "c51b963105625362fc788c8427f1e3a32b168e38d42d3a054426f4927223b7b2"
+    },
+    "src/shell/WorkspaceTransitionOverlay.tsx": {
+      "current": "da0c12956d90ba8d8a72e88fb0f24ddafda8eae4dd34fe615193245f6a705e08",
+      "previous": "ca0a12ce85f8b7c21bc23c0f65d07b2b8842ddc1efe39ae95dff8ed6ad92a7b6"
+    },
+    "src/shell/navigation.ts": {
+      "current": "8415eeec854a1a110cefc0a683617aec7f46694de8208e3f824ce90303df2ba0",
+      "previous": "8415eeec854a1a110cefc0a683617aec7f46694de8208e3f824ce90303df2ba0"
+    },
+    "src/shell/workspaceTransition.ts": {
+      "current": "1e048ea827906800931b116726c072fbdf2e0ac23624ab5be5581cad9c65e735",
+      "previous": "1e048ea827906800931b116726c072fbdf2e0ac23624ab5be5581cad9c65e735"
+    },
+    "src/styles/app.css": {
+      "current": "e52cf79bca95b9bc9c19fc888a2652b38570fd2a0d1575c4d929f6458b0117e4",
+      "previous": "9445b404878548158de03fa77ab669f059855ec305b8d4f8c99c9f0dfa62afdd"
+    },
+    "src/styles/components.css": {
+      "current": "d875c0656c3b31b3c34cb7f6b8ac41163e3f379a604df67be01e256b5493cb6c",
+      "previous": "d875c0656c3b31b3c34cb7f6b8ac41163e3f379a604df67be01e256b5493cb6c"
+    },
+    "src/styles/layout-integration-v062.css": {
+      "current": "8e589975509fc89339cd8bc1689fdf7765a44c3f8b3f62597d8cc38f17d5625a",
+      "previous": "8e589975509fc89339cd8bc1689fdf7765a44c3f8b3f62597d8cc38f17d5625a"
+    },
+    "src/styles/light-sidebar-v058.css": {
+      "current": "2867cdf444826f830dbdfb5eb1972b806094b82d1e22a7c9a4f83b600042172c",
+      "previous": "2867cdf444826f830dbdfb5eb1972b806094b82d1e22a7c9a4f83b600042172c"
+    },
+    "src/styles/motion.css": {
+      "current": "7b7837d2f8af32f3359647dff945a0b7765a4a594e3299a8182c3c7022184343",
+      "previous": "7b7837d2f8af32f3359647dff945a0b7765a4a594e3299a8182c3c7022184343"
+    },
+    "src/styles/navigation-cleanup.css": {
+      "current": "20445959c87a5ca6e4df865580eae00eea2974f4fff3a2d5b89fc40be21ac7c8",
+      "previous": "20445959c87a5ca6e4df865580eae00eea2974f4fff3a2d5b89fc40be21ac7c8"
+    },
+    "src/styles/premium-interactions.css": {
+      "current": "8d8d5eb397971c405077a64552128670d54f3089c4e4c5d1703dc93003aa37dd",
+      "previous": "8d8d5eb397971c405077a64552128670d54f3089c4e4c5d1703dc93003aa37dd"
+    },
+    "src/styles/profile-workspace-hotfix.css": {
+      "current": "32fdee315c14be15b7a1060f13ae0bce72ca1f727f6a887f02b628809923eb9e",
+      "previous": "32fdee315c14be15b7a1060f13ae0bce72ca1f727f6a887f02b628809923eb9e"
+    },
+    "src/styles/responsive.css": {
+      "current": "960f9fcf9947dd6eb19a22574fe4f2d6c880482338e6f0d71f4651ec5efa1313",
+      "previous": "960f9fcf9947dd6eb19a22574fe4f2d6c880482338e6f0d71f4651ec5efa1313"
+    },
+    "src/styles/sidebar-story.css": {
+      "current": "230fd41b4820ffbc8cc418a254c82f60b7127796e0d4084d2acd6dfec65738da",
+      "previous": "230fd41b4820ffbc8cc418a254c82f60b7127796e0d4084d2acd6dfec65738da"
+    },
+    "src/styles/support-motion.css": {
+      "current": "5d8f8700201d1a38e2129ada0deb5567a0649e5a01d5e8ecf477f39d26ccb27e",
+      "previous": "5d8f8700201d1a38e2129ada0deb5567a0649e5a01d5e8ecf477f39d26ccb27e"
+    },
+    "src/styles/support.css": {
+      "current": "a5250627554b7b7187db8322eca8f5ea9504e8183a05c18f79aa51cee6f6a060",
+      "previous": "a5250627554b7b7187db8322eca8f5ea9504e8183a05c18f79aa51cee6f6a060"
+    },
+    "src/styles/system-management.css": {
+      "current": "d3b8306d252efd21049bfdc737e8ca6aa8b892bd88152617b886a3e19ead3667",
+      "previous": "d3b8306d252efd21049bfdc737e8ca6aa8b892bd88152617b886a3e19ead3667"
+    },
+    "src/styles/tokens.css": {
+      "current": "98af423a6e0175e3c118fc82411997590519518a2bbeb8b3f8e3b48dde67cdf4",
+      "previous": "98af423a6e0175e3c118fc82411997590519518a2bbeb8b3f8e3b48dde67cdf4"
+    },
+    "src/styles/typography.css": {
+      "current": "2c300a09b34e79fb9c2b657088744304c1555e72bd899c5c6058509d27628162",
+      "previous": "2c300a09b34e79fb9c2b657088744304c1555e72bd899c5c6058509d27628162"
+    },
+    "tests/admin-navigation-cleanup.test.mjs": {
+      "current": "89e200c5d10ef765b59dfd3c104a6398d369b8be3302533fe188d3258a7b612f",
+      "previous": "89e200c5d10ef765b59dfd3c104a6398d369b8be3302533fe188d3258a7b612f"
+    },
+    "tests/application-shell-v065.test.mjs": {
+      "current": "93a90338f6bf753c88088c61916a1d6a7745eb4d62bebe12038eb0755a4ca19e",
+      "previous": "93a90338f6bf753c88088c61916a1d6a7745eb4d62bebe12038eb0755a4ca19e"
+    },
+    "tests/chart-refinement.test.mjs": {
+      "current": "4ed5c2119fcb4c2d48fff9008ff16a461932c191ed0effebbc2c6413231dad30",
+      "previous": "4ed5c2119fcb4c2d48fff9008ff16a461932c191ed0effebbc2c6413231dad30"
+    },
+    "tests/code-quality-foundation.test.mjs": {
+      "current": "11728af425dd712c07a30ecc608d8ee1f80bb04a8fa5c32b0a54931694b8abaa",
+      "previous": "11728af425dd712c07a30ecc608d8ee1f80bb04a8fa5c32b0a54931694b8abaa"
+    },
+    "tests/control-refinement.test.mjs": {
+      "current": "65ca4934d54dec82831e73c07ef71cf21ffa35637e4ae0fc58f341ad88f9f7e4",
+      "previous": "65ca4934d54dec82831e73c07ef71cf21ffa35637e4ae0fc58f341ad88f9f7e4"
+    },
+    "tests/dashboard-cleanup.test.mjs": {
+      "current": "507f0a8658a1f3fa058fdb55c0b20e9d24619308bd285613e3723c755ccb9880",
+      "previous": "507f0a8658a1f3fa058fdb55c0b20e9d24619308bd285613e3723c755ccb9880"
+    },
+    "tests/dashboard-extraction-v066.test.mjs": {
+      "current": "5da0dc6cc8c72b592b9ac3eb1e9adf4338c4d859101c357694979c8720b0fc8f",
+      "previous": "5da0dc6cc8c72b592b9ac3eb1e9adf4338c4d859101c357694979c8720b0fc8f"
+    },
+    "tests/dashboard-quality.test.mjs": {
+      "current": "1ceca004081099d1b5a127bf6e363ea7cfee2a8ae361e3510487430f7a35f2a4",
+      "previous": "1ceca004081099d1b5a127bf6e363ea7cfee2a8ae361e3510487430f7a35f2a4"
+    },
+    "tests/demo-menu-seeding.test.mjs": {
+      "current": "7c09065c0a106a7b33daf053eab9cdaf9a7908aaccccaa457b35698dabb53820",
+      "previous": "7c09065c0a106a7b33daf053eab9cdaf9a7908aaccccaa457b35698dabb53820"
+    },
+    "tests/fixtures/approved-v064-source/src/App.tsx": {
+      "current": "379711f81477100e828a127f9e27cab1d4baaf846447ec75dc5917a5198b1e23",
+      "previous": "379711f81477100e828a127f9e27cab1d4baaf846447ec75dc5917a5198b1e23"
+    },
+    "tests/fixtures/approved-v064-source/src/components/Charts.tsx": {
+      "current": "bc51a481dff688d29d006f2e4bb7dd74dd38015ac5ec9c0fdfcd1678b0c11628",
+      "previous": "bc51a481dff688d29d006f2e4bb7dd74dd38015ac5ec9c0fdfcd1678b0c11628"
+    },
+    "tests/fixtures/approved-v064-source/src/components/SupportWorkspace.tsx": {
+      "current": "a848e0556520c94ff60f95bc7d79ca59538fcd14879dd15609f313eba9cd3e13",
+      "previous": "a848e0556520c94ff60f95bc7d79ca59538fcd14879dd15609f313eba9cd3e13"
+    },
+    "tests/fixtures/approved-v064-source/src/components/Ui.tsx": {
+      "current": "5d0272afba0f2f0a77dea2d84ea7c9a7b1b9ed2acc6cb1fed694632f424e33e0",
+      "previous": "5d0272afba0f2f0a77dea2d84ea7c9a7b1b9ed2acc6cb1fed694632f424e33e0"
+    },
+    "tests/fixtures/approved-v064-source/src/data/demo.ts": {
+      "current": "b818c595cd06e2171a41b7587e875fa3b11961a3874c68394de1314798e2193c",
+      "previous": "b818c595cd06e2171a41b7587e875fa3b11961a3874c68394de1314798e2193c"
+    },
+    "tests/fixtures/approved-v064-source/src/data/qualityFixtures.ts": {
+      "current": "27acbedfde3ead3b47818b9672bae759d3d7c709249f0b1ae047faa1d164496b",
+      "previous": "27acbedfde3ead3b47818b9672bae759d3d7c709249f0b1ae047faa1d164496b"
+    },
+    "tests/fixtures/approved-v064-source/src/domain/store.ts": {
+      "current": "7f8728bda01416a25fe1b3b7783d781d7f68428d2943d064cc30aecd117d0939",
+      "previous": "7f8728bda01416a25fe1b3b7783d781d7f68428d2943d064cc30aecd117d0939"
+    },
+    "tests/fixtures/approved-v064-source/src/domain/supportNavigation.ts": {
+      "current": "9b602423f4337260808c1f501c06d34a5b851a1773653838019e215015b90211",
+      "previous": "9b602423f4337260808c1f501c06d34a5b851a1773653838019e215015b90211"
+    },
+    "tests/fixtures/approved-v064-source/src/domain/types.ts": {
+      "current": "1566705036a61869b2d2107b32b8ea48dbfdc55996fc6361192e557b72a9f8ee",
+      "previous": "1566705036a61869b2d2107b32b8ea48dbfdc55996fc6361192e557b72a9f8ee"
+    },
+    "tests/fixtures/approved-v064-source/src/main.tsx": {
+      "current": "f1a39368f49f10d45c5a9f6c2dc8e04fb6a9d24ddc3b82ca8deda164f3f2a23e",
+      "previous": "f1a39368f49f10d45c5a9f6c2dc8e04fb6a9d24ddc3b82ca8deda164f3f2a23e"
+    },
+    "tests/fixtures/approved-v064-source/vite.config.ts": {
+      "current": "2e22169dcf47cfa4b5ed63f65ff54d622a6f8d6927e2950e216ada60ae1d1566",
+      "previous": "2e22169dcf47cfa4b5ed63f65ff54d622a6f8d6927e2950e216ada60ae1d1566"
+    },
+    "tests/fixtures/legacy-v063-source/src/App.tsx": {
+      "current": "fdd4dab29bae7edbb4755b7f45dc8c1d2ae322d5c22e7e657ead7f15aaaaa669",
+      "previous": "fdd4dab29bae7edbb4755b7f45dc8c1d2ae322d5c22e7e657ead7f15aaaaa669"
+    },
+    "tests/fixtures/legacy-v063-source/src/components/Charts.tsx": {
+      "current": "508de5ac7d73a6b40896d249658b5d5fe933e5dc3afd144b345cdad9cfd5b439",
+      "previous": "508de5ac7d73a6b40896d249658b5d5fe933e5dc3afd144b345cdad9cfd5b439"
+    },
+    "tests/fixtures/legacy-v063-source/src/components/SupportWorkspace.tsx": {
+      "current": "633d55f7d536e1c2f032c0486a0fe0a146336baf7e4db0bd88859f32d7f7dc8d",
+      "previous": "633d55f7d536e1c2f032c0486a0fe0a146336baf7e4db0bd88859f32d7f7dc8d"
+    },
+    "tests/fixtures/legacy-v063-source/src/components/Ui.tsx": {
+      "current": "85d15bf2692a507942953a7d65f3f7c0e2090470a7e094d1ee6d102928467129",
+      "previous": "85d15bf2692a507942953a7d65f3f7c0e2090470a7e094d1ee6d102928467129"
+    },
+    "tests/fixtures/legacy-v063-source/src/data/demo.ts": {
+      "current": "08750ecd7a857af03245595ac4ac97f417db7528ea20fb48eb3e985a68ebf8b3",
+      "previous": "08750ecd7a857af03245595ac4ac97f417db7528ea20fb48eb3e985a68ebf8b3"
+    },
+    "tests/fixtures/legacy-v063-source/src/data/qualityFixtures.ts": {
+      "current": "e6623541fca852d45d526845c21caa6c8ad24e255e03e32aedf2396e0d2a5651",
+      "previous": "e6623541fca852d45d526845c21caa6c8ad24e255e03e32aedf2396e0d2a5651"
+    },
+    "tests/fixtures/legacy-v063-source/src/domain/store.ts": {
+      "current": "85b7a032b501b6c80cfa6b6bc912f31343300d4fbf734e48abfbbaf76415715f",
+      "previous": "85b7a032b501b6c80cfa6b6bc912f31343300d4fbf734e48abfbbaf76415715f"
+    },
+    "tests/fixtures/legacy-v063-source/src/domain/supportNavigation.ts": {
+      "current": "661ed7df35a2198c55424dd23df7180aa9ecb07ba89b4306973648150ffb2d8d",
+      "previous": "661ed7df35a2198c55424dd23df7180aa9ecb07ba89b4306973648150ffb2d8d"
+    },
+    "tests/fixtures/legacy-v063-source/src/domain/types.ts": {
+      "current": "6b0a40850d0c5a35ed8d47cadb83ee56be12bdf8e315fe8f18b58ba5b4b62cbd",
+      "previous": "6b0a40850d0c5a35ed8d47cadb83ee56be12bdf8e315fe8f18b58ba5b4b62cbd"
+    },
+    "tests/fixtures/legacy-v063-source/src/main.tsx": {
+      "current": "e8a7526c68d631f4bf81157ace28d1e90b82c4fa8d649ba36aa35ad8804cf777",
+      "previous": "e8a7526c68d631f4bf81157ace28d1e90b82c4fa8d649ba36aa35ad8804cf777"
+    },
+    "tests/fixtures/legacy-v063-source/vite.config.ts": {
+      "current": "111dbdab18db74de3329cd4e21fc96d5456f1ce05fe2901892bc5a20f3cde325",
+      "previous": "111dbdab18db74de3329cd4e21fc96d5456f1ce05fe2901892bc5a20f3cde325"
+    },
+    "tests/fixtures/v062-approved-baseline.json": {
+      "current": "742b66d9f471519c7886dad50d7f16b7f6de22348c34682d15c51e06561585b9",
+      "previous": "742b66d9f471519c7886dad50d7f16b7f6de22348c34682d15c51e06561585b9"
+    },
+    "tests/fixtures/v065-untouched-during-dashboard.json": {
+      "current": "32d04d6a7df5d250c89da95763078bd0d55e96762c08dbb5103f55892b283dcf",
+      "previous": "32d04d6a7df5d250c89da95763078bd0d55e96762c08dbb5103f55892b283dcf"
+    },
+    "tests/foundation.test.mjs": {
+      "current": "c3f1602a71c48a65a0b113a7b806f6049c17330b5aa4d581940c387cc30d872e",
+      "previous": "c3f1602a71c48a65a0b113a7b806f6049c17330b5aa4d581940c387cc30d872e"
+    },
+    "tests/front-desk-charges-domain.test.mjs": {
+      "current": "7a7be251e993453851e8af8d477521332548de83d05fba13d6481c19b2adf2f7",
+      "previous": "7a7be251e993453851e8af8d477521332548de83d05fba13d6481c19b2adf2f7"
+    },
+    "tests/front-desk-checkout-domain.test.mjs": {
+      "current": "ce5977a81683df77b1a1ff6a553b7f68d0bef03be5806eb5b569fec514d6c58f",
+      "previous": "ce5977a81683df77b1a1ff6a553b7f68d0bef03be5806eb5b569fec514d6c58f"
+    },
+    "tests/front-desk-dashboard.test.mjs": {
+      "current": "c03d1be48d6e7159729a2862c10dd2f73be41255173758fa108506d36b1c112c",
+      "previous": "c03d1be48d6e7159729a2862c10dd2f73be41255173758fa108506d36b1c112c"
+    },
+    "tests/front-desk-rooms-domain.test.mjs": {
+      "current": "9f45555eac69ea9a14faada0f960bd43a958212398236a8c3cea98dc870730b5",
+      "previous": "9f45555eac69ea9a14faada0f960bd43a958212398236a8c3cea98dc870730b5"
+    },
+    "tests/global-pages-search.test.mjs": {
+      "current": "ae5cb48f70b63d58723c18608216dd061e6ac98c873cee39b912bf77be73eab2",
+      "previous": "ae5cb48f70b63d58723c18608216dd061e6ac98c873cee39b912bf77be73eab2"
+    },
+    "tests/global-ui-hotfix.test.mjs": {
+      "current": "0e7ccb275a4907bfedb4e43301b8729bd060a080db8596568020c25915f7eea5",
+      "previous": "0e7ccb275a4907bfedb4e43301b8729bd060a080db8596568020c25915f7eea5"
+    },
+    "tests/helpers/css-for-legacy-checks.mjs": {
+      "current": "8c32ce55ada40a0af5991b853b1e530fac8d7b5ab2a89fc8d44cc19ecb789a81",
+      "previous": "8c32ce55ada40a0af5991b853b1e530fac8d7b5ab2a89fc8d44cc19ecb789a81"
+    },
+    "tests/helpers/source-for-legacy-checks.mjs": {
+      "current": "4de5a1f8f68618e024be12c91e08745326b59dd3c73a39b25e968f6dc7f5b835",
+      "previous": "4de5a1f8f68618e024be12c91e08745326b59dd3c73a39b25e968f6dc7f5b835"
+    },
+    "tests/layout-refinement.test.mjs": {
+      "current": "0a6ca49589b71554d4a16158df36e782b096700a52ef8a3f1e049027966d8086",
+      "previous": "0a6ca49589b71554d4a16158df36e782b096700a52ef8a3f1e049027966d8086"
+    },
+    "tests/logo-quality-build-fix.test.mjs": {
+      "current": "2d92573cd9bb2879222e73ac1366348cceaab9900fa59b22e19ea123c18bb8e4",
+      "previous": "2d92573cd9bb2879222e73ac1366348cceaab9900fa59b22e19ea123c18bb8e4"
+    },
+    "tests/menu-categories-domain.test.mjs": {
+      "current": "5b961eaa77b677d60a6a31f872f8ba514651de1b639d6dbdcf3e4a4802d1576f",
+      "previous": "5b961eaa77b677d60a6a31f872f8ba514651de1b639d6dbdcf3e4a4802d1576f"
+    },
+    "tests/menu-categories-release.test.mjs": {
+      "current": "67b1788f24b3f9f878321fc982c055d2186b8969c6c3c8d02372a5faae623ec9",
+      "previous": "67b1788f24b3f9f878321fc982c055d2186b8969c6c3c8d02372a5faae623ec9"
+    },
+    "tests/menu-management-domain.test.mjs": {
+      "current": "29b8954ac5c3701f094dc299827b2902e90546ef7448011d2a726ca8e880667a",
+      "previous": "29b8954ac5c3701f094dc299827b2902e90546ef7448011d2a726ca8e880667a"
+    },
+    "tests/menu-management-persistence.test.mjs": {
+      "current": "512eb815704644413fb459e71b54d0191478a07208fe620575a491e130571721",
+      "previous": "512eb815704644413fb459e71b54d0191478a07208fe620575a491e130571721"
+    },
+    "tests/motion-refinement.test.mjs": {
+      "current": "dff78148bbcb4d0773b12b079c70db2abd30ad375e29d430824d8bb79d07bb97",
+      "previous": "dff78148bbcb4d0773b12b079c70db2abd30ad375e29d430824d8bb79d07bb97"
+    },
+    "tests/multifeature-refinements.test.mjs": {
+      "current": "873acb51185b1bd3fc4a8f25e29c5e6ffa355a4d3249de8ae7583c59eba9315d",
+      "previous": "873acb51185b1bd3fc4a8f25e29c5e6ffa355a4d3249de8ae7583c59eba9315d"
+    },
+    "tests/payment-methods-domain.test.mjs": {
+      "current": "f9a4fb097208e3c314cd9d6a0c09f766d6ff8c4393a1b8c42f28b88af2138e29",
+      "previous": "f9a4fb097208e3c314cd9d6a0c09f766d6ff8c4393a1b8c42f28b88af2138e29"
+    },
+    "tests/premium-experience.test.mjs": {
+      "current": "a9341ed579d296b451d76cff6f4a345c42340b112e03da10b8874cda9e4f4890",
+      "previous": "a9341ed579d296b451d76cff6f4a345c42340b112e03da10b8874cda9e4f4890"
+    },
+    "tests/quality-fixtures-runtime.test.mjs": {
+      "current": "9c7ae6666a2d83dfbea259b7c1d51084df1238d599d56800859cefb3e5e824cf",
+      "previous": "9c7ae6666a2d83dfbea259b7c1d51084df1238d599d56800859cefb3e5e824cf"
+    },
+    "tests/recovery-integrity.test.mjs": {
+      "current": "07043a053121f78d73f2a8c6d8b3ee8852f14613c2a72400aa52f93b1fd2cdf5",
+      "previous": "07043a053121f78d73f2a8c6d8b3ee8852f14613c2a72400aa52f93b1fd2cdf5"
+    },
+    "tests/regression-recovery.test.mjs": {
+      "current": "ed3efb7edf470fdbe4f5125df6280fbc835a0667957c98cf82ee764e80bfad30",
+      "previous": "ed3efb7edf470fdbe4f5125df6280fbc835a0667957c98cf82ee764e80bfad30"
+    },
+    "tests/responsive-refinement.test.mjs": {
+      "current": "8135be8c39741a70c9f216fef8cdda7f29ca684c1b9f1108408c1c7cd7b02cc6",
+      "previous": "8135be8c39741a70c9f216fef8cdda7f29ca684c1b9f1108408c1c7cd7b02cc6"
+    },
+    "tests/restaurant-orders-domain.test.mjs": {
+      "current": "ca3e3f273298941b148ae95635eb782231a20f4c13eebec2cd952fb455a89fae",
+      "previous": "ca3e3f273298941b148ae95635eb782231a20f4c13eebec2cd952fb455a89fae"
+    },
+    "tests/restaurant-orders-styling-hotfix.test.mjs": {
+      "current": "3d7dad932db4337cc3379d9881d36993a693dca4d0f1f6865b41a6dbe6adf7d3",
+      "previous": "3d7dad932db4337cc3379d9881d36993a693dca4d0f1f6865b41a6dbe6adf7d3"
+    },
+    "tests/restaurant-stage1.test.mjs": {
+      "current": "2db534d69aa3932d0a4be7bc5952ff37976c7ff2857b5fca3b96cdfcb01e6522",
+      "previous": "2db534d69aa3932d0a4be7bc5952ff37976c7ff2857b5fca3b96cdfcb01e6522"
+    },
+    "tests/restaurant-tables-domain.test.mjs": {
+      "current": "a7c1e6b4d940398a96a19935080458f159dac2c2f78e10db0c9524b0d005380c",
+      "previous": "a7c1e6b4d940398a96a19935080458f159dac2c2f78e10db0c9524b0d005380c"
+    },
+    "tests/restaurant-tables-integrity.test.mjs": {
+      "current": "a4c07cae038e7bfc4122e36bf5fba4ad00ced0b07501ade3e66eca50adc16e3a",
+      "previous": "a4c07cae038e7bfc4122e36bf5fba4ad00ced0b07501ade3e66eca50adc16e3a"
+    },
+    "tests/restaurant-tables-storage.test.mjs": {
+      "current": "bff25ccd6e81f8da962891e349208454ad29076712fa078643ff6a695d31fa04",
+      "previous": "bff25ccd6e81f8da962891e349208454ad29076712fa078643ff6a695d31fa04"
+    },
+    "tests/restaurant-tables-ui-hotfix.test.mjs": {
+      "current": "ac693541f842d22d245d4c5d7ccfa868628a98b3587abde4c272fd93cb36a487",
+      "previous": "ac693541f842d22d245d4c5d7ccfa868628a98b3587abde4c272fd93cb36a487"
+    },
+    "tests/rooms-manager-domain.test.mjs": {
+      "current": "16c289192bdc8cff2c1fd36bff9d4556774eebfadfabaf809e95f5a684977eaa",
+      "previous": "16c289192bdc8cff2c1fd36bff9d4556774eebfadfabaf809e95f5a684977eaa"
+    },
+    "tests/rooms-manager-react-interactions.test.mjs": {
+      "current": "3ea6ffdd29e3e2b176eb1c4ab397f53f45ac9b8129f0007c2750e2a0ed135a76",
+      "previous": "3ea6ffdd29e3e2b176eb1c4ab397f53f45ac9b8129f0007c2750e2a0ed135a76"
+    },
+    "tests/service-catalog-domain.test.mjs": {
+      "current": "7d00995b39562861233d6768119c211db95e43d9677ea0b649177281badb0f14",
+      "previous": "7d00995b39562861233d6768119c211db95e43d9677ea0b649177281badb0f14"
+    },
+    "tests/service-catalog-react-interactions.test.mjs": {
+      "current": "d6aacd068e3720dbe0770c2648d96874f833d31b9817fb988bcde98ec79ef6c6",
+      "previous": "d6aacd068e3720dbe0770c2648d96874f833d31b9817fb988bcde98ec79ef6c6"
+    },
+    "tests/shared-ticket-integration.test.mjs": {
+      "current": "e497ce0ab3238187072daf15431177e2cf7e215775e7b8d9b091f7ac87e77fee",
+      "previous": "e497ce0ab3238187072daf15431177e2cf7e215775e7b8d9b091f7ac87e77fee"
+    },
+    "tests/shortcut-refinement.test.mjs": {
+      "current": "f9c155a2a102f57ccb5a85094173f3cc6bb686305eb70145ce25717d2f9e4bcd",
+      "previous": "f9c155a2a102f57ccb5a85094173f3cc6bb686305eb70145ce25717d2f9e4bcd"
+    },
+    "tests/sidebar-v058-acceptance.test.mjs": {
+      "current": "1c91451ce578f8792eebb392f3403ffa12841cf32ac802e6c1070653855a03e3",
+      "previous": "1c91451ce578f8792eebb392f3403ffa12841cf32ac802e6c1070653855a03e3"
+    },
+    "tests/sidebar-v059-composition.test.mjs": {
+      "current": "fd75abab9a62344b1d188048aa08e0a734c502a9bc01bcc4e6bb1df308846d9e",
+      "previous": "fd75abab9a62344b1d188048aa08e0a734c502a9bc01bcc4e6bb1df308846d9e"
+    },
+    "tests/sidebar-v060-height-refinement.test.mjs": {
+      "current": "6c014fb149faeebe002c3c6aeec0948c7c733286609aade8982217828400a298",
+      "previous": "6c014fb149faeebe002c3c6aeec0948c7c733286609aade8982217828400a298"
+    },
+    "tests/stage2-motion-support.test.mjs": {
+      "current": "f86bea16e6a98c5858fc07600fe883901834ee4e27b644e746552ed09c27fab0",
+      "previous": "f86bea16e6a98c5858fc07600fe883901834ee4e27b644e746552ed09c27fab0"
+    },
+    "tests/support-activity-timeline.test.mjs": {
+      "current": "ad2d9456a2b75b9bac454d1ccb896610dca4903bf29dcf3788f9098b9b3ce973",
+      "previous": "ad2d9456a2b75b9bac454d1ccb896610dca4903bf29dcf3788f9098b9b3ce973"
+    },
+    "tests/support-details-design.test.mjs": {
+      "current": "96b3c98d9c6d371b65b0161e47f2845416bf2cc59be8de3660f607dcbce5797e",
+      "previous": "96b3c98d9c6d371b65b0161e47f2845416bf2cc59be8de3660f607dcbce5797e"
+    },
+    "tests/support-inbox.test.mjs": {
+      "current": "803affb5b2af99f4490c810f9eff82ed931a294a7440147ba30e68a104fdd551",
+      "previous": "803affb5b2af99f4490c810f9eff82ed931a294a7440147ba30e68a104fdd551"
+    },
+    "tests/support-interaction-foundation.test.mjs": {
+      "current": "a61fd79511aadba1f17f2b0c5aec68fc05d5c28f021bf2eb1ed2ae59e60f99e3",
+      "previous": "a61fd79511aadba1f17f2b0c5aec68fc05d5c28f021bf2eb1ed2ae59e60f99e3"
+    },
+    "tests/support-layout-v062.test.mjs": {
+      "current": "db79c76b9ec2dcd86def78165bb19a8c43cf7ee343f352723e30cfa12a67a977",
+      "previous": "db79c76b9ec2dcd86def78165bb19a8c43cf7ee343f352723e30cfa12a67a977"
+    },
+    "tests/support-motion-polish.test.mjs": {
+      "current": "42af2dd59a63d088abaf14a7fa1325b00bdffe4bb72e85828a1bd9264a72bdfa",
+      "previous": "42af2dd59a63d088abaf14a7fa1325b00bdffe4bb72e85828a1bd9264a72bdfa"
+    },
+    "tests/support-structure.test.mjs": {
+      "current": "b614e7ee82986d8809746fb3c8ea6df75092cdb3c3d5f042ddf83b67992c98fc",
+      "previous": "b614e7ee82986d8809746fb3c8ea6df75092cdb3c3d5f042ddf83b67992c98fc"
+    },
+    "tests/support-tabs-and-promo.test.mjs": {
+      "current": "432b2286031c0fb528574be56da9718cfeac1bfc86c30b27e97f099d5a32c5a1",
+      "previous": "432b2286031c0fb528574be56da9718cfeac1bfc86c30b27e97f099d5a32c5a1"
+    },
+    "tests/system-management-integration.test.mjs": {
+      "current": "c7f6c252d413d5cae7ae4c4214558b40788a9b5da146f93929b3d0bd8d5dde33",
+      "previous": "c7f6c252d413d5cae7ae4c4214558b40788a9b5da146f93929b3d0bd8d5dde33"
+    },
+    "tests/system-management-qa-polling.test.mjs": {
+      "current": "de744d737b8324a80d2d9abd3bea2dd2d99fededd13cdb7773d38339935e89b5",
+      "previous": "de744d737b8324a80d2d9abd3bea2dd2d99fededd13cdb7773d38339935e89b5"
+    },
+    "tests/tables-manager-domain.test.mjs": {
+      "current": "6df00361a7bde58d157a3f61efb0ef67a8313ced663d939b4b1d8d5eab7e0fc9",
+      "previous": "6df00361a7bde58d157a3f61efb0ef67a8313ced663d939b4b1d8d5eab7e0fc9"
+    },
+    "tests/tables-manager-drag-hotfix.test.mjs": {
+      "current": "6eb4456e1f659a3935fdee00dd616ad8c1e2fe92feaa051c9101c55639cc1e17",
+      "previous": "6eb4456e1f659a3935fdee00dd616ad8c1e2fe92feaa051c9101c55639cc1e17"
+    },
+    "tests/typescript-readability-v064.test.mjs": {
+      "current": "22263de44aae5d8d0fe0fc3c48585bbd4813bf55aee0e7c5ab1992c1d8bc0638",
+      "previous": "22263de44aae5d8d0fe0fc3c48585bbd4813bf55aee0e7c5ab1992c1d8bc0638"
+    },
+    "tests/typography-refinement.test.mjs": {
+      "current": "4117f0d0000542033c8a7766c5e4468bb537ed78a66200287c44bfa6eaa03af7",
+      "previous": "4117f0d0000542033c8a7766c5e4468bb537ed78a66200287c44bfa6eaa03af7"
+    },
+    "tests/v0661-banner-release.test.mjs": {
+      "current": "db78ff6e861adc507e872aa13ee1daa1b538e133761fce588b69fef9ca436255",
+      "previous": "db78ff6e861adc507e872aa13ee1daa1b538e133761fce588b69fef9ca436255"
+    },
+    "tests/workspace-transition-hotfix.test.mjs": {
+      "current": "b7d27f41355e2187f9f0b66d3dba8b646427d173708d5086653b03f51f62336f",
+      "previous": "b7d27f41355e2187f9f0b66d3dba8b646427d173708d5086653b03f51f62336f"
+    },
+    "tools-render-hotfix-preflight.cjs": {
+      "current": "38293168549ae38e9121f32c3ebc8974cba00201f551fd2e51255c090121d405",
+      "previous": "38293168549ae38e9121f32c3ebc8974cba00201f551fd2e51255c090121d405"
+    },
+    "tools-render-preview.cjs": {
+      "current": "479dd4c4374a118cbe0e22ee5b329034e62e1bf440b99ebed80d4d3cfcba9e72",
+      "previous": "479dd4c4374a118cbe0e22ee5b329034e62e1bf440b99ebed80d4d3cfcba9e72"
+    },
+    "tools-render-restaurant-preflight.cjs": {
+      "current": "142257ad35b243327bff8b30cf23e5eb0cb3b054c4d51cc7d77969fe9bfc7c5e",
+      "previous": "142257ad35b243327bff8b30cf23e5eb0cb3b054c4d51cc7d77969fe9bfc7c5e"
+    },
+    "tools-render-support.cjs": {
+      "current": "6671228714ffa88213d889ee1d9d5e43ee5461602e3e98557bc5b1958b93ab10",
+      "previous": "6671228714ffa88213d889ee1d9d5e43ee5461602e3e98557bc5b1958b93ab10"
+    },
+    "tsconfig.json": {
+      "current": "3520a98e7b36269f80bd3c1605dbbd43fff80cd775415aecd471d39da9b86e47",
+      "previous": "3520a98e7b36269f80bd3c1605dbbd43fff80cd775415aecd471d39da9b86e47"
+    },
+    "tsconfig.tsbuildinfo": {
+      "current": "a4821c9c394685f7b2f19a8ec07a9fc174345ee6f9d51e8675c250858acb3c56",
+      "previous": "a4821c9c394685f7b2f19a8ec07a9fc174345ee6f9d51e8675c250858acb3c56"
+    },
+    "visual-reference.html": {
+      "current": "1781c1df4a6a517478585bf1b8b8b879730c50486555d46849dc625083029858",
+      "previous": "1781c1df4a6a517478585bf1b8b8b879730c50486555d46849dc625083029858"
+    },
+    "vite.config.ts": {
+      "current": "2e22169dcf47cfa4b5ed63f65ff54d622a6f8d6927e2950e216ada60ae1d1566",
+      "previous": "2e22169dcf47cfa4b5ed63f65ff54d622a6f8d6927e2950e216ada60ae1d1566"
+    }
+  }
+}

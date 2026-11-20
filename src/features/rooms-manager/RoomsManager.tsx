@@ -6,6 +6,7 @@ import {
   validateRoomFields, writeRooms
 } from './model'
 import type { Room, RoomDirectory } from './model'
+import { useDiscardConfirmation } from '../../shared/useDiscardConfirmation'
 
 type Status = 'all' | 'active' | 'inactive'
 type Sort = 'natural' | 'reverse' | 'latest'
@@ -95,6 +96,7 @@ function StatusDialog({ room, onCancel, onConfirm }: {
 }
 
 export function RoomsManager({ onDirtyChange }: { onDirtyChange?: (dirty: boolean) => void }) {
+  const {requestDiscard,discardDialog} = useDiscardConfirmation()
   const [initial] = useState(readRooms)
   const [directory, setDirectory] = useState<RoomDirectory>(initial.data)
   const [storageError, setStorageError] = useState<string | null>(initial.error)
@@ -110,7 +112,7 @@ export function RoomsManager({ onDirtyChange }: { onDirtyChange?: (dirty: boolea
   const lastEditedRef = useRef<HTMLButtonElement | null>(null)
   const rooms = directory.rooms
   const activeEditorRoom = editor?.id ? rooms.find(r => r.id === editor.id) : undefined
-  const dirty = !!editor && (editor.id === null ? !!(editor.name || editor.code) : !activeEditorRoom || clean(editor.name) !== activeEditorRoom.name || clean(editor.code) !== activeEditorRoom.code)
+  const dirty = !!editor && (editor.id === null ? !!(clean(editor.name) || clean(editor.code)) : !activeEditorRoom || clean(editor.name) !== activeEditorRoom.name || clean(editor.code) !== activeEditorRoom.code)
   useEffect(() => { onDirtyChange?.(dirty); return () => onDirtyChange?.(false) }, [dirty, onDirtyChange])
   useEffect(() => {
     if (!dirty) return
@@ -122,12 +124,14 @@ export function RoomsManager({ onDirtyChange }: { onDirtyChange?: (dirty: boolea
   const visible = useMemo(() => selectRooms(rooms, query, status, sort), [rooms, query, status, sort])
   const byGroup = (active: boolean) => visible.filter(r => r.active === active)
   const dismissEditor = () => { setEditor(null); setErrors({}); lastEditedRef.current?.focus() }
+  const requestDismiss = () => requestDiscard(dirty, dismissEditor)
   const openEditor = (room?: Room, trigger?: HTMLButtonElement) => {
-    if (dirty && !window.confirm('Discard unsaved room changes?')) return
-    lastEditedRef.current = trigger || null
-    setErrors({}); setNotice('')
-    setEditor(room ? { id: room.id, name: room.name, code: room.code } : { id: null, name: '', code: '' })
-    if (room) setCollapsed(values => values.filter(v => v !== (room.active ? 'active' : 'inactive')))
+    requestDiscard(dirty, () => {
+      lastEditedRef.current = trigger || null
+      setErrors({}); setNotice('')
+      setEditor(room ? { id: room.id, name: room.name, code: room.code } : { id: null, name: '', code: '' })
+      if (room) setCollapsed(values => values.filter(v => v !== (room.active ? 'active' : 'inactive')))
+    })
   }
   const persist = (next: RoomDirectory, success: string) => {
     if (!canWrite) { setStorageError('Saved data must be repaired before making changes. Existing storage has not been overwritten.'); return false }
@@ -176,10 +180,9 @@ export function RoomsManager({ onDirtyChange }: { onDirtyChange?: (dirty: boolea
       <button type="button" className="rm-btn rm-btn-small" onClick={(e: MouseEvent<HTMLButtonElement>) => openEditor(room, e.currentTarget)}><Pencil size={13} aria-hidden="true"/> Edit</button>
     </div>
     {editor?.id === room.id && <div className="rm-b-inline">
-      <RoomForm editor={editor} setEditor={changeEditor} errors={errors} onCancel={dismissEditor}
+      <RoomForm editor={editor} setEditor={changeEditor} errors={errors} onCancel={requestDismiss}
         onSave={saveEditor} room={room} onToggle={r => {
-          if (dirty && !window.confirm('Changing status will discard unsaved room field edits. Continue?')) return
-          setConfirmRoomId(r.id)
+          requestDiscard(dirty, () => setConfirmRoomId(r.id))
         }} />
     </div>}
   </article>
@@ -212,9 +215,9 @@ export function RoomsManager({ onDirtyChange }: { onDirtyChange?: (dirty: boolea
       {storageError && <div className="rm-storage-error" role="alert">{storageError}</div>}
       {editor?.id === null && <div className="rm-b-create">
         <div className="rm-inline-head"><h2>Add Room</h2>
-          <button type="button" className="rm-btn rm-btn-small rm-btn-icon" aria-label="Close add room" onClick={dismissEditor}><X size={16}/></button>
+          <button type="button" className="rm-btn rm-btn-small rm-btn-icon" aria-label="Close add room" onClick={requestDismiss}><X size={16}/></button>
         </div>
-        <RoomForm editor={editor} errors={errors} setEditor={changeEditor} onCancel={dismissEditor} onSave={saveEditor}/>
+        <RoomForm editor={editor} errors={errors} setEditor={changeEditor} onCancel={requestDismiss} onSave={saveEditor}/>
       </div>}
       {showEmpty && <div className="rm-empty" data-empty={query || status !== 'all' ? 'search' : 'directory'}>
         <span className="rm-empty-icon"><DoorOpen size={25}/></span>
@@ -244,5 +247,6 @@ export function RoomsManager({ onDirtyChange }: { onDirtyChange?: (dirty: boolea
     <span className="rm-sr-only" role="status" aria-live="polite">{visible.length} {visible.length === 1 ? 'room' : 'rooms'} displayed. {notice}</span>
     {notice && <div className="rm-feedback" role="status">{notice}<button type="button" onClick={() => setNotice('')} aria-label="Dismiss notification"><X size={13}/></button></div>}
     {confirmRoom && <StatusDialog room={confirmRoom} onCancel={() => setConfirmRoomId(null)} onConfirm={commitStatus} />}
+    {discardDialog}
   </section>
 }

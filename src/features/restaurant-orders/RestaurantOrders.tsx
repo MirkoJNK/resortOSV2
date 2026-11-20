@@ -9,13 +9,16 @@ import type { FinanceConfig } from '../discount-management/model'
 import { calculateOrder, defaultFinanceConfig } from '../discount-management/model'
 import { loadFinanceConfig, FINANCE_CHANGED_EVENT } from '../discount-management/storage'
 import { FinancialBreakdown } from '../discount-management/FinancialBreakdown'
+import { DocumentActions } from '../receipt-settings/DocumentActions'
 import type { AppRoute } from '../../shell/navigation'
+import {orderSnapshot,recordedEmployeeName} from '../audit-log/transaction-details'
 
 type Tab = 'active' | 'history'
+export const defaultOrdersTab = (ops: Operations): Tab => ops.orders.some(order => !isHistoricalOrder(ops, order)) ? 'active' : 'history'
 type DateFilter = 'all' | 'today' | 'week' | 'custom'
 const STATUS_LABELS: Record<OrderHistoryStatus,string> = {
-  recorded: 'Recorded', 'ready-to-pay': 'Ready to Pay', 'cash-demo': 'Cash Paid (Demo)',
-  'room-demo': 'Room Posting (Demo)', canceled: 'Canceled', 'session-ended': 'Session Ended'
+  recorded: 'Recorded', 'ready-to-pay': 'Ready to Pay', 'cash-demo': 'Payment Recorded',
+  'room-demo': 'Posted to Room', canceled: 'Canceled', 'session-ended': 'Session Ended'
 }
 const dateParts = (timestamp: string) => {
   const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Manila', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date(timestamp))
@@ -28,7 +31,7 @@ const displayDate = (timestamp: string) => new Intl.DateTimeFormat('en-PH', {
 const recordedAt = (order: RestaurantOrder) => order.lines.map(l => l.recordedAt).sort()[0] ?? order.createdAt
 const itemAmount = (order: RestaurantOrder) => lineTotal(order.lines)
 const orderAmount = (order: RestaurantOrder, ops:Operations, finance:FinanceConfig) => order.canceledAt ? itemAmount(order) :
-  settlementForOrder(ops,order.id)?.amountCentavos ?? calculateOrder(order,order.discountElections??[],finance.service).payableCentavos
+  settlementForOrder(ops,order.id)?.amountCentavos ?? calculateOrder(order,order.discountElections??[],finance.service,new Date().toISOString(),finance.taxMode).payableCentavos
 const statusTone = (status: OrderHistoryStatus) => status === 'canceled' ? 'canceled' : status === 'ready-to-pay' ? 'ready' : status === 'cash-demo' ? 'cash' : status === 'room-demo' ? 'room' : 'neutral'
 
 function OrderDetails({ order, operations, finance, tableName, onManage }: {
@@ -37,14 +40,13 @@ function OrderDetails({ order, operations, finance, tableName, onManage }: {
   const status = orderHistoryStatus(operations, order)
   const session = operations.sessions.find(s => s.id === order.sessionId)
   const payment = settlementForOrder(operations, order.id)
-  const calculation = payment?.calculation ?? (!order.canceledAt && !payment ? calculateOrder(order,order.discountElections??[],finance.service) : null)
+  const isCashPayment = payment?.method === 'cash' || (payment?.method === 'restaurant' && payment.methodBehaviorSnapshot === 'cash')
+  const calculation = payment?.calculation ?? (!order.canceledAt && !payment ? calculateOrder(order,order.discountElections??[],finance.service,new Date().toISOString(),finance.taxMode) : null)
   const included = order.canceledAt ? order.lines.flatMap(line => {
     const quantity = activeRecordedQuantity(line)
     return quantity ? [{...line, quantity}] : []
   }) : activeRecordedLines(order)
-  const removed = order.lines.flatMap(line => line.removals?.length ? line.removals.map(event => ({
-    ...line, quantity: event.quantity, canceledAt: event.removedAt, id: event.id
-  })) : line.canceledAt ? [line] : [])
+  const removed=orderSnapshot(order,operations).removed
   const reference = orderReference(order.id, order.displayNumber)
   return <div className="ro-detail ro-detail-enter">
     <div className="ro-detail-heading"><h1 title={reference}>Order {reference}</h1><span className={`ro-status ro-status-${statusTone(status)}`}>{STATUS_LABELS[status]}</span></div>
@@ -63,38 +65,43 @@ function OrderDetails({ order, operations, finance, tableName, onManage }: {
         <span>{line.quantity}</span><span>{formatPrice(line.priceCentavos)}</span><strong>{formatPrice(line.priceCentavos * line.quantity)}</strong>
       </div>)}
       {!included.length && <p className="ro-muted">No included items</p>}
-      {calculation&&(calculation.discounts.length>0||calculation.serviceRateBasisPoints>0)&&<FinancialBreakdown calculation={calculation} compact/>}
+      {calculation&&<FinancialBreakdown calculation={calculation} compact/>}
       <div className="ro-total"><span>{order.canceledAt ? 'Original recorded amount' : 'Order total'}</span><strong>{formatPrice(orderAmount(order,operations,finance))}</strong></div>
       {order.canceledAt && <p className="ro-muted">Canceled order. This amount is historical, not collected revenue</p>}
     </section>
     {removed.length > 0 && <details className="ro-surface ro-removed">
       <summary>Removed Items ({removed.length})</summary>
       {removed.map(line => <div className="ro-removed-line" key={line.id}>
-        <div><strong>{line.nameSnapshot}</strong><span>{line.quantity} × {formatPrice(line.priceCentavos)}</span><span>Removed {displayDate(line.canceledAt!)}</span></div>
+        <div><strong>{line.name}</strong><span>{line.quantity} × {formatPrice(line.priceCentavos)}</span><span>Removed {displayDate(line.at)} by {line.employee}</span></div>
         <strong>{formatPrice(line.priceCentavos * line.quantity)}</strong>
       </div>)}
     </details>}
-    {payment && <section className="ro-surface" aria-label="Demo settlement">
-      <h2>Settlement (Demo)</h2>
+    {payment && <section className="ro-surface" aria-label="Recorded settlement">
+      <h2>Settlement</h2>
       <div className="ro-meta ro-settlement-meta">
-        <div><span>Method</span><strong>{payment.method === 'cash' ? 'Cash' : 'Charge to Room'}</strong></div>
+        <div><span>Method</span><strong>{payment.method === 'room' ? 'Charge to Room' : (payment.methodNameSnapshot ?? (payment.method === 'cash' ? 'Cash' : 'Payment method not recorded'))}</strong></div>
         {payment.method === 'room' && <div><span>Room</span><strong>{payment.roomNameSnapshot}{payment.roomCodeSnapshot ? ` (${payment.roomCodeSnapshot})` : ''}</strong></div>}
         <div><span>Amount</span><strong>{formatPrice(payment.amountCentavos)}</strong></div>
+        {isCashPayment && payment.cashReceivedCentavos !== undefined && <div><span>Cash received</span><strong>{formatPrice(payment.cashReceivedCentavos)}</strong></div>}
+        {isCashPayment && payment.changeCentavos !== undefined && <div><span>Change</span><strong>{formatPrice(payment.changeCentavos)}</strong></div>}
         <div><span>Recorded</span><strong>{displayDate(payment.recordedAt)}</strong></div>
-        <div><span>Handled by</span><strong>Not recorded</strong></div>
-        <div><span>Status</span><strong>{payment.method === 'cash' ? 'Demo payment recorded' : 'Demo room posting, not paid'}</strong></div>
+        <div><span>Handled by</span><strong>{recordedEmployeeName(payment)}</strong></div>
+        <div><span>Status</span><strong>{payment.method === 'room' ? 'Posted to room, not yet paid' : 'Payment recorded'}</strong></div>
       </div>
+      <div className="receipt-history-actions"><DocumentActions kind={payment.method!=='room'?'restaurant-payment':'room-charge-slip'} sourceId={payment.id}
+        label={payment.method!=='room'?'View / Reprint Receipt':'View / Reprint Room Slip'} reprint/></div>
     </section>}
-    {!payment && <section className="ro-surface ro-actors"><h2>Employee Details</h2><p>Order recorded by: <strong>Not recorded</strong></p><p>Payment information: <strong>Not available</strong></p></section>}
+    {!payment && <section className="ro-surface ro-actors"><h2>Employee Details</h2><p>Order recorded by: <strong>{recordedEmployeeName(order)}</strong></p><p>Payment information: <strong>Not available</strong></p></section>}
     {!isHistoricalOrder(operations, order) && session && !session.closedAt && <button className="rt-btn rt-btn-primary ro-manage" type="button" onClick={onManage}>Open in Tables <ChevronRight size={16}/></button>}
   </div>
 }
 
-export function RestaurantOrders({ go, navigationActivation = 0 }: { go: (route: AppRoute) => void; navigationActivation?: number }) {
+export function RestaurantOrders({ go, navigationActivation = 0,tutorialTab,tutorialReadOnly=false }: { go: (route: AppRoute) => void; navigationActivation?: number;tutorialTab?:Tab;tutorialReadOnly?:boolean }) {
   const [operations, setOperations] = useState<Operations>(emptyOperations)
   const [finance,setFinance] = useState<FinanceConfig>(defaultFinanceConfig)
   const [tables, setTables] = useState(() => { const result = readTables(); return result.error ? [] : result.data.tables })
   const [tab, setTab] = useState<Tab>('history')
+  const displayedTab=tutorialTab??tab
   const [query, setQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [dateFilter, setDateFilter] = useState<DateFilter>('all')
@@ -103,22 +110,29 @@ export function RestaurantOrders({ go, navigationActivation = 0 }: { go: (route:
   const [sort, setSort] = useState<'newest' | 'oldest'>('newest')
   const [selected, setSelected] = useState<string | null>(null)
   const entranceFinished = useRef(false)
-  useEffect(() => { setSelected(null) }, [navigationActivation])
+  const initialActivation = useRef(navigationActivation)
+  useEffect(() => {
+    setSelected(null)
+    if (initialActivation.current === navigationActivation) return
+    initialActivation.current = navigationActivation
+    loadOperations(!tutorialReadOnly).then(next => {setOperations(next);setTab(defaultOrdersTab(next));setStatusFilter('all')})
+      .catch(() => setError('Could not refresh orders'))
+  }, [navigationActivation,tutorialReadOnly])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(() => readTables().error ?? '')
   useEffect(() => {
     let active = true
-    Promise.all([loadOperations(),loadFinanceConfig()]).then(([next,policy]) => { if (active) {setOperations(next);setFinance(policy); setLoading(false)} })
+    Promise.all([loadOperations(!tutorialReadOnly),loadFinanceConfig(!tutorialReadOnly)]).then(([next,policy]) => { if (active) {setOperations(next);setTab(defaultOrdersTab(next));setFinance(policy); setLoading(false)} })
       .catch(e => { if (active) {setError(e instanceof Error ? e.message : 'Could not load orders'); setLoading(false)} })
-    const refresh = () => { loadOperations().then(next => { if (active) setOperations(next) }).catch(() => { if(active) setError('Could not refresh orders') }) }
+    const refresh = () => { loadOperations(!tutorialReadOnly).then(next => { if (active) setOperations(next) }).catch(() => { if(active) setError('Could not refresh orders') }) }
     const onFocus = () => {const current = readTables(); if(active && !current.error) setTables(current.data.tables); refresh()}
-    const refreshFinance = () => {loadFinanceConfig().then(next => {if(active)setFinance(next)}).catch(()=>{if(active)setError('Could not refresh Restaurant finance settings')})}
+    const refreshFinance = () => {loadFinanceConfig(!tutorialReadOnly).then(next => {if(active)setFinance(next)}).catch(()=>{if(active)setError('Could not refresh Restaurant finance settings')})}
     window.addEventListener('focus', onFocus)
     window.addEventListener('focus', refreshFinance)
     window.addEventListener(FINANCE_CHANGED_EVENT,refreshFinance)
     window.addEventListener('restaurant-operations-changed', refresh)
     return () => { active = false; window.removeEventListener('focus',onFocus);window.removeEventListener('focus',refreshFinance);window.removeEventListener(FINANCE_CHANGED_EVENT,refreshFinance); window.removeEventListener('restaurant-operations-changed',refresh) }
-  }, [])
+  }, [tutorialReadOnly])
   const tableName = (order: RestaurantOrder) => {
     const session = operations.sessions.find(s => s.id === order.sessionId)
     return tables.find(t => t.id === session?.tableId)?.label ?? 'Table unavailable'
@@ -129,7 +143,7 @@ export function RestaurantOrders({ go, navigationActivation = 0 }: { go: (route:
     const q = query.trim().toLocaleLowerCase()
     return operations.orders.filter(order => {
       const history = isHistoricalOrder(operations, order)
-      if (tab === 'history' ? !history : history) return false
+      if (displayedTab === 'history' ? !history : history) return false
       const state = orderHistoryStatus(operations, order)
       if (statusFilter !== 'all' && statusFilter !== state) return false
       if (q && !orderReference(order.id, order.displayNumber).toLowerCase().includes(q) && !tableName(order).toLocaleLowerCase().includes(q)) return false
@@ -139,23 +153,23 @@ export function RestaurantOrders({ go, navigationActivation = 0 }: { go: (route:
       if (dateFilter === 'custom' && ((dateFrom && date < dateFrom) || (dateTo && date > dateTo))) return false
       return true
     }).sort((a,b) => (sort === 'newest' ? -1 : 1) * (recordedAt(a).localeCompare(recordedAt(b)) || a.id.localeCompare(b.id)))
-  }, [operations, tables, tab, statusFilter, query, dateFilter, dateFrom, dateTo, sort])
+  }, [operations, tables, displayedTab, statusFilter, query, dateFilter, dateFrom, dateTo, sort])
   const current = selected ? operations.orders.find(o => o.id === selected) : null
   const changeTab = (next: Tab) => {setTab(next); setStatusFilter('all'); setSelected(null)}
   return <div className="rt-page ro-page">
     {current ? <OrderDetails order={current} operations={operations} finance={finance} tableName={tableName(current)}
       onManage={() => go('restaurant-tables')}/> : <>
       <div className={`rt-page-heading${entranceFinished.current ? '' : ' rt-enter-heading'}`}><h1>Orders</h1></div>
-      <div className={`rt-tabs${entranceFinished.current ? '' : ' rt-enter-toolbar'}`} role="tablist" aria-label="Restaurant Orders views">
-        <button type="button" role="tab" aria-selected={tab==='active'} className={tab==='active'?'active':''} onClick={() => changeTab('active')}><ClipboardList size={17}/> Active Orders</button>
-        <button type="button" role="tab" aria-selected={tab==='history'} className={tab==='history'?'active':''} onClick={() => changeTab('history')}><ClipboardList size={17}/> Order History</button>
-      </div>
+      {!loading&&<div className={`rt-tabs${entranceFinished.current ? '' : ' rt-enter-toolbar'}`} role="tablist" aria-label="Restaurant Orders views" data-tour-target="restaurant-orders-tabs">
+        <button type="button" role="tab" aria-selected={displayedTab==='active'} className={displayedTab==='active'?'active':''} onClick={() => changeTab('active')}><ClipboardList size={17}/> Active Orders</button>
+        <button type="button" role="tab" aria-selected={displayedTab==='history'} className={displayedTab==='history'?'active':''} onClick={() => changeTab('history')}><ClipboardList size={17}/> Order History</button>
+      </div>}
       <div className={`rt-toolbar ro-toolbar${entranceFinished.current ? '' : ' rt-enter-toolbar'}`}>
         <div className="rt-toolbar-main"><div className="rt-search-box"><Search size={17}/><input aria-label="Search orders" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search orders"/></div></div>
         <div className="rt-toolbar-tools">
           <label className="rt-sr-only" htmlFor="ro-status">Order status</label>
           <select className="rt-select" id="ro-status" value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}><option value="all">All statuses</option>
-            {(tab==='active' ? ['recorded','ready-to-pay'] : ['cash-demo','room-demo','canceled','session-ended']).map(s=><option key={s} value={s}>{STATUS_LABELS[s as OrderHistoryStatus]}</option>)}
+            {(displayedTab==='active' ? ['recorded','ready-to-pay'] : ['cash-demo','room-demo','canceled','session-ended']).map(s=><option key={s} value={s}>{STATUS_LABELS[s as OrderHistoryStatus]}</option>)}
           </select>
           <label className="rt-sr-only" htmlFor="ro-date">Order date</label><select className="rt-select" id="ro-date" value={dateFilter} onChange={e=>setDateFilter(e.target.value as DateFilter)}>
             <option value="all">All dates</option><option value="today">Today</option><option value="week">Last 7 days</option><option value="custom">Custom range</option>
@@ -167,7 +181,7 @@ export function RestaurantOrders({ go, navigationActivation = 0 }: { go: (route:
       </div>
       {dateFilter === 'custom' && <div className="ro-date-range"><label>From <input type="date" value={dateFrom} onChange={e=>setDateFrom(e.target.value)}/></label><label>To <input type="date" value={dateTo} min={dateFrom || undefined} onChange={e=>setDateTo(e.target.value)}/></label></div>}
       {error && <div className="rt-alert rt-alert-error" role="alert">{error}</div>}
-      {loading ? <div className="rt-empty">Loading orders</div> : <section className={`ro-surface ro-list${entranceFinished.current ? '' : ' ro-list-enter'}`} onAnimationEnd={() => { entranceFinished.current = true }} aria-label={tab === 'active' ? 'Active Orders' : 'Order History'}>
+      {loading ? <div className="rt-empty">Loading orders</div> : <section className={`ro-surface ro-list${entranceFinished.current ? '' : ' ro-list-enter'}`} onAnimationEnd={() => { entranceFinished.current = true }} aria-label={displayedTab === 'active' ? 'Active Orders' : 'Order History'} data-tour-target={displayedTab==='active'?'restaurant-orders-active':'restaurant-orders-history'}>
         <div className="ro-list-head"><span>Order</span><span>Table</span><span>Date</span><span>Amount</span><span>Status</span><span>Manage</span></div>
         {visible.map(order => {
           const state = orderHistoryStatus(operations, order)

@@ -19,7 +19,8 @@ function harness(){
    window:{confirm:()=>confirmAnswer,addEventListener(){},removeEventListener(){}},
    document:{getElementById:()=>({focus(){}}),activeElement:null,addEventListener(){},removeEventListener(){}}}
  const model={exports:{}}
- vm.runInNewContext(transpile('src/features/service-catalog/model.ts'),{...base,module:model,exports:model.exports},{filename:'service-model.js'})
+ vm.runInNewContext(transpile('src/features/service-catalog/model.ts'),{...base,module:model,exports:model.exports,
+   require:name=>name==='../audit-log/storage'?{recordCollection(){}}:(()=>{throw Error('Unexpected '+name)})()},{filename:'service-model.js'})
  const mod={exports:{}}
  const icon=()=>jsx('svg',{})
  const lucide=new Proxy({}, {get:(_,name)=>name==='__esModule'?false:icon})

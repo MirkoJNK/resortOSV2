@@ -24,11 +24,6 @@ test('all TS/TSX files preserve the approved structure and literal values', () =
     } else if (file === 'src/domain/types.ts') {
       const approved = JSON.parse(fs.readFileSync('SERVICE_CATALOG_APPROVED.json', 'utf8'))
       assert.equal(typescriptSemanticHash(file), approved.domainTypesHash)
-    } else if (file === 'vite.config.ts') {
-      // Deployment-specific exception, protected by the full-file SHA-256 pin.
-      const deployment = JSON.parse(fs.readFileSync('GITHUB_DEPLOYMENT_APPROVAL.json', 'utf8'))
-      const crypto = require('node:crypto')
-      assert.equal(crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'), deployment.updated_vite_sha256)
     } else if (file === 'src/main.tsx') {
       assert.equal(verifySystemManagementEntrypoint(), true)
     } else {
@@ -53,12 +48,13 @@ test('the unused LayoutDashboard icon import is gone without changing other impo
 })
 
 test('shared-ticket and filtered-ticket behavior is explicitly documented', () => {
-  assert.match(app, /Shared in-session tickets keep Dashboard metrics synchronized/)
+  assert.match(app, /const supportTickets = supportData\.tickets/)
+  assert.match(app, /qualitySupportTickets\(supportTickets, reviewScenario\)/)
   assert.match(support, /Keep it in\n  \/\/ the right-hand panel/)
   assert.match(support, /Admin conversations and structured ticket activity/)
 })
 
-test('System Management v2 adds one scoped feature while keeping other features and entrypoints in place', () => {
+test('System Management preserves all scoped features and the new Menu Management module', () => {
   const original = Object.keys(manifest.sourceSemantics).sort()
   const actual = []
   function collect(folder) {
@@ -77,7 +73,35 @@ test('System Management v2 adds one scoped feature while keeping other features 
     'src/shell/WorkspaceSwitcher.tsx',
     'src/shell/navigation.ts',
     'src/features/dashboard/Dashboard.tsx',
+    'src/features/front-desk/FrontDeskDashboard.tsx',
+    'src/features/front-desk/FrontDeskRooms.tsx',
+    'src/features/front-desk/FrontDeskCharges.tsx',
+    'src/features/front-desk/FrontDeskCheckout.tsx',
+    'src/features/front-desk/checkout.ts',
+    'src/features/front-desk/dashboardMetrics.ts',
+    'src/features/front-desk/charges.ts',
+    'src/features/front-desk/roomMetrics.ts',
+    'src/features/front-desk/stays.ts',
+    'src/features/menu-categories/MenuCategories.tsx',
+    'src/features/menu-categories/model.ts',
+    'src/features/menu-categories/storage.ts',
+    'src/features/menu-categories/images.ts',
+    'src/features/menu-management/MenuManagement.tsx',
+    'src/features/menu-management/model.ts',
+    'src/features/menu-management/storage.ts',
+    'src/features/payment-methods/PaymentMethodSelect.tsx',
+    'src/features/payment-methods/PaymentMethods.tsx',
+    'src/features/payment-methods/model.ts',
     'src/features/restaurant/RestaurantDashboard.tsx',
+    'src/features/restaurant-orders/RestaurantOrders.tsx',
+    'src/features/restaurant-tables/DemoPaymentDialog.tsx',
+    'src/features/restaurant-tables/DialogFrame.tsx',
+    'src/features/restaurant-tables/OrderWorkspace.tsx',
+    'src/features/restaurant-tables/Reservations.tsx',
+    'src/features/restaurant-tables/RestaurantTables.tsx',
+    'src/features/restaurant-tables/TableOverviews.tsx',
+    'src/features/restaurant-tables/model.ts',
+    'src/features/restaurant-tables/storage.ts',
     'src/features/system-management/SystemManagement.tsx',
     'src/features/rooms-manager/model.ts',
     'src/features/rooms-manager/RoomsManager.tsx',

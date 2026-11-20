@@ -55,13 +55,13 @@ export const stayCharges = (ops: Operations, stayId: string) => allCharges(ops).
 export function outstandingTotal(charges: ChargeView[]): number {
   return charges.reduce((sum, charge) => {
     const next = sum + (charge.paidAt ? 0 : charge.amountCentavos)
-    if (!Number.isSafeInteger(next) || next < 0) throw Error('Invalid outstanding demo balance')
+    if (!Number.isSafeInteger(next) || next < 0) throw Error('Invalid outstanding balance')
     return next
   },0)
 }
 /** Writes only snapshotted service data, never the catalog or guest stay. */
 export function postServiceCharge(ops: Operations, rooms: Room[], services: ServiceRecord[],
-  input: {roomId: string; serviceId: string; quantity: string}, now = new Date().toISOString(), id = crypto.randomUUID()): Operations {
+  input: {roomId: string; serviceId: string; quantity: string}, now = new Date().toISOString(), id: string = crypto.randomUUID()): Operations {
   if (!validTime(now) || !id || (ops.serviceCharges ?? []).some(c=>c.id === id)) throw Error('Invalid charge identity')
   const room = rooms.find(r => r.id === input.roomId && r.active)
   const stay = room ? currentStay(ops,room.id) : undefined
@@ -79,7 +79,7 @@ export function postServiceCharge(ops: Operations, rooms: Room[], services: Serv
 }
 /** Independent full-charge demo payment event with immutable source and amount. */
 export function recordChargePayment(ops: Operations, source: ChargeSource, sourceId: string,
-  now = new Date().toISOString(), id = crypto.randomUUID(),
+  now = new Date().toISOString(), id: string = crypto.randomUUID(),
   method?: { directory: PaymentDirectory; methodId: string; cashReceived?: string }): Operations {
   if (!id || !validTime(now) || (ops.chargePayments??[]).some(p=>p.id === id)) throw Error('Invalid payment record')
   const charge = allCharges(ops).find(c=>c.id === sourceId && c.source === source)

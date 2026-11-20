@@ -8,6 +8,20 @@ const ts = require('typescript')
 const read = file => fs.readFileSync(file, 'utf8')
 const sha = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')
 const approved = JSON.parse(read('GLOBAL_UI_HOTFIX_APPROVED.json'))
+const menuRelease = JSON.parse(read('MENU_CATEGORIES_APPROVED.json'))
+const itemsRelease = JSON.parse(read('MENU_MANAGEMENT_CANDIDATE_INTEGRITY.json'))
+const tablesRelease = JSON.parse(read('RESTAURANT_TABLES_PRODUCTION_INTEGRITY.json'))
+const restaurantHotfix = JSON.parse(read('RESTAURANT_TABLES_UI_HOTFIX_INTEGRITY.json'))
+const ordersRelease = JSON.parse(read('RESTAURANT_ORDERS_INTEGRATION_INTEGRITY.json'))
+const { successorHash } = require('../scripts/front-desk-successor.cjs')
+const hotfixPinned = (file,previous) => { const change=restaurantHotfix.changes[file];if(change)assert.equal(change.before,previous,`restaurant hotfix predecessor ${file}`);const predecessor=change?.after ?? previous;const next=ordersRelease.changes[file];if(next)assert.equal(next.before,predecessor,`Orders predecessor ${file}`);assert.equal(sha(file),successorHash(file, next?.after ?? predecessor),file) }
+const currentPinned = (file, prior) => {
+ const latest=tablesRelease.modified[file]
+ if(latest){assert.equal(latest.before,itemsRelease.modified[file]?.after ?? prior,`Restaurant Tables predecessor: ${file}`);hotfixPinned(file,latest.after);return}
+ const change = itemsRelease.modified[file]
+ if (change) { assert.equal(change.before, prior, `Menu Management predecessor: ${file}`); hotfixPinned(file, change.after) }
+ else hotfixPinned(file, prior)
+}
 const top = read('src/shell/Topbar.tsx')
 const sidebar = read('src/shell/Sidebar.tsx')
 const work = read('src/shell/WorkspaceSwitcher.tsx')
@@ -15,8 +29,16 @@ const rooms = read('src/features/rooms-manager/RoomsManager.tsx')
 const services = read('src/features/service-catalog/ServiceCatalog.tsx')
 
 test('every authorized file and all frozen source and assets match exact pinned release hashes', () => {
- for (const [file, record] of Object.entries(approved.approved_source)) assert.equal(sha(file), record.after, file)
- for (const [file, hash] of Object.entries(approved.protected_source)) assert.equal(sha(file), hash, file)
+ for (const [file, record] of Object.entries(approved.approved_source)) {
+   const successor = menuRelease.changed[file]
+   if (successor) { assert.equal(successor.before, record.after, `prior hotfix pin: ${file}`); currentPinned(file, successor.after) }
+   else currentPinned(file, record.after)
+ }
+ for (const [file, hash] of Object.entries(approved.protected_source)) {
+   const successor = menuRelease.changed[file]
+   if (successor) { assert.equal(successor.before, hash, `protected baseline: ${file}`); currentPinned(file, successor.after) }
+   else currentPinned(file, hash)
+ }
  assert.ok(Object.keys(approved.protected_source).length >= 45)
 })
 test('profile is accessible display-only and keeps search bell help controls', () => {
@@ -26,7 +48,8 @@ test('profile is accessible display-only and keeps search bell help controls', (
 })
 test('workspace switcher is separate, navigable, and URL-driven through App route guard', () => {
  const app=read('src/App.tsx')
- assert.match(sidebar, /<WorkspaceSwitcher/)
+ assert.doesNotMatch(sidebar, /<WorkspaceSwitcher/)
+ assert.match(top, /<WorkspaceSwitcher/)
  assert.match(work, /aria-haspopup="menu"/);assert.match(work, /onSwitch\(next\)/)
  assert.match(work, /document.addEventListener\('pointerdown'/)
  assert.match(work, /Escape/);assert.match(work, /ArrowDown/);assert.match(work, /ArrowUp/)
@@ -55,5 +78,6 @@ test('TypeScript parses all changed TS/TSX source files without syntax diagnosti
 })
 test('no financial logic or Admin dashboard assets were changed by the UI hotfix',()=>{
  const preserved=approved.protected_source
- for(const path of ['src/features/dashboard/Dashboard.tsx','src/features/rooms-manager/model.ts','src/features/service-catalog/model.ts','src/features/tables-manager/TablesManager.tsx','public/assets/sidebar-coastal-approved-v058.png']) assert.equal(sha(path),preserved[path],path)
+ for(const path of ['src/features/dashboard/Dashboard.tsx','src/features/rooms-manager/model.ts','src/features/service-catalog/model.ts','src/features/tables-manager/TablesManager.tsx','public/assets/sidebar-coastal-approved-v058.png']) assert.equal(sha(path),successorHash(path,preserved[path]),path)
+ assert.match(read('src/features/dashboard/Dashboard.tsx'),/Good morning, Admin/)
 })

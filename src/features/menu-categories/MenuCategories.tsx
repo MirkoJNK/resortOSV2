@@ -9,6 +9,8 @@ import type { CategorySort, CategoryStatus, MenuCategory } from './model'
 import { commitCatalog, loadCatalog } from './storage'
 import type { Catalog, CategoryImage } from './storage'
 import { processCategoryImage } from './images'
+import { useDiscardConfirmation } from '../../shared/useDiscardConfirmation'
+import { MenuFallbackImage } from '../../shared/MenuFallbackImage'
 
 type Draft = { id: string | null; name: string; imageAction: 'keep' | 'remove' | 'replace'; pending: CategoryImage | null }
 type Drag = { id: string; targetId: string }
@@ -25,9 +27,7 @@ function useImageUrls(images?: Map<string, CategoryImage>) {
 }
 
 function CategoryPicture({ image, name, large = false }: { image?: string; name: string; large?: boolean }) {
-  return <span className={`mc-image-frame ${large ? 'mc-image-large' : ''}`}>
-    {image ? <img src={image} alt={`Category: ${name}`} /> : <span className="mc-image-placeholder" aria-label="No category image"><ImageIcon size={large ? 29 : 20} aria-hidden="true" /></span>}
-  </span>
+  return <MenuFallbackImage image={image} name={name} large={large} kind="category" />
 }
 
 function trapDialogKeys(event: KeyboardEvent, container: HTMLDivElement | null, dismiss: () => void) {
@@ -136,7 +136,8 @@ function StatusDialog({ category, busy, cancel, confirm }: { category: MenuCateg
   </div>
 }
 
-export function MenuCategories({ onDirtyChange }: { onDirtyChange?: (dirty: boolean) => void }) {
+export function MenuCategories({ onDirtyChange, onBusyChange }: { onDirtyChange?: (dirty: boolean) => void; onBusyChange?: (busy:boolean) => void }) {
+  const {requestDiscard,discardDialog} = useDiscardConfirmation()
   const [catalog, setCatalog] = useState<Catalog | null>(null)
   const [loading, setLoading] = useState(true)
   const [storageError, setStorageError] = useState<string | null>(null)
@@ -171,6 +172,7 @@ export function MenuCategories({ onDirtyChange }: { onDirtyChange?: (dirty: bool
     return () => { active = false }
   }, [])
   useEffect(() => { onDirtyChange?.(dirty); return () => onDirtyChange?.(false) }, [dirty, onDirtyChange])
+  useEffect(() => {onBusyChange?.(busy || processing);return () => onBusyChange?.(false)},[busy,processing,onBusyChange])
   useEffect(() => {
     if (!dirty) return
     const handler = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = '' }
@@ -192,16 +194,19 @@ export function MenuCategories({ onDirtyChange }: { onDirtyChange?: (dirty: bool
   const restoreFocus = () => { requestAnimationFrame(() => lastFocus.current?.focus()) }
   const closeEditor = () => {
     if (busyRef.current) return
-    if (dirty && !window.confirm('Discard unsaved category changes?')) return
-    imageSession.current++
-    setDraft(null); setNameError(null); setImageError(null); setProcessing(false); restoreFocus()
+    requestDiscard(dirty, () => {
+      imageSession.current++
+      setDraft(null); setNameError(null); setImageError(null); setProcessing(false); restoreFocus()
+    }, processing)
   }
   const openEditor = (category?: MenuCategory, trigger?: HTMLElement) => {
-    if (busyRef.current || (dirty && !window.confirm('Discard unsaved category changes?'))) return
-    lastFocus.current = trigger ?? document.activeElement as HTMLElement
-    imageSession.current++
-    setDraft({ id: category?.id ?? null, name: category?.name ?? '', imageAction: 'keep', pending: null })
-    setNameError(null); setImageError(null); setNotice('')
+    if (busyRef.current) return
+    requestDiscard(dirty, () => {
+      lastFocus.current = trigger ?? document.activeElement as HTMLElement
+      imageSession.current++
+      setDraft({ id: category?.id ?? null, name: category?.name ?? '', imageAction: 'keep', pending: null })
+      setNameError(null); setImageError(null); setNotice('')
+    }, processing)
   }
   const persist = async (next: Catalog, success: string) => {
     if (busyRef.current) return false
@@ -245,10 +250,12 @@ export function MenuCategories({ onDirtyChange }: { onDirtyChange?: (dirty: bool
   }
   const statusCategory = categories.find(c => c.id === confirmId)
   const requestStatus = (category: MenuCategory, trigger?: HTMLElement) => {
-    if (busyRef.current || (dirty && !window.confirm('Discard unsaved category changes?'))) return
-    if (trigger) lastFocus.current = trigger
-    imageSession.current++
-    setDraft(null); setProcessing(false); setConfirmId(category.id); setImageError(null); setNameError(null)
+    if (busyRef.current) return
+    requestDiscard(dirty, () => {
+      if (trigger) lastFocus.current = trigger
+      imageSession.current++
+      setDraft(null); setProcessing(false); setConfirmId(category.id); setImageError(null); setNameError(null)
+    }, processing)
   }
   const toggleStatus = async () => {
     if (!statusCategory || !catalog || busyRef.current) return
@@ -359,5 +366,6 @@ export function MenuCategories({ onDirtyChange }: { onDirtyChange?: (dirty: bool
       cancel={closeEditor} save={() => { void saveDraft() }}
       setStatus={() => { if (editOriginal) requestStatus(editOriginal) }}/>}
     {statusCategory && <StatusDialog category={statusCategory} busy={busy} cancel={() => { setConfirmId(null); restoreFocus() }} confirm={() => { void toggleStatus() }}/>} 
+    {discardDialog}
   </section>
 }

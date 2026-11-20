@@ -3,6 +3,8 @@ import { activeRecordedQuantity, activeOrderTotal } from '../restaurant-tables/m
 
 /** All money is integer centavos, all percentage rates are integer hundredths of 1%. */
 export const MAX_FINANCIAL_CENTAVOS = 999_999_999_999
+/** 12% VAT already included in the Restaurant's displayed menu prices. */
+export const RESTAURANT_VAT_BASIS_POINTS = 1200
 export type TaxMode = 'unconfigured' | 'non-vat' | 'vat-inclusive'
 export type DiscountKind = 'senior' | 'pwd' | 'custom'
 export type DiscountType = 'percentage' | 'fixed'
@@ -83,7 +85,7 @@ export type DiscountResult = {
   discountCentavos: number
 }
 export type CalculationSnapshot = {
-  version: 1
+  version: 1 | 2
   calculatedAt: string
   originalCentavos: number
   vatReliefCentavos: number
@@ -94,14 +96,17 @@ export type CalculationSnapshot = {
   serviceCentavos: number
   payableCentavos: number
   taxMode: TaxMode
+  /** Present on version 2 snapshots; informational, never added to payable. */
+  vatRateBasisPoints?: number
+  vatIncludedCentavos?: number
   discounts: DiscountResult[]
 }
 export const statutoryId = (kind: 'senior' | 'pwd') => `statutory:${kind}`
 export const defaultFinanceConfig = (): FinanceConfig => ({
   revision: 0,
-  taxMode: 'unconfigured',
+  taxMode: 'vat-inclusive',
   taxHistory: [],
-  service: { active: false, rateBasisPoints: 0, version: 1, history: [] },
+  service: { active: true, rateBasisPoints: 1000, version: 1, history: [] },
   discounts: [
     {
       id: statutoryId('senior'),
@@ -135,6 +140,47 @@ export const defaultFinanceConfig = (): FinanceConfig => ({
     },
   ],
 })
+/** Legacy untouched defaults are migrated, but a saved Admin change (version/history) is sacred. */
+export function migrateLegacyFinanceConfig(
+  config: FinanceConfig,
+  now = new Date().toISOString(),
+): FinanceConfig {
+  const untouchedService =
+    config.service.version === 1 &&
+    config.service.history.length === 0 &&
+    !config.service.active &&
+    config.service.rateBasisPoints === 0
+  const unconfiguredTax = config.taxMode === 'unconfigured'
+  if (!untouchedService && !unconfiguredTax) return config
+  const next: FinanceConfig = {
+    ...config,
+    revision: config.revision + 1,
+    taxMode: unconfiguredTax ? 'vat-inclusive' : config.taxMode,
+    taxHistory: unconfiguredTax
+      ? [...config.taxHistory, { mode: 'unconfigured', at: now, reason: 'Legacy VAT default migration' }]
+      : config.taxHistory,
+    service: untouchedService
+      ? {
+          ...config.service,
+          active: true,
+          rateBasisPoints: 1000,
+          version: config.service.version + 1,
+          history: [
+            ...config.service.history,
+            {
+              version: config.service.version,
+              active: false,
+              rateBasisPoints: 0,
+              at: now,
+              reason: 'Legacy untouched default migration',
+            },
+          ],
+        }
+      : config.service,
+  }
+  if (!isValidFinanceConfig(next)) throw Error('Legacy finance settings could not be migrated')
+  return next
+}
 const safeCents = (n: unknown): n is number =>
   Number.isSafeInteger(n) && (n as number) >= 0 && (n as number) <= MAX_FINANCIAL_CENTAVOS
 const rate = (n: unknown): n is number =>
@@ -357,12 +403,12 @@ export function updateService(
   config: FinanceConfig,
   active: boolean,
   rateBasisPoints: number,
-  reason: string,
+  reason = 'Service charge updated',
   now = new Date().toISOString(),
 ): FinanceConfig {
-  if (!rate(rateBasisPoints) || (active && rateBasisPoints === 0))
+  if (!rate(rateBasisPoints))
     throw Error('Enter a valid service-charge percentage')
-  if (reason.trim().length < 4) throw Error('Enter a reason for the service-charge change')
+  const auditReason = reason.trim() || 'Service charge updated'
   const prior = config.service
   const next: FinanceConfig = {
     ...config,
@@ -377,7 +423,7 @@ export function updateService(
           active: prior.active,
           rateBasisPoints: prior.rateBasisPoints,
           at: now,
-          reason: reason.trim(),
+          reason: auditReason,
         },
       ],
     },
@@ -388,15 +434,15 @@ export function updateService(
 export function updateTax(
   config: FinanceConfig,
   mode: TaxMode,
-  reason: string,
+  reason = 'VAT registration updated',
   now = new Date().toISOString(),
 ): FinanceConfig {
-  if (!['non-vat', 'vat-inclusive'].includes(mode) || reason.trim().length < 4)
-    throw Error('Confirm the Restaurant VAT treatment and reason')
+  if (!['non-vat', 'vat-inclusive'].includes(mode))
+    throw Error('Choose a valid Restaurant VAT setting')
   const next: FinanceConfig = {
     ...config,
     taxMode: mode,
-    taxHistory: [...config.taxHistory, { mode: config.taxMode, at: now, reason: reason.trim() }],
+    taxHistory: [...config.taxHistory, { mode: config.taxMode, at: now, reason: reason.trim() || 'VAT registration updated' }],
   }
   if (!isValidFinanceConfig(next)) throw Error('Invalid tax configuration')
   return next
@@ -455,6 +501,7 @@ export function calculateOrder(
   elections: DiscountElection[],
   service: ServicePolicy,
   calculatedAt = new Date().toISOString(),
+  taxMode: TaxMode = elections[0]?.taxMode ?? 'vat-inclusive',
 ): CalculationSnapshot {
   if (
     order.canceledAt ||
@@ -462,6 +509,7 @@ export function calculateOrder(
     !Array.isArray(elections) ||
     elections.length > 2 ||
     !service ||
+    !['unconfigured', 'non-vat', 'vat-inclusive'].includes(taxMode) ||
     !rate(service.rateBasisPoints) ||
     !Number.isSafeInteger(service.version) ||
     service.version < 1
@@ -473,6 +521,7 @@ export function calculateOrder(
   const capacity = new Map<string, number>()
   let vatReliefCentavos = 0,
     discountCentavos = 0
+  let statutorilyExemptGrossCentavos = 0
   let custom = 0,
     statutory = 0
   const results: DiscountResult[] = []
@@ -552,6 +601,8 @@ export function calculateOrder(
       throw Error('Discount exceeds its eligible amount')
     vatReliefCentavos = sumExact(vatReliefCentavos, relief)
     discountCentavos = sumExact(discountCentavos, savings)
+    if (election.kind !== 'custom')
+      statutorilyExemptGrossCentavos = sumExact(statutorilyExemptGrossCentavos, eligibleCentavos)
     results.push({
       ruleId: election.ruleId,
       ruleVersion: election.ruleVersion,
@@ -567,6 +618,12 @@ export function calculateOrder(
   }
   const discountedCentavos = originalCentavos - vatReliefCentavos - discountCentavos
   if (!safeCents(discountedCentavos)) throw Error('Discounted order total is invalid')
+  const taxableGrossCentavos = originalCentavos - statutorilyExemptGrossCentavos -
+    (custom > 0 ? discountCentavos : 0)
+  if (!safeCents(taxableGrossCentavos)) throw Error('Taxable amount is invalid')
+  const vatIncludedCentavos = taxMode === 'vat-inclusive'
+    ? taxableGrossCentavos - rounded(BigInt(taxableGrossCentavos) * 100n, 112n)
+    : 0
   const serviceRateBasisPoints = service.active ? service.rateBasisPoints : 0
   const serviceCentavos = rounded(
     BigInt(discountedCentavos) * BigInt(serviceRateBasisPoints),
@@ -574,7 +631,7 @@ export function calculateOrder(
   )
   const payableCentavos = sumExact(discountedCentavos, serviceCentavos)
   return {
-    version: 1,
+    version: 2,
     calculatedAt,
     originalCentavos,
     vatReliefCentavos,
@@ -584,7 +641,9 @@ export function calculateOrder(
     serviceVersion: service.version,
     serviceCentavos,
     payableCentavos,
-    taxMode: elections[0]?.taxMode ?? 'unconfigured',
+    taxMode,
+    vatRateBasisPoints: taxMode === 'vat-inclusive' ? RESTAURANT_VAT_BASIS_POINTS : 0,
+    vatIncludedCentavos,
     discounts: results,
   }
 }
@@ -598,7 +657,7 @@ export function validCalculationSnapshot(
   const s = snapshot as CalculationSnapshot
   try {
     if (
-      s.version !== 1 ||
+      (s.version !== 1 && s.version !== 2) ||
       !stamp(s.calculatedAt) ||
       !rate(s.serviceRateBasisPoints) ||
       !Number.isSafeInteger(s.serviceVersion) ||
@@ -615,8 +674,25 @@ export function validCalculationSnapshot(
         history: [],
       },
       s.calculatedAt,
+      s.version === 1 ? (elections[0]?.taxMode ?? 'unconfigured') : s.taxMode,
     )
-    return JSON.stringify(computed) === JSON.stringify(s)
+    if (s.version === 2) return JSON.stringify(computed) === JSON.stringify(s)
+    // Version 1 is an already-settled transaction. Verify its original fields
+    // without adding newly introduced VAT amounts or rewriting stored records.
+    const legacy: CalculationSnapshot = {
+      version: 1, calculatedAt: computed.calculatedAt,
+      originalCentavos: computed.originalCentavos,
+      vatReliefCentavos: computed.vatReliefCentavos,
+      discountCentavos: computed.discountCentavos,
+      discountedCentavos: computed.discountedCentavos,
+      serviceRateBasisPoints: computed.serviceRateBasisPoints,
+      serviceVersion: computed.serviceVersion,
+      serviceCentavos: computed.serviceCentavos,
+      payableCentavos: computed.payableCentavos,
+      taxMode: elections[0]?.taxMode ?? 'unconfigured',
+      discounts: computed.discounts,
+    }
+    return JSON.stringify(legacy) === JSON.stringify(s)
   } catch {
     return false
   }

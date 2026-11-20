@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Pencil, Plus, Search } from 'lucide-react'
 import { DialogFrame } from '../restaurant-tables/DialogFrame'
+import { useDiscardConfirmation } from '../../shared/useDiscardConfirmation'
 import {
   PAYMENT_METHODS_EVENT, PAYMENT_METHODS_KEY, readPaymentMethods,
   setPaymentStatus, updatePaymentDirectory, writePaymentMethods
@@ -11,6 +12,7 @@ type Sort = 'az' | 'za' | 'newest'
 type Filter = 'all' | 'active' | 'inactive'
 
 export function PaymentMethods({ onDirtyChange }: {onDirtyChange?: (dirty:boolean)=>void}) {
+  const {requestDiscard,discardDialog} = useDiscardConfirmation()
   const [initial] = useState(readPaymentMethods)
   const [directory,setDirectory] = useState(initial.data)
   const [error,setError] = useState(initial.error ?? '')
@@ -38,8 +40,7 @@ export function PaymentMethods({ onDirtyChange }: {onDirtyChange?: (dirty:boolea
   }).sort((a,b)=> sort==='newest'?b.createdAt.localeCompare(a.createdAt)||a.id.localeCompare(b.id):
     sort==='za'?b.name.localeCompare(a.name,undefined,{sensitivity:'base'}):a.name.localeCompare(b.name,undefined,{sensitivity:'base'})),[directory,query,filter,sort])
   const close=()=>{
-    if(dirty&&!window.confirm('Discard unsaved payment method changes?'))return
-    setEditor(null);setFormError('');trigger.current?.focus()
+    requestDiscard(dirty,()=>{setEditor(null);setFormError('');trigger.current?.focus()})
   }
   const commit=(update:(current:PaymentDirectory)=>PaymentDirectory,message:string)=>{
     try {
@@ -99,5 +100,6 @@ export function PaymentMethods({ onDirtyChange }: {onDirtyChange?: (dirty:boolea
         <div className="rt-dialog-actions"><button type="button" className="rt-btn" onClick={()=>setConfirmation(null)}>Cancel</button><button type="button" className="rt-btn rt-btn-primary" onClick={()=>toggle(selected)}>{selected.active?'Deactivate':'Reactivate'}</button></div>
       </div>
     </DialogFrame>}
+    {discardDialog}
   </section>
 }

@@ -1,0 +1,113 @@
+/* resortOS Roles & Permissions: established management controls, shared graph editor. */
+.rp-page{display:flex;flex-direction:column;gap:16px;min-width:0}
+.rp-page .fd-charges-heading{margin-bottom:0}
+.rp-tabs{display:inline-flex;align-self:flex-start;gap:3px;padding:4px;border-radius:12px;background:#f0f3ee;border:1px solid #e6eae3}
+.rp-tabs button{border:0;border-radius:9px;background:transparent;padding:10px 18px;min-height:38px;font:800 12px var(--ros-font);color:#6d796e;cursor:pointer;transition:background .17s ease,color .17s ease,box-shadow .17s ease}
+.rp-tabs button.active{background:#fff;color:var(--ros-text);box-shadow:0 2px 8px #171d1a12}
+.rp-tabs button:focus-visible,.rp-page button:focus-visible,.rp-page input:focus-visible,.rp-page select:focus-visible{outline:2px solid #8eb752;outline-offset:2px}
+.rp-employee-layout{display:grid;grid-template-columns:218px minmax(0,1fr);gap:16px;align-items:stretch;min-height:620px}
+.rp-employee-picker,.rp-work-area,.rp-subroles-table,.rp-subroles-toolbar,.rp-builder-head,.rp-scope-options{background:white;border:1px solid var(--ros-border);border-radius:18px;box-shadow:var(--ros-shadow-card)}
+.rp-employee-picker{display:flex;flex-direction:column;gap:16px;padding:18px 12px;min-width:0}
+.rp-employee-picker h2,.rp-library-heading h2{font:800 14px var(--ros-font);letter-spacing:-.02em;margin:0;color:var(--ros-text)}
+.rp-employee-picker h2{padding:0 8px}
+.rp-library-search{display:flex;align-items:center;gap:8px;border:1px solid #e4eae2;border-radius:11px;background:#f2f5f2;padding:0 11px;min-height:43px;color:#748277;min-width:0}
+.rp-library-search input{border:0;background:transparent;font:600 12px var(--ros-font);color:var(--ros-text);width:100%;min-width:0;outline:0}
+.rp-library-search:focus-within{outline:2px solid #a8ce70;outline-offset:1px}
+.rp-page .rp-library-search input:focus-visible{outline:0;box-shadow:none}
+.rp-library-search button{display:flex;border:0;background:transparent;color:#6f7c72;cursor:pointer;padding:3px}
+.rp-employee-list{overflow-y:auto;max-height:625px;display:flex;flex-direction:column;gap:5px;min-height:0}
+.rp-employee-option{width:100%;text-align:left;display:flex;flex-direction:column;gap:4px;padding:12px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--ros-text);cursor:pointer;transition:background .17s ease}
+.rp-employee-option strong,.rp-library-item strong{font:750 12px var(--ros-font);overflow-wrap:anywhere}
+.rp-employee-option span,.rp-library-item span,.rp-node span{font:600 10px var(--ros-font);color:#738176}
+.rp-employee-option:hover{background:#f4f9e7}
+.rp-employee-option.active{background:var(--ros-lime-soft);border-color:#dcebab}
+.rp-work-area{display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.rp-work-head,.rp-builder-head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 18px;min-width:0}
+.rp-work-head{border-bottom:1px solid var(--ros-border)}
+.rp-work-head h2{font:800 17px var(--ros-font);margin:0 0 4px;color:var(--ros-text);letter-spacing:-.03em}
+.rp-work-head span{font:650 11px var(--ros-font);color:#768176}
+.rp-work-actions,.rp-graph-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.rp-page .rt-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:37px;white-space:nowrap}
+.rp-protected{padding:7px 11px;border-radius:9px;background:#f1f3f0;color:#647568}
+.rp-editor-layout{display:grid;grid-template-columns:minmax(0,1fr) 223px;min-width:0;min-height:550px;flex:1}
+.rp-graph-area{display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.rp-graph-toolbar{min-height:53px;display:flex;align-items:center;justify-content:space-between;gap:9px;padding:7px 12px;border-bottom:1px solid var(--ros-border)}
+.rp-graph-toolbar>span{font:750 11px var(--ros-font);color:#65736a;white-space:nowrap}
+.rp-graph-toolbar .rt-btn{min-height:31px;font-size:11px;padding:6px 9px}
+.rp-ticket-department-detail{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;padding:13px 15px;background:#f9fcf4;border-bottom:1px solid #e3ecd8}
+.rp-ticket-department-detail strong{font:800 12px var(--ros-font);color:#2c422e}
+.rp-ticket-department-detail p{margin:4px 0 0;font:600 11px/1.5 var(--ros-font);color:#647668}
+.rp-ticket-department-choices{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.rp-ticket-department-choices label{display:inline-flex;align-items:center;gap:7px;font:700 11px var(--ros-font);color:#354b37;cursor:pointer}
+.rp-ticket-department-choices input{width:16px;height:16px;accent-color:#7cae36;cursor:pointer}
+.rp-ticket-department-choices input:disabled{cursor:default;opacity:1}
+.rp-ticket-department-choices small{font:650 10px var(--ros-font);color:#7b897d}
+.rp-flow{height:530px;min-width:0;position:relative;background:#fbfcf8}
+.rp-flow.is-initializing .react-flow__viewport{opacity:0}
+.rp-flow.is-ready .react-flow__viewport{opacity:1;transition:opacity .2s ease-out}
+.rp-graph-initializing{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;background:#fbfcf8;color:#7a887e;font:700 12px var(--ros-font)}
+.rp-flow .react-flow__controls{box-shadow:0 2px 8px #00000012;border-radius:10px;overflow:hidden}
+.rp-flow .react-flow__controls-button{width:29px;height:29px;background:white;border-color:#e4eae2}
+.rp-flow .react-flow__edge.selected path{stroke:#6f9651!important;stroke-width:2.7!important}
+.rp-flow .react-flow__node{border:0;background:transparent;width:175px}
+.rp-flow .react-flow__node-heading{width:180px;pointer-events:none;box-shadow:none}
+.rp-column-heading{font:800 13px/1.4 var(--ros-font);color:#435848;padding:5px 0;white-space:nowrap;pointer-events:none}
+.rp-flow .react-flow__edge-interaction{stroke-width:18}
+.rp-node{min-height:64px;width:175px;display:flex;flex-direction:column;justify-content:center;gap:7px;padding:12px 15px;background:#fff;border:1.5px solid #dce5d7;border-radius:14px;box-shadow:0 6px 22px rgba(23,29,26,.07);transition:border-color .17s ease,box-shadow .17s ease}
+.rp-node-root{background:#ebf6c9;border-color:#bddb75}
+.rp-node-source{background:#f6faef;border-color:#cfe0be}
+.rp-node.pending{border-style:dashed;background:#fffef8}
+.rp-node.restricted{border-color:#c7a29d;background:#fff9f7}
+.rp-node.selected{border-color:#79aa37;box-shadow:0 0 0 3px #cdeaa385,0 9px 28px #171d1a15}
+.rp-node strong{font:800 12px/1.35 var(--ros-font);color:#27362c;overflow-wrap:anywhere}
+.rp-node span{line-height:1.4}
+.rp-node .rp-handle{width:10px;height:10px;border:2px solid white;background:#86b04d;box-shadow:0 0 0 1px #a2b78f}
+/* Semantic category accents live on permission nodes only; interaction states win. */
+.rp-node-permission.rp-category-administration{border-color:#bda9d4;background:#f6f1fc}
+.rp-node-permission.rp-category-administration .rp-handle{background:#7c5aa8;box-shadow:0 0 0 1px #bda9d4}
+.rp-node-permission.rp-category-restaurant{border-color:#e5bd93;background:#fff6eb}
+.rp-node-permission.rp-category-restaurant .rp-handle{background:#c47b34;box-shadow:0 0 0 1px #e5bd93}
+.rp-node-permission.rp-category-front-desk{border-color:#afcfdf;background:#f0f8fc}
+.rp-node-permission.rp-category-front-desk .rp-handle{background:#4e89a8;box-shadow:0 0 0 1px #afcfdf}
+.rp-node-permission.rp-category-employee-operations{border-color:#c5d2c8;background:#f5f7f4}
+.rp-node-permission.rp-category-employee-operations .rp-handle{background:#78877c;box-shadow:0 0 0 1px #c5d2c8}
+.rp-node-permission.restricted{border-color:#bd7d78;background:#fff8f6}
+.rp-node-permission.selected{border-color:#79aa37;box-shadow:0 0 0 3px #cdeaa385,0 9px 28px #171d1a15}
+.rp-library{min-width:0;display:flex;flex-direction:column;gap:12px;border-left:1px solid var(--ros-border);padding:15px 12px;background:#fff}
+.rp-library-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.rp-library-heading span{font:700 11px var(--ros-font);color:#79867a}
+.rp-module-select{width:100%!important;max-width:none!important;min-height:38px;font:650 12px var(--ros-font)}
+.rp-library-items{display:flex;flex-direction:column;gap:4px;overflow:auto;max-height:480px;min-height:0}
+.rp-library-item{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid #eef1eb;border-radius:10px;padding:10px;background:#fff;transition:background .17s ease}
+.rp-library-item[draggable=true]{cursor:grab}
+.rp-library-item:hover{background:#f6faef}
+.rp-library-item>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.rp-add-icon{display:grid;place-items:center;flex:0 0 29px;height:29px;border:1px solid #dce5d7;border-radius:8px;background:#f5fae9;color:#2a422c;cursor:pointer;font:800 19px var(--ros-font)}
+.rp-add-icon:hover:not(:disabled){background:var(--ros-lime)}
+.rp-add-icon:disabled{color:#93a097;background:#f6f8f4;cursor:default}
+.rp-no-results,.rp-no-selection{font:600 12px var(--ros-font);color:#748276;text-align:center;padding:30px 8px}
+.rp-removal-explanation{margin:0;font:650 13px/1.6 var(--ros-font);color:#3c4e40;overflow-wrap:anywhere}
+.rp-removal-explanation strong{font-weight:800;color:var(--ros-text)}
+.rp-removal-hint{margin:-3px 0 0;font:600 11px/1.5 var(--ros-font);color:#778879}
+.rp-subroles{display:flex;flex-direction:column;gap:16px}
+.rp-subroles-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px}
+.rp-subroles-toolbar .rp-library-search{width:min(100%,525px)}
+.rp-subroles-head,.rp-subrole-row{display:grid;grid-template-columns:minmax(0,2fr) minmax(75px,.6fr) minmax(95px,.65fr);align-items:center;gap:12px;padding:15px 20px}
+.rp-subroles-head{background:#fafbf8;font:800 11px var(--ros-font);color:#728075}
+.rp-subrole-row{border-top:1px solid #edf1eb;font:650 12px var(--ros-font);min-height:68px;color:#36473c}
+.rp-subrole-row:hover{background:#fbfdf8}
+.rp-subrole-row strong{font:800 13px var(--ros-font);overflow-wrap:anywhere}
+.rp-subrole-row>div{justify-self:end}
+.rp-subroles-empty{text-align:center;padding:36px;font:650 12px var(--ros-font);color:#79857a}
+.rp-builder{display:flex;flex-direction:column;gap:12px;min-width:0}
+.rp-builder-head{flex-wrap:wrap}
+.rp-name-field{display:flex;align-items:center;gap:10px;color:#657269;font:750 11px var(--ros-font);flex:1;min-width:200px}
+.rp-name-field input{border:1px solid #dce6d9;border-radius:10px;min-height:41px;min-width:0;flex:1;padding:8px 11px;color:var(--ros-text);font:750 13px var(--ros-font)}
+.rp-scope-options{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:14px 18px;font:650 11px var(--ros-font);color:#536658}
+.rp-scope-options label,.rp-check{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font:700 11px var(--ros-font)}
+.rp-scope-options input,.rp-check input{accent-color:#6d9c29;width:16px;height:16px}
+.rp-builder>.rp-editor-layout{border:1px solid var(--ros-border);border-radius:18px;overflow:hidden;background:white}
+@media(max-width:1170px){.rp-employee-layout{grid-template-columns:185px minmax(0,1fr)}.rp-editor-layout{grid-template-columns:minmax(0,1fr) 200px}.rp-work-head{flex-wrap:wrap}.rp-flow{height:500px}}
+@media(max-width:900px){.rp-employee-layout{grid-template-columns:minmax(0,1fr)}.rp-employee-picker{padding:12px;gap:10px}.rp-employee-list{flex-direction:row;max-height:104px;overflow-x:auto;overflow-y:hidden}.rp-employee-option{min-width:155px;max-width:190px}.rp-editor-layout{grid-template-columns:minmax(0,1fr) 210px}}
+@media(max-width:620px){.rp-page{gap:12px}.rp-tabs{width:100%}.rp-tabs button{flex:1}.rp-editor-layout{grid-template-columns:minmax(0,1fr)}.rp-library{border-left:0;border-top:1px solid var(--ros-border)}.rp-library-items{max-height:215px}.rp-flow{height:420px}.rp-work-head,.rp-builder-head{padding:13px}.rp-work-actions{width:100%;justify-content:flex-start}.rp-graph-toolbar{flex-wrap:wrap}.rp-name-field{order:3;flex-basis:100%}.rp-subroles-toolbar{flex-wrap:wrap}.rp-subroles-toolbar .rp-library-search{width:100%}.rp-subroles-head{display:none}.rp-subrole-row{grid-template-columns:minmax(0,1fr) 45px 76px;padding:12px}.rp-employee-layout{gap:12px}.rp-scope-options{gap:9px}}
+@media(prefers-reduced-motion:reduce){.rp-page *{animation:none!important;transition:none!important}.rp-flow .react-flow__edge{animation:none!important}.rp-flow.is-ready .react-flow__viewport{transition:none}}

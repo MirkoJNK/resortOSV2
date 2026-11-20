@@ -10,7 +10,8 @@ const js = ts.transpileModule(source,{fileName:'service-model.ts',compilerOption
 const store = () => {let raw=null,calls=0;return {getItem(){return raw},setItem(_key,value){raw=value;calls++},get raw(){return raw},set raw(v){raw=v},get calls(){return calls}}}
 function load(storage=store(), nextId=()=> 'uuid-fresh-1') {
   const mod={exports:{}}
-  vm.runInNewContext(js,{module:mod,exports:mod.exports,console,Date,Intl,Number,BigInt,Set,JSON,Math,crypto:{randomUUID:nextId},localStorage:storage},{filename:'service-model.js'})
+  vm.runInNewContext(js,{module:mod,exports:mod.exports,console,Date,Intl,Number,BigInt,Set,JSON,Math,crypto:{randomUUID:nextId},localStorage:storage,
+    require:name=>name==='../audit-log/storage'?{recordCollection(){}}:(()=>{throw Error('Unexpected '+name)})()},{filename:'service-model.js'})
   return mod.exports
 }
 const plain = x=>JSON.parse(JSON.stringify(x))

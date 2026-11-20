@@ -6,9 +6,7 @@ function mod(p){
  const abs=path.join(root,p); const text=fs.readFileSync(abs,'utf8');
  const output=ts.transpileModule(text,{fileName:abs,compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX},reportDiagnostics:true});
  if(output.diagnostics?.length)failed.push(...output.diagnostics.map(d=>ts.flattenDiagnosticMessageText(d.messageText,'\n')));
- // The source uses Vite's import.meta.env.BASE_URL. This CommonJS-only
- // legacy renderer substitutes the same configured base for its static preview.
- return output.outputText.replaceAll('import.meta.env.BASE_URL', JSON.stringify(process.env.GITHUB_PAGES_BASE || '/'));
+ return output.outputText;
 }
 const e=(type,props)=>({type,props:props||{}});
 const React={useState:(x)=>[(process.env.ROS_PREVIEW_OPEN==='1' && new Error().stack.includes('WorkspaceSwitcher'))?true:(typeof x==='function'?x():x),()=>{}],useEffect:()=>{},useRef:()=>({current:null}),useMemo:(fn)=>fn(),createElement:(t,p,...c)=>e(t,{...p,children:c}),Fragment:Symbol('fragment')};

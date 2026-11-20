@@ -194,7 +194,8 @@
   justify-content: center;
   gap: 5px;
   color: #57645d;
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 700;
   white-space: nowrap;
   padding: 4px;
 }
@@ -206,17 +207,22 @@
 }
 
 .support-filter-tabs button span {
-  font-size: 9px;
-  line-height: 1.25;
-  padding: 2px 4px;
-  border-radius: 7px;
-  background: #e6e8e6;
-  color: #607166;
+  display: inline;
+  font-size: inherit;
+  line-height: inherit;
+  font-variant-numeric: tabular-nums;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  opacity: .72;
 }
 
 .support-filter-tabs button.selected span {
-  background: #bde442;
-  color: #283921;
+  background: transparent;
+  color: inherit;
+  opacity: 1;
 }
 
 .support-filter-row {
@@ -752,7 +758,7 @@
     gap: 3px;
   }
   .support-filter-tabs button {
-    font-size: 9px;
+    font-size: 10px;
   }
   .support-detail-head {
     padding: 19px 16px 12px;
@@ -1812,3 +1818,100 @@
 /* resortOS v0.6.6.1 — approved Composition A1 coastal banner
    Scope: artwork and top-section geometry only. The weather badge is unchanged.
    The art spans edge-to-edge, without the v0.6.6 transparency mask or raster weather. */
+
+.support-draft-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 10px 16px 2px;
+}
+
+.support-draft-files>span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #e2e9de;
+  border-radius: 11px;
+  background: #f7faf3;
+  font-size: 12px;
+  color: #283a32;
+}
+
+.support-draft-files small {
+  font-size: 11px;
+  color: #6e8075;
+  white-space: nowrap;
+}
+
+.support-draft-files button {
+  display: inline-grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+  color: #50685b;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.support-draft-files button:hover {
+  background: #e6efdc;
+}
+
+.support-file {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.support-file button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 100%;
+  border: 1px solid #dce6d6;
+  border-radius: 9px;
+  padding: 8px 10px;
+  background: #f8faf5;
+  color: #344b3d;
+  font-size: 12px;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.support-file button:hover {
+  background: #eff7e6;
+}
+
+.support-file small {
+  color: #687d6f;
+}
+
+.support-file-image {
+  display: block;
+  max-width: 220px;
+  max-height: 150px;
+  object-fit: contain;
+  border-radius: 9px;
+  border: 1px solid #dde8d7;
+}
+
+.support-composer input[type="file"] {
+  display: none;
+}
+
+.support-composer>button:first-of-type {
+  height: 39px;
+  width: 40px;
+  border: 1px solid var(--ros-border);
+  background: #fff;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: #26392d;
+}

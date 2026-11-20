@@ -7,28 +7,38 @@
     "dev": "vite --host 127.0.0.1",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "start": "node server/start.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "node --test tests/discount-financial-integration.test.mjs",
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "visual:reference": "node tools-render-preview.cjs",
+    "visual:support": "node tools-render-support.cjs",
+    "quality:baseline": "node scripts/verify-approved-baseline.cjs",
+    "format:css": "node scripts/format-css.cjs --write",
+    "format:css:check": "node scripts/format-css.cjs --check",
     "lint": "eslint \"src/**/*.{ts,tsx}\" vite.config.ts",
     "format:typescript": "prettier --write \"src/**/*.{ts,tsx}\" vite.config.ts",
-    "format:typescript:check": "prettier --check \"src/**/*.{ts,tsx}\" vite.config.ts"
+    "format:typescript:check": "prettier --check \"src/**/*.{ts,tsx}\" vite.config.ts",
+    "check:source": "npm run quality:baseline && npm run format:css:check && npm run syntax:ts && npm test",
+    "check:full": "npm run check:source && npm run typecheck && npm run lint && npm run build",
+    "syntax:ts": "node scripts/check-typescript-syntax.cjs"
   },
   "dependencies": {
+    "@xyflow/react": "13.0.1",
+    "lucide-react": "^0.468.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "lucide-react": "^0.468.0"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@eslint/js": "9.39.1",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^4.7.0",
-    "typescript": "^5.9.0",
-    "vite": "^7.1.0",
-    "postcss": "8.5.6",
-    "@eslint/js": "9.39.1",
     "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
+    "postcss": "8.5.6",
+    "prettier": "3.9.10",
+    "typescript": "^5.9.0",
     "typescript-eslint": "8.46.3",
-    "prettier": "3.9.10"
+    "vite": "^7.1.0"
   }
 }

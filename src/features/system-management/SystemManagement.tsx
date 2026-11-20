@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
 import { Building2, CreditCard, ReceiptText, Search, Store, Users, X } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import type { AppRoute } from '../../shell/navigation'
 
 /**
- * Management directory: six implemented managers have routes.
+ * Management directory: implemented managers have routes.
  * The remaining editors stay informational until their React pages exist.
  */
 type ManagementTool = { id: string; label: string; description: string; searchTerms?: string }
@@ -53,21 +54,23 @@ const sections: ManagementSection[] = [
   }
 ]
 
-export function SystemManagement() {
+export function SystemManagement({canOpen = () => true}: {canOpen?: (route: AppRoute) => boolean}) {
   const [query, setQuery] = useState('')
   const filter = query.trim().toLocaleLowerCase()
   const filtered = useMemo(() => sections.map(section => ({
     ...section,
     tools: section.tools.filter(tool =>
-      !filter || [tool.label, tool.description, tool.searchTerms]
+      canOpen((tool.id === 'roles' ? 'roles-permissions' : tool.id === 'methods' ? 'payment-methods' : tool.id) as AppRoute) &&
+      (!filter || [tool.label, tool.description, tool.searchTerms]
         .filter(Boolean).join(' ').toLocaleLowerCase().includes(filter)
+      )
     )
-  })).filter(section => section.tools.length), [filter])
+  })).filter(section => section.tools.length), [filter, canOpen])
   const visibleCount = filtered.reduce((total, section) => total + section.tools.length, 0)
   const totalCount = sections.reduce((total, section) => total + section.tools.length, 0)
 
   return <section className="sm-page" aria-labelledby="sm-page-heading">
-    <div className="section-header sm-heading">
+    <div className="section-header sm-heading ros-admin-heading" data-tour-target="admin-system-heading">
       <div>
           <h1 id="sm-page-heading">System Management</h1>
         
@@ -96,18 +99,17 @@ export function SystemManagement() {
     </span>
 
     {/* Stable wrapper: search updates do not replay entrance motion. */}
-    <div className="sm-results-stage">
+    <div className="sm-results-stage" data-tour-target="admin-system-tools">
     {filtered.length ? <div className="sm-grid">
-      {filtered.map(section => <article className="sm-category" key={section.id}>
+      {filtered.map(section => <article className="sm-category" key={section.id} data-tour-target="admin-system-groups">
         <div className="sm-category-head">
           <span className="sm-category-icon" aria-hidden="true"><section.icon size={19} strokeWidth={1.9} /></span>
           <div>
             <h2>{section.title}</h2>
-            <p>{section.description}</p>
           </div>
         </div>
         <div className="sm-items">
-          {section.tools.map(tool => tool.id === 'tables' || tool.id === 'rooms' || tool.id === 'services' || tool.id === 'menu-categories' || tool.id === 'menu' || tool.id === 'methods' || tool.id === 'discounts' ? <a className="sm-tool sm-tool-link" key={tool.id} href={tool.id === 'discounts' ? '#systems/discounts' : tool.id === 'rooms' ? '#systems/rooms' : tool.id === 'services' ? '#systems/services' : tool.id === 'menu-categories' ? '#systems/menu-categories' : tool.id === 'menu' ? '#systems/menu' : tool.id === 'methods' ? '#systems/payment-methods' : '#systems/tables'}>
+          {section.tools.map(tool => tool.id === 'roles' || tool.id === 'employees' || tool.id === 'tables' || tool.id === 'rooms' || tool.id === 'services' || tool.id === 'menu-categories' || tool.id === 'menu' || tool.id === 'methods' || tool.id === 'discounts' || tool.id === 'receipt-settings' || tool.id === 'receipt-builder' ? <a className="sm-tool sm-tool-link" key={tool.id} href={tool.id === 'roles' ? '#/systems/roles-permissions' : tool.id === 'employees' ? '#systems/employees' : tool.id === 'receipt-builder' ? '#systems/receipt-builder' : tool.id === 'receipt-settings' ? '#systems/receipt-settings' : tool.id === 'discounts' ? '#systems/discounts' : tool.id === 'rooms' ? '#systems/rooms' : tool.id === 'services' ? '#systems/services' : tool.id === 'menu-categories' ? '#systems/menu-categories' : tool.id === 'menu' ? '#systems/menu' : tool.id === 'methods' ? '#systems/payment-methods' : '#systems/tables'}>
             <div className="sm-tool-copy"><h3>{tool.label}</h3><p>{tool.description}</p></div>
           </a> : <div className="sm-tool" key={tool.id}>
             <div className="sm-tool-copy">

@@ -9,7 +9,8 @@ try{ts=require('typescript')}catch{ts=require('/opt/nvm/versions/node/v22.16.0/l
 const source=fs.readFileSync('src/features/tables-manager/model.ts','utf8')
 const out=ts.transpileModule(source,{fileName:'model.ts',compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText
 const mod={exports:{}}
-vm.runInNewContext(out,{exports:mod.exports,module:mod,crypto:{randomUUID:()=> 'test-uuid'},localStorage:{getItem:()=>null,setItem:()=>{}}},{filename:'model.js'})
+vm.runInNewContext(out,{exports:mod.exports,module:mod,crypto:{randomUUID:()=> 'test-uuid'},localStorage:{getItem:()=>null,setItem:()=>{}},
+ require:name=>name==='../audit-log/storage'?{recordCollection(){}}:(()=>{throw Error('Unexpected '+name)})()},{filename:'model.js'})
 const M=mod.exports
 const table=(extra={})=>({...M.sampleConfiguration.tables[0],...extra})
 const canonical=x=>JSON.parse(JSON.stringify(x))
@@ -72,8 +73,8 @@ test('source has no chair drag/selection or zoom editing feature',()=>{
 })
 test('Tables Manager remains navigable alongside the newly approved Rooms Manager',()=>{
  const src=fs.readFileSync('src/features/system-management/SystemManagement.tsx','utf8')
- assert.match(src,/tool\.id === 'tables' \|\| tool\.id === 'rooms' \|\| tool\.id === 'services' \? <a/)
- assert.match(src,/href=\{tool\.id === 'rooms' \? '#systems\/rooms' : tool\.id === 'services' \? '#systems\/services' : '#systems\/tables'\}/)
+ assert.match(src,/tool\.id === 'tables' \|\| tool\.id === 'rooms' \|\| tool\.id === 'services' \|\| tool\.id === 'menu-categories' \|\| tool\.id === 'menu' \|\| tool\.id === 'methods' \? <a/)
+ assert.match(src,/href=\{tool\.id === 'rooms' \? '#systems\/rooms' : tool\.id === 'services' \? '#systems\/services' : tool\.id === 'menu-categories' \? '#systems\/menu-categories' : tool\.id === 'menu' \? '#systems\/menu' : tool\.id === 'methods' \? '#systems\/payment-methods' : '#systems\/tables'\}/)
  assert.match(src,/ : <div className="sm-tool"/)
 })
 

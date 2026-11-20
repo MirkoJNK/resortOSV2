@@ -1,0 +1,61 @@
+{
+  "source_zip": "resortOS_RestaurantOrders_Styling_Hotfix.zip",
+  "modified": {
+    "src/App.tsx": {
+      "before": "2dfb5b581ae414c478b38244ed58690851b9f5bf7ac91c22d4d5b490df922d95",
+      "after": "39d5ddcb52fddb5355f855b6e60d0be557a2e6d35ba1011184946453f7f28dfd"
+    },
+    "src/features/dashboard/Dashboard.tsx": {
+      "before": "0f205055d64b91f7c7de531399abe581fe1ad4f1268b95db0f0e723a43ef9556",
+      "after": "fbd5b54a086c59c618b9b5d6a0ef0dc0bbedeef5e9a7c69435e73baee5ccb986"
+    },
+    "src/features/front-desk/FrontDeskDashboard.tsx": {
+      "before": "90c376e9ed204e64a5d3603e677c25cd1207742b349cea537f0f0a38cd6073e6",
+      "after": "066e3008e7e14275474eed80ea828ab153cae2658c689590368efd66ac490c92"
+    },
+    "src/features/restaurant/RestaurantDashboard.tsx": {
+      "before": "a9d4bba21e24603fb8c95297e9dcc62422a20fa4c3f1b7aeec551a85600755c1",
+      "after": "1196d7f0774951568805ad76e7ba6e912f749fe3bb53a7262bbccadc925c37df"
+    },
+    "src/features/restaurant-orders/RestaurantOrders.tsx": {
+      "before": "702ed7d76ab68e3e0e004b2c442389b143db0a71e9738e36b47e4a7c5e3ca69c",
+      "after": "79169d770aba50e05139979df3f83d740accc3b1c509a582221bfd777e771378"
+    },
+    "src/features/restaurant-orders/restaurant-orders.css": {
+      "before": "33b83b2df72f665a598bff7b27f8a6140fbce0b0e9abbf23dc1c6c2a9b7a2c56",
+      "after": "6bd0a899a00860ee8837d73f1c8d85504fa3cb5e9b1b714b6b03bc8c5086f608"
+    },
+    "src/features/restaurant-tables/OrderWorkspace.tsx": {
+      "before": "8ec54bc820922a144a1dc58f0367dacc48b124767a51d54a4ddb3a654f586c00",
+      "after": "ff2cb2da2303ba76ea8e661c8672a56fb612e37971bbb7b89d1191e4b950dfb2"
+    },
+    "src/features/restaurant-tables/RestaurantTables.tsx": {
+      "before": "30ea6a274ce6afbf0336d9f4c5e5e438c88dc938df1cf9e5e08b76b561748978",
+      "after": "afa6aff83816a13d05b05e96d9c5b6d5a72601a32c0aab0c6cc63f633ecef197"
+    },
+    "src/features/restaurant-tables/model.ts": {
+      "before": "53a1fa3982f434a7dbce08636003f1b87dcda09a8abdcd7a891f9f236b8def0e",
+      "after": "2472d1e87320daf36b056189027aac5441d4de8154b259cd9e4ea09f87abc9ca"
+    },
+    "src/features/restaurant-tables/restaurant-tables.css": {
+      "before": "8ac6f66dd246e4c757a67b273fe1e2f2171e26bc98aa98e848b0a61435539f99",
+      "after": "2b073979a44f1b69e012ffa031e1507af149aaa3b0a2bd2f284079c2b63cdd88"
+    },
+    "src/features/restaurant-tables/storage.ts": {
+      "before": "7dce5b99d06d230aaec0f0e7119f79b4758ffafb3a07c688d5bd23e318cf7b27",
+      "after": "febeff3effff3361250a013e9a03991ce25714e8fde7dad0f3ff8ddb1d1f380f"
+    },
+    "src/shell/Sidebar.tsx": {
+      "before": "83258ef52f9f070ab95b255d63ae834713853deecd5d86ff0960be24a7dcab69",
+      "after": "8c20e8fe1a44b0e2484683060ebc829a90955dd4d0bf0272f4719cae2aa7f2ce"
+    },
+    "src/shell/Topbar.tsx": {
+      "before": "c46659c96142de29e0c1a00f2fcf0c294c25be0693894bc781fe2af9dafe66d7",
+      "after": "ac89424631760abb4bea6cf8878a799e1b90e6b818ccc155bbe27aedce6c5f6e"
+    },
+    "src/styles/profile-workspace-hotfix.css": {
+      "before": "e48a3f7a44122f1898ba5fc4c862dd441cec6da0b246b2d990cae67007d7cff9",
+      "after": "32fdee315c14be15b7a1060f13ae0bce72ca1f727f6a887f02b628809923eb9e"
+    }
+  }
+}

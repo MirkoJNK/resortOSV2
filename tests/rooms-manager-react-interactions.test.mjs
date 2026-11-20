@@ -22,7 +22,8 @@ function harness(){
    HTMLInputElement:class HTMLInputElement{}
  }
  const model={exports:{}}
- vm.runInNewContext(transpile('src/features/rooms-manager/model.ts'),{...base,module:model,exports:model.exports},{filename:'room-model.js'})
+ vm.runInNewContext(transpile('src/features/rooms-manager/model.ts'),{...base,module:model,exports:model.exports,
+   require:name=>name==='../audit-log/storage'?{recordCollection(){}}:(()=>{throw Error('Unexpected '+name)})()},{filename:'room-model.js'})
  const module={exports:{}}
  const icon=()=>jsx('svg',{})
  const lucide=new Proxy({}, {get:(_,name)=>name==='__esModule'?false:icon})

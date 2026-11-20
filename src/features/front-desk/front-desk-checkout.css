@@ -1,4 +1,16 @@
 /* Checkout intentionally inherits the exact Front Desk Rooms grid and card presentation. */
+.fd-checkout-current-panel,.fd-checkout-history{display:flex;flex-direction:column;gap:17px;min-width:0}
+.fd-checkout-page .rt-tabs{align-self:flex-start}
+.fd-checkout-page .rt-tabs button:focus-visible{outline:2px solid #8dbb54;outline-offset:2px}
+.fd-history-list-head,.fd-history-list-row{grid-template-columns:minmax(115px,1fr) minmax(155px,1.4fr) minmax(135px,1fr) minmax(160px,1.25fr) minmax(110px,.75fr)}
+.fd-history-list-row>strong,.fd-history-list-row>span{min-width:0;overflow-wrap:anywhere}
+.fd-history-list-row>strong{color:#263a2c}
+.fd-history-list-row .fd-history-manage{justify-self:end}
+.fd-history-list-row .fd-history-manage .rt-btn{white-space:nowrap;font-size:11px;padding:9px 12px}
+.fd-history-list .rt-empty{padding:40px 20px;text-align:center}
+.fd-checkout-complete-text{font-size:13px;color:#45604b;line-height:1.6;margin:4px 0 10px}
+@media(max-width:900px){.fd-history-list-head{display:none}.fd-history-list-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:17px;align-items:start}.fd-history-list-row>strong{grid-column:1;grid-row:1}.fd-history-list-row>span:nth-child(2){grid-column:2;grid-row:1;text-align:right}.fd-history-list-row>span:nth-child(3){grid-column:1;grid-row:2}.fd-history-list-row>span:nth-child(3)::before{content:'Check-in: ';font-weight:700;color:#67796b}.fd-history-list-row>span:nth-child(4){grid-column:2;grid-row:2;text-align:right}.fd-history-list-row>span:nth-child(4)::before{content:'Checkout: ';font-weight:700;color:#67796b}.fd-history-list-row>.fd-history-manage{grid-column:1/-1;grid-row:3}}
+@media(max-width:520px){.fd-history-list-row{padding:15px;grid-template-columns:minmax(0,1fr)}.fd-history-list-row>strong,.fd-history-list-row>span:nth-child(2),.fd-history-list-row>span:nth-child(3),.fd-history-list-row>span:nth-child(4),.fd-history-list-row>.fd-history-manage{grid-column:1;grid-row:auto;text-align:left}.fd-history-list-row>.fd-history-manage{justify-self:start}.fd-history-list .rt-toolbar-tools{width:100%}.fd-checkout-page .rt-tabs{align-self:stretch}}
 .fd-checkout-dialog{width:min(760px,100%);max-height:min(92vh,900px);overflow-y:auto;overscroll-behavior:contain}
 .fd-checkout-confirm-dialog{width:min(470px,100%)}
 .fd-checkout-content{display:flex;flex-direction:column;gap:15px;min-width:0}

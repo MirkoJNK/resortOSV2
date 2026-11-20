@@ -1,5 +1,6 @@
 import type { MenuCategory } from './model'
 import { sampleCategories, validCategories } from './model'
+import { recordCollection } from '../audit-log/storage'
 
 export const CATEGORY_DB_NAME = 'resortos:menu-categories:v1'
 export type CategoryImage = { id: string; blob: Blob; mime: string; width: number; height: number }
@@ -38,7 +39,7 @@ export async function openCategoryDB(): Promise<IDBDatabase> {
     request.onsuccess = () => { request.result.onversionchange = () => request.result.close(); resolve(request.result) }
   })
 }
-export async function loadCatalog(): Promise<Catalog> {
+export async function loadCatalog(initializeDemo = true): Promise<Catalog> {
   const db = await openCategoryDB()
   try {
     // A marker distinguishes first use from an intentionally empty directory.
@@ -46,7 +47,7 @@ export async function loadCatalog(): Promise<Catalog> {
     const checkDone = transactionDone(checkTx)
     const wasInitialized = await requestResult(checkTx.objectStore(META).get(marker))
     await checkDone
-    if (!wasInitialized) {
+    if (!wasInitialized && initializeDemo) {
       const seedTx = db.transaction([CATEGORIES, META], 'readwrite')
       const done = transactionDone(seedTx)
       for (const c of sampleCategories) seedTx.objectStore(CATEGORIES).put(c)
@@ -85,6 +86,7 @@ export async function commitCatalog(next: Catalog): Promise<void> {
     const image = next.images.get(id)
     if (!image || !(image.blob instanceof Blob)) throw Error('Cannot save a category with a missing image')
   }
+  const before = await loadCatalog()
   const db = await openCategoryDB()
   try {
     const tx = db.transaction([CATEGORIES, IMAGES, META], 'readwrite')
@@ -97,5 +99,8 @@ export async function commitCatalog(next: Catalog): Promise<void> {
     for (const id of referenced) images.put(next.images.get(id)!)
     tx.objectStore(META).put(true, marker)
     await done
+    recordCollection({category:'Restaurant',kind:'menu-category',name:'Menu category',operationId:`categories:${crypto.randomUUID()}`,
+      before:before.categories.map(c=>({id:c.id,label:c.name,active:c.active,state:`${c.order}/${c.imageId??'none'}`})),
+      after:next.categories.map(c=>({id:c.id,label:c.name,active:c.active,state:`${c.order}/${c.imageId??'none'}`}))})
   } finally { db.close() }
 }

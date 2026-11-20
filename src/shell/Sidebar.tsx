@@ -1,22 +1,24 @@
 import { BedDouble, ClipboardList, CreditCard, LogOut, UtensilsCrossed } from 'lucide-react'
 import type { AppRoute, DepartmentNavItem } from './navigation'
 import { primaryNav } from './navigation'
+import { publicAsset } from './assets'
 
 function Logo() {
   return <div className="brand ros-light-brand">
     <img
       className="ros-full-brandmark"
-      src={`${import.meta.env.BASE_URL}assets/resortos-brand-balanced.svg`}
+      src={publicAsset('resortos-brand-balanced.svg')}
       alt="resortOS" />
   </div>
 }
 
-export function Sidebar({ area, onNavigate, menuOpen, onClose, items }: {
+export function Sidebar({ area, onNavigate, menuOpen, onClose, items,tutorialActive=false }: {
   area: AppRoute
   onNavigate: (a: AppRoute) => void
   menuOpen: boolean
   onClose: () => void
   items?: DepartmentNavItem[]
+  tutorialActive?:boolean
 }) {
   // Admin's original navigation list and markup remain the default.
   const nav = items ?? primaryNav.map(item => ({ ...item, enabled: true }))
@@ -46,7 +48,7 @@ export function Sidebar({ area, onNavigate, menuOpen, onClose, items }: {
     <div className={`mobile-shade ${menuOpen ? 'visible' : ''}`} onClick={onClose} />
     <aside
       className={`sidebar ros-light-sidebar ${menuOpen ? 'open' : ''}`}
-      id="resortos-nav">
+      id="resortos-nav" data-tour-target="tour-navigation" inert={tutorialActive}>
       <Logo />
           <nav
         className="nav-stack"
@@ -57,7 +59,7 @@ export function Sidebar({ area, onNavigate, menuOpen, onClose, items }: {
         className="side-bottom ros-coastal-bottom"
         aria-hidden="true">
         <img
-          src={`${import.meta.env.BASE_URL}assets/sidebar-coastal-approved-v058.png`}
+          src={publicAsset('sidebar-coastal-approved-v058.png')}
           alt="" />
       </div>
     </aside>

@@ -1,4 +1,5 @@
 /** Rooms Manager: deliberately separate from the operational/payment demo store. */
+import { recordCollection } from '../audit-log/storage'
 export type Room = {
   id: string
   name: string
@@ -93,8 +94,12 @@ export function readRooms(): ReadResult {
 }
 export function writeRooms(data: RoomDirectory): SaveResult {
   if (!validateDirectory(data)) return { ok: false, error: 'Invalid room information cannot be saved.' }
+  const previous=readRooms()
   try {
     localStorage.setItem(ROOMS_STORAGE_KEY, JSON.stringify(data))
+    if(!previous.error)recordCollection({category:'Settings',kind:'room',name:'Room',operationId:`rooms:${crypto.randomUUID()}`,
+      before:previous.data.rooms.map(r=>({id:r.id,label:r.name,active:r.active,state:r.code})),
+      after:data.rooms.map(r=>({id:r.id,label:r.name,active:r.active,state:r.code}))})
     return { ok: true }
   } catch {
     return { ok: false, error: 'Could not save rooms in this browser. Please retry; your changes remain in the form.' }

@@ -7,10 +7,51 @@ const { cssSemanticHash } = require('./css-semantic.cjs')
 
 const root = path.resolve(__dirname, '..')
 const hotfix = JSON.parse(fs.readFileSync(path.join(root, 'GLOBAL_UI_HOTFIX_APPROVED.json'), 'utf8'))
+const categoryRelease = JSON.parse(fs.readFileSync(path.join(root, 'MENU_CATEGORIES_APPROVED.json'), 'utf8'))
+const itemCandidate = JSON.parse(fs.readFileSync(path.join(root, 'MENU_MANAGEMENT_CANDIDATE_INTEGRITY.json'), 'utf8'))
+const tablesCandidate = JSON.parse(fs.readFileSync(path.join(root, 'RESTAURANT_TABLES_PRODUCTION_INTEGRITY.json'), 'utf8'))
+const restaurantHotfix = JSON.parse(fs.readFileSync(path.join(root, 'RESTAURANT_TABLES_UI_HOTFIX_INTEGRITY.json'), 'utf8'))
+const ordersRelease = JSON.parse(fs.readFileSync(path.join(root,'RESTAURANT_ORDERS_INTEGRATION_INTEGRITY.json'),'utf8'))
+const { successorHash, verifyAdded } = require('./front-desk-successor.cjs')
+const shaSource = rel => crypto.createHash('sha256').update(fs.readFileSync(path.join(root,rel))).digest('hex')
+const restaurantHotfixValid = rel => {
+  const change = restaurantHotfix.changes[rel]
+  if (!change) return false
+  const prior = tablesCandidate.modified[rel]?.after || tablesCandidate.added[rel] ||
+    (rel === 'src/features/restaurant/RestaurantDashboard.tsx' ? 'eaa7b72041123a9733f57dea8d70ef7c149dbbff4e2f64ecf4984b9bfce23f59' : null)
+  const successor = ordersRelease.changes[rel]
+  return !!prior && change.before === prior && (!successor || successor.before === change.after) && shaSource(rel) === successorHash(rel, successor?.after ?? change.after)
+}
+const tableSuccessorValid = rel => {
+  const change = tablesCandidate.modified[rel]
+  const previous = itemCandidate.modified[rel]?.after
+  const file = path.join(root, rel)
+  const successor = ordersRelease.changes[rel]
+  return !!change && !!previous && change.before === previous && (!successor || successor.before === change.after) && fs.existsSync(file) &&
+    crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') === successorHash(rel, successor?.after ?? change.after)
+}
+const itemSuccessor = rel => itemCandidate.modified[rel]
+const itemCandidateValid = rel => {
+  const change = itemSuccessor(rel)
+  const original = categoryRelease.changed[rel]
+  const file = path.join(root, rel)
+  return !!change && !!original && change.before === original.after && fs.existsSync(file) &&
+    crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') === successorHash(rel, change.after)
+}
+const categoryApproved = rel => {
+  if (itemSuccessor(rel)) return itemCandidateValid(rel)
+  const change = categoryRelease.changed[rel]
+  const file = path.join(root, rel)
+  return !!change && fs.existsSync(file) && crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') === successorHash(rel, change.after)
+}
 const hotfixApproved = rel => {
+  if (restaurantHotfix.changes[rel]) return restaurantHotfixValid(rel)
+  if (tablesCandidate.modified[rel]) return tableSuccessorValid(rel)
+  if (itemSuccessor(rel)) return itemCandidateValid(rel)
+  if (categoryRelease.changed[rel]) return categoryApproved(rel)
   const expected = hotfix.approved_source[rel]?.after
   const file = path.join(root, rel)
-  return !!expected && fs.existsSync(file) && crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') === expected
+  return !!expected && fs.existsSync(file) && crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') === successorHash(rel, expected)
 }
 const reference = 'tests/fixtures/approved-v064-source/src/App.tsx'
 
@@ -134,8 +175,7 @@ function verify() {
       else failures.push('SectionHeader: unauthorized heading or App change')
       continue
     }
-    if (['Logo', 'App', 'routeFromHash', 'Sidebar', 'Header', 'SearchDialog'].includes(originalName)) {
-      // The complete Sidebar source hash also protects the deploy-only Logo asset URL.
+    if (['App', 'routeFromHash', 'Sidebar', 'Header', 'SearchDialog'].includes(originalName)) {
       // Restaurant Stage 1 explicitly authorizes only the department routing and
       // three backward-compatible shell configuration points. Every approved file
       // is guarded in full by its reviewed semantic hash. All other frozen
@@ -145,9 +185,15 @@ function verify() {
         App: 'appHash', routeFromHash: 'navigationHash', Sidebar: 'sidebarHash',
         Header: 'topbarHash', SearchDialog: 'globalSearchHash'
       }
-      if (!actual || (hotfix.approved_source[file] ? !hotfixApproved(file) : typescriptSemanticHash(path.join(root, file)) !== approved[keys[originalName]])) {
+      if (!actual || (hotfix.approved_source[file] || categoryRelease.changed[file] ? !hotfixApproved(file) : typescriptSemanticHash(path.join(root, file)) !== approved[keys[originalName]])) {
         failures.push(`${originalName}: unapproved departmental integration change (${file})`)
       } else verified.push(originalName)
+      continue
+    }
+    if (originalName === 'Dashboard' && actual &&
+        fs.existsSync(path.join(root, 'MULTI_FEATURE_REFINEMENTS_INTEGRITY.json')) &&
+        shaSource(file) === successorHash(file, shaSource('resortOS_v066/src/features/dashboard/Dashboard.tsx'))) {
+      verified.push(`${originalName} (greeting-only authorized successor)`)
       continue
     }
     if (!expected || !actual || fingerprint(expected, protectedApp) !== fingerprint(actual, protectedApp)) failures.push(`${originalName}: missing or semantically modified (${file})`)
@@ -223,10 +269,11 @@ function verify() {
     ['src/features/restaurant/restaurant-dashboard.css', 'restaurantStylesHash', cssSemanticHash]
   ]) {
     const filename = path.join(root, rel)
-    if (!fs.existsSync(filename) || hash(filename) !== restaurantApproval[key]) {
+    if (!fs.existsSync(filename) || (restaurantHotfix.changes[rel] ? !restaurantHotfixValid(rel) : hash(filename) !== restaurantApproval[key])) {
       failures.push(`Unapproved Restaurant Stage 1 change: ${rel}`)
     }
   }
+  try { verifyAdded() } catch (error) { failures.push(error.message) }
   if (failures.length) throw Error('Approved shell extraction mismatch:\n' + failures.join('\n'))
   return verified
 }

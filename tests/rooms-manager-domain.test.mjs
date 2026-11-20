@@ -9,7 +9,8 @@ const source = fs.readFileSync('src/features/rooms-manager/model.ts','utf8')
 const output = ts.transpileModule(source,{fileName:'model.ts',compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText
 function load(storage, idGenerator=()=> 'uuid-test-unique') {
   const mod={exports:{}}
-  const context={module:mod,exports:mod.exports,localStorage:storage,crypto:{randomUUID:idGenerator},console,Date,Intl,Set,JSON,String,Object,Number,Array}
+  const context={module:mod,exports:mod.exports,localStorage:storage,crypto:{randomUUID:idGenerator},console,Date,Intl,Set,JSON,String,Object,Number,Array,
+    require:name=>name==='../audit-log/storage'?{recordCollection(){}}:(()=>{throw Error('Unexpected '+name)})()}
   vm.runInNewContext(output,context,{filename:'rooms-model.js'})
   return mod.exports
 }

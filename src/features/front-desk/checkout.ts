@@ -30,7 +30,7 @@ export type CheckoutInput = {
 
 /** One domain transition: all remaining charge allocations, checkout record and stay closure. */
 export function finalizeCheckout(ops: Operations, input: CheckoutInput,
-  now = new Date().toISOString(), checkoutId = crypto.randomUUID(),
+  now = new Date().toISOString(), checkoutId: string = crypto.randomUUID(),
   paymentIds?: string[], directory?: PaymentDirectory): Operations {
   if (!isTimestamp(now) || !checkoutId || (ops.checkouts ?? []).some(c => c.id === checkoutId)) throw Error('Invalid checkout identifier')
   const stay: GuestStay | undefined = (ops.stays ?? []).find(s => s.id === input.stayId)

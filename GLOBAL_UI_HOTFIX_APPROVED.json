@@ -12,7 +12,7 @@
     },
     "src/shell/Sidebar.tsx": {
       "before": "254a261ce8765808916797bc6d3a36499fcf178b8f5e41784e67f384b345b9fd",
-      "after": "b2aca93e94fd47750540ba165d466c19048c30d6f99aa13130aebc84d865b5df"
+      "after": "d7711631eb657476fc6ce30fcbae415b46b932be9a5d42c7fac3f1aa91f14a46"
     },
     "src/shell/Topbar.tsx": {
       "before": "766c349602bdd87874b33304a84b353f569c6bbe1a8b81cf0bac7c30adc28881",

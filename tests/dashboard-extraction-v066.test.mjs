@@ -7,6 +7,7 @@ import { createRequire } from 'node:module'
 
 const require = createRequire(import.meta.url)
 const { verify } = require('../scripts/verify-shell-extraction.cjs')
+const { successorHash } = require('../scripts/front-desk-successor.cjs')
 const dashboardPath = 'src/features/dashboard/Dashboard.tsx'
 const dashboard = fs.readFileSync(dashboardPath, 'utf8')
 const app = fs.readFileSync('src/App.tsx', 'utf8')
@@ -19,7 +20,7 @@ test('Dashboard extraction remains unique alongside the approved System Manageme
   assert.match(dashboard, /export function Dashboard\s*\(/)
   assert.equal((app + dashboard).match(/function Dashboard\s*\(/g)?.length, 1)
   const contents = fs.readdirSync('src/features', { withFileTypes: true })
-  assert.deepEqual(contents.map(f => f.name).sort(), ['dashboard', 'restaurant', 'rooms-manager', 'service-catalog', 'system-management', 'tables-manager'])
+  assert.deepEqual(contents.map(f => f.name).sort(), ['dashboard', 'front-desk', 'menu-categories', 'menu-management', 'payment-methods', 'restaurant', 'restaurant-orders', 'restaurant-tables', 'rooms-manager', 'service-catalog', 'system-management', 'tables-manager'])
 })
 
 test('Dashboard retains its live shared-ticket calculations and demo-data ownership', () => {
@@ -53,8 +54,17 @@ test('other features, shell, styles and every public image are byte-identical to
       }
       const { typescriptSemanticHash } = require('../scripts/typescript-semantic.cjs')
       const hotfix = JSON.parse(fs.readFileSync('GLOBAL_UI_HOTFIX_APPROVED.json', 'utf8')).approved_source
-      const expectedHotfix = hotfix[file]?.after
-      if (expectedHotfix) assert.equal(crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'), expectedHotfix, 'Only the exact authorized UI hotfix may change the shell')
+      const successor = JSON.parse(fs.readFileSync('MENU_CATEGORIES_APPROVED.json', 'utf8')).changed[file]
+      const itemSuccessor = JSON.parse(fs.readFileSync('MENU_MANAGEMENT_CANDIDATE_INTEGRITY.json', 'utf8')).modified[file]
+      const tablesSuccessor = JSON.parse(fs.readFileSync('RESTAURANT_TABLES_PRODUCTION_INTEGRITY.json', 'utf8')).modified[file]
+      const expectedHotfix = successor?.after ?? hotfix[file]?.after
+      if (successor && hotfix[file]) assert.equal(successor.before, hotfix[file].after)
+      if (itemSuccessor) assert.equal(itemSuccessor.before, successor?.after ?? expectedHotfix)
+      if (tablesSuccessor) assert.equal(tablesSuccessor.before, itemSuccessor?.after ?? expectedHotfix, 'Restaurant Tables predecessor')
+      const prior= tablesSuccessor?.after ?? itemSuccessor?.after ?? expectedHotfix
+      const ordersSuccessor=JSON.parse(fs.readFileSync('RESTAURANT_ORDERS_INTEGRATION_INTEGRITY.json','utf8')).changes[file]
+      if(ordersSuccessor)assert.equal(ordersSuccessor.before,prior,'Orders routing predecessor')
+      if (expectedHotfix) assert.equal(crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'), successorHash(file, ordersSuccessor?.after ?? prior), 'Only reviewed successor routing may change the shell')
       else assert.equal(typescriptSemanticHash(file), approved[keys[file]], 'Only explicitly approved Restaurant shell integration may change')
       continue
     }
@@ -72,7 +82,8 @@ test('other features, shell, styles and every public image are byte-identical to
 
 test('App continues to own routing, ticket state, and global keyboard handlers', () => {
   assert.match(app, /createSupportTickets/)
-  assert.match(app, /onTicketsChange=\{setSupportTickets\}/)
+  assert.match(app, /const \[supportData,setSupportData\]/)
+  assert.match(app, /onManageTicket=\{area==='support'\?manageSupportTicket:undefined\}/)
   assert.match(app, /addEventListener\('hashchange'/)
   assert.match(app, /e\.key\.toLowerCase\(\) === 'k'/)
   for (const area of ['dashboard', 'support', 'audit', 'systems']) assert.match(app, new RegExp(`case '${area}':`))
@@ -85,6 +96,6 @@ test('the module source contains the original cards without changed copy', () =>
   for (const text of [
     'Unresolved support tickets', "Today's payments", 'Active employees',
     'Pending approvals', 'Roles & access', 'Recent audit events',
-    'Administration shortcuts', 'No urgent issues', 'Your resort needs your attention',
+    'Administration shortcuts', 'No urgent issues', 'Good morning, Admin',
   ]) assert.ok(dashboard.includes(text), text)
 })

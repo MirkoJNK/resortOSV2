@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Pencil, Plus, Search } from 'lucide-react'
 import { DialogFrame } from '../restaurant-tables/DialogFrame'
+import { useDiscardConfirmation } from '../../shared/useDiscardConfirmation'
 import { loadCatalog } from '../menu-categories/storage'
 import { loadItemCatalog } from '../menu-management/storage'
 import type { MenuCategory } from '../menu-categories/model'
@@ -76,9 +77,12 @@ const formFromRule = (rule?: DiscountRule): Draft => ({
 
 export function DiscountManagement({
   onDirtyChange,
+  onBusyChange,
 }: {
   onDirtyChange?: (dirty: boolean) => void
+  onBusyChange?: (busy: boolean) => void
 }) {
+  const {requestDiscard,discardDialog} = useDiscardConfirmation()
   const [tab, setTab] = useState<'discounts' | 'service'>('discounts')
   const [config, setConfig] = useState<FinanceConfig>(defaultFinanceConfig)
   const [loading, setLoading] = useState(true)
@@ -94,23 +98,19 @@ export function DiscountManagement({
   const [editor, setEditor] = useState<Draft | null>(null)
   const [statusId, setStatusId] = useState<string | null>(null)
   const [formError, setFormError] = useState('')
-  const [serviceRate, setServiceRate] = useState('0')
-  const [serviceActive, setServiceActive] = useState(false)
-  const [serviceReason, setServiceReason] = useState('')
+  const [serviceRate, setServiceRate] = useState('10')
+  const [serviceActive, setServiceActive] = useState(true)
   const [confirmService, setConfirmService] = useState(false)
-  const [taxMode, setTaxMode] = useState<TaxMode>('unconfigured')
-  const [taxReason, setTaxReason] = useState('')
+  const [taxMode, setTaxMode] = useState<TaxMode>('vat-inclusive')
   const [confirmTax, setConfirmTax] = useState(false)
   const modalActiveRef = useRef(false)
   modalActiveRef.current = !!editor || confirmService || confirmTax
-  const dirty =
-    !!editor ||
-    confirmService ||
-    confirmTax ||
-    (tab === 'service' &&
-      (serviceRate !== percent(config.service.rateBasisPoints) ||
-        serviceActive !== config.service.active ||
-        taxMode !== config.taxMode))
+  const editOriginal = editor?.id ? config.discounts.find(rule => rule.id === editor.id) : undefined
+  const editorDirty = !!editor && JSON.stringify(editor) !== JSON.stringify(formFromRule(editOriginal))
+  const dirty = editorDirty || serviceRate !== percent(config.service.rateBasisPoints) ||
+    serviceActive !== config.service.active || taxMode !== config.taxMode
+  const closeEditor = () => requestDiscard(editorDirty, () => {setEditor(null);setFormError('')}, busy)
+  useEffect(()=>{onBusyChange?.(busy);return()=>onBusyChange?.(false)},[busy,onBusyChange])
   useEffect(() => {
     onDirtyChange?.(dirty)
     return () => onDirtyChange?.(false)
@@ -445,19 +445,6 @@ export function DiscountManagement({
                 Active
               </label>
             </div>
-            <p className="dm-hint">
-              Applied once to the Restaurant subtotal after eligible discounts and VAT relief.
-              Disabled by default.
-            </p>
-            <label>
-              Reason for change
-              <input
-                maxLength={300}
-                value={serviceReason}
-                onChange={(e) => setServiceReason(e.target.value)}
-                placeholder="Reason for service-charge update"
-              />
-            </label>
             <div className="dm-actions">
               <button
                 type="button"
@@ -466,10 +453,8 @@ export function DiscountManagement({
                 onClick={() => {
                   setFormError('')
                   try {
-                    if (serviceActive) parsePercentage(serviceRate)
-                    else if (Number(serviceRate) < 0 || Number(serviceRate) > 100)
-                      throw Error('Enter a rate from 0 to 100')
-                    if (serviceReason.trim().length < 4) throw Error('Enter a reason')
+                    if (!/^\d{1,3}(?:\.\d{1,2})?$/.test(serviceRate.trim()) || Number(serviceRate) > 100)
+                      throw Error('Enter a rate from 0 to 100 with up to two decimal places')
                     setConfirmService(true)
                   } catch (e) {
                     setFormError(e instanceof Error ? e.message : 'Invalid rate')
@@ -479,64 +464,29 @@ export function DiscountManagement({
                 Save Service Charge
               </button>
             </div>
-            <details>
-              <summary>Configuration history ({config.service.history.length})</summary>
-              {config.service.history.map((h, i) => (
-                <p key={i}>
-                  v{h.version} · {h.active ? `${percent(h.rateBasisPoints)}%` : 'Inactive'} ·{' '}
-                  {h.reason} · {new Date(h.at).toLocaleDateString('en-PH')}
-                </p>
-              ))}
-            </details>
           </section>
           <section className="dm-setting-panel">
-            <h2>Restaurant VAT Treatment</h2>
+            <h2>Restaurant VAT</h2>
             <label>
               Menu pricing
               <select value={taxMode} onChange={(e) => setTaxMode(e.target.value as TaxMode)}>
-                <option value="unconfigured">Not configured</option>
-                <option value="non-vat">Non-VAT establishment</option>
-                <option value="vat-inclusive">VAT registered, prices include 12% VAT</option>
+                <option value="vat-inclusive">VAT Registered</option>
+                <option value="non-vat">Non-VAT Establishment</option>
               </select>
-            </label>
-            <p className="dm-hint">
-              Required before applying statutory discounts. Confirm with the resort's tax records.
-              VAT-exclusive prices are not supported in this demo.
-            </p>
-            <label>
-              Reason for change
-              <input
-                value={taxReason}
-                maxLength={300}
-                onChange={(e) => setTaxReason(e.target.value)}
-                placeholder="Verified VAT registration and menu pricing"
-              />
             </label>
             <div className="dm-actions">
               <button
                 type="button"
                 className="rt-btn rt-btn-primary"
-                disabled={busy || !!error || taxMode === 'unconfigured'}
+                disabled={busy || !!error}
                 onClick={() => {
                   setFormError('')
-                  if (taxReason.trim().length < 4) {
-                    setFormError('Enter a reason')
-                    return
-                  }
                   setConfirmTax(true)
                 }}
               >
                 Save VAT Treatment
               </button>
             </div>
-            <details>
-              <summary>VAT configuration history ({config.taxHistory.length})</summary>
-              {config.taxHistory.map((h, i) => (
-                <p key={i}>
-                  {h.mode} · {h.reason} · {new Date(h.at).toLocaleDateString('en-PH')}
-                </p>
-              ))}
-            </details>
           </section>
         </div>
       )}
@@ -548,12 +498,7 @@ export function DiscountManagement({
       {editor && (
         <DialogFrame
           title={editor.id ? 'Edit Discount' : 'Add Discount'}
-          onClose={() => {
-            if (!busy) {
-              setEditor(null)
-              setFormError('')
-            }
-          }}
+          onClose={closeEditor}
           closeDisabled={busy}
           className="dm-dialog"
         >
@@ -741,7 +686,7 @@ export function DiscountManagement({
                 type="button"
                 className="rt-btn"
                 disabled={busy}
-                onClick={() => setEditor(null)}
+                onClick={closeEditor}
               >
                 Cancel
               </button>
@@ -831,15 +776,11 @@ export function DiscountManagement({
                       updateService(
                         c,
                         serviceActive,
-                        serviceActive
-                          ? parsePercentage(serviceRate)
-                          : Math.round(Number(serviceRate) * 100),
-                        serviceReason,
+                        Math.round(Number(serviceRate) * 100),
                       ),
                     'Service charge updated',
                     () => {
                       setConfirmService(false)
-                      setServiceReason('')
                     },
                   )
                 }
@@ -852,7 +793,7 @@ export function DiscountManagement({
       )}
       {confirmTax && (
         <DialogFrame
-          title="Confirm Restaurant VAT Treatment"
+          title="Confirm Restaurant VAT Change"
           onClose={() => setConfirmTax(false)}
           closeDisabled={busy}
         >
@@ -881,11 +822,10 @@ export function DiscountManagement({
                 disabled={busy}
                 onClick={() =>
                   save(
-                    (c) => updateTax(c, taxMode, taxReason),
+                    (c) => updateTax(c, taxMode),
                     'VAT treatment updated',
                     () => {
                       setConfirmTax(false)
-                      setTaxReason('')
                     },
                   )
                 }
@@ -896,6 +836,7 @@ export function DiscountManagement({
           </div>
         </DialogFrame>
       )}
+      {discardDialog}
     </section>
   )
 }

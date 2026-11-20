@@ -4,6 +4,7 @@ import { allCharges } from '../front-desk/charges'
 import { resortDate } from '../front-desk/stays'
 
 export type DashboardDataPoint = { label: string; value: number }
+export type RoomPostingPoint = DashboardDataPoint & { postedCentavos: number }
 
 /** Today and six preceding resort-local calendar dates, independent of viewer timezone/DST. */
 export function resortWeek(now: Date = new Date()): string[] {
@@ -38,6 +39,36 @@ export function recordedOrdersByDay(ops: Operations, now: Date = new Date()): Da
   return days.map(day => ({ label: day, value: count.get(day) ?? 0 }))
 }
 
+/** Committed posting events, not payments or collections. Retains historical room postings
+ * whose stay link predates Front Desk; allCharges intentionally omits those legacy records. */
+export function roomPostingsByDay(ops: Operations, now: Date = new Date()): RoomPostingPoint[] {
+  const days = resortWeek(now)
+  const totals = new Map(days.map(day => [day, { value: 0, postedCentavos: 0 }]))
+  const seen = new Set<string>()
+  const recordedOrders = new Set(ops.orders.filter(order => !order.canceledAt).map(order => order.id))
+  const append = (source: 'restaurant' | 'service', id: string, at: string, amount: number) => {
+    const key = `${source}:${id}`
+    if (seen.has(key)) return
+    seen.add(key)
+    if (!Number.isSafeInteger(amount) || amount <= 0) throw Error('Invalid posted charge amount')
+    const day = validLocalDay(at)
+    if (!day) throw Error('Invalid posting timestamp')
+    const total = totals.get(day)
+    if (!total) return
+    const postedCentavos = total.postedCentavos + amount
+    if (!Number.isSafeInteger(postedCentavos)) throw Error('Posted charges exceed supported value')
+    total.postedCentavos = postedCentavos
+    total.value += 1
+  }
+  for (const settlement of ops.settlements ?? []) {
+    if (settlement.method === 'room' && recordedOrders.has(settlement.orderId))
+      append('restaurant', settlement.id, settlement.recordedAt, settlement.amountCentavos)
+  }
+  for (const service of ops.serviceCharges ?? [])
+    append('service', service.id, service.recordedAt, service.amountCentavos)
+  return days.map(day => ({ label: day, ...totals.get(day)! }))
+}
+
 /** Only checkout settlement, never tender or previously paid individual charges. */
 export function checkoutCollectionsByDay(ops: Operations, now: Date = new Date()): DashboardDataPoint[] {
   const days = resortWeek(now)
@@ -48,9 +79,9 @@ export function checkoutCollectionsByDay(ops: Operations, now: Date = new Date()
     seen.add(record.id)
     const day = validLocalDay(record.recordedAt)
     if (!day || !totals.has(day)) continue
-    if (!Number.isSafeInteger(record.settledCentavos) || record.settledCentavos < 0) throw Error('Invalid demo checkout settlement')
+    if (!Number.isSafeInteger(record.settledCentavos) || record.settledCentavos < 0) throw Error('Invalid checkout settlement')
     const next = (totals.get(day) ?? 0) + record.settledCentavos
-    if (!Number.isSafeInteger(next)) throw Error('Demo checkout collection exceeds supported value')
+    if (!Number.isSafeInteger(next)) throw Error('Checkout collection exceeds supported value')
     totals.set(day, next)
   }
   return days.map(day => ({ label: day, value: totals.get(day) ?? 0 }))

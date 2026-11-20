@@ -3,6 +3,7 @@ import type { MenuItem } from '../menu-management/model'
 import { MAX_PRICE_CENTAVOS } from '../menu-management/model'
 import type { CalculationSnapshot, DiscountElection, FinanceConfig } from '../discount-management/model'
 import { calculateOrder, discountAvailable, validCalculationSnapshot } from '../discount-management/model'
+import type { PaymentSnapshot } from '../payment-methods/model'
 
 /** Restaurant operations are separate from Admin's physical table configuration. */
 export type SessionPhase = 'open' | 'ready-to-pay'
@@ -25,7 +26,8 @@ export type RecordedLine = {
   /** Optional for backward compatibility with previously recorded lines. */
   canceledAt?: string
   /** Append-only quantity removals. The original recorded quantity never changes. */
-  removals?: { id: string; quantity: number; removedAt: string }[]
+  removals?: { id: string; quantity: number; removedAt: string; employeeId?: string; employeeNameSnapshot?: string }[]
+  employeeId?: string; employeeNameSnapshot?: string
 }
 export type RestaurantOrder = {
   id: string
@@ -41,6 +43,7 @@ export type RestaurantOrder = {
   discountElections?: DiscountElection[]
   /** Set when an allocation became invalid and requires employee acknowledgement. */
   discountReviewRequired?: boolean
+  employeeId?: string; employeeNameSnapshot?: string
 }
 export type Reservation = {
   id: string
@@ -65,12 +68,14 @@ export type GuestStay = {
   createdAt: string
   updatedAt: string
   checkedOutAt?: string
+  employeeId?: string; employeeNameSnapshot?: string
 }
 export type DemoSettlement = {
   id: string
   orderId: string
   sessionId: string
-  method: 'cash' | 'room'
+  /** 'cash' is a historical direct-cash code; new direct payments use 'restaurant'. */
+  method: 'cash' | 'restaurant' | 'room'
   amountCentavos: number
   recordedAt: string
   simulated: true
@@ -81,7 +86,14 @@ export type DemoSettlement = {
   roomCodeSnapshot?: string
   /** Immutable calculation evidence for newly discounted / service-charged orders. */
   calculation?: CalculationSnapshot
+  methodId?: string
+  methodNameSnapshot?: string
+  methodBehaviorSnapshot?: 'cash' | 'noncash'
+  cashReceivedCentavos?: number
+  changeCentavos?: number
+  employeeId?: string; employeeNameSnapshot?: string
 }
+export type RestaurantPaymentInput = PaymentSnapshot & {cashReceivedCentavos?:number;changeCentavos?:number}
 /** Historical service pricing is frozen when the demo charge is recorded. */
 export type ServiceCharge = {
   id: string
@@ -98,6 +110,7 @@ export type ServiceCharge = {
   amountCentavos: number
   recordedAt: string
   simulated: true
+  employeeId?: string; employeeNameSnapshot?: string
 }
 /** Independent payment event; never mutates a Restaurant settlement into Cash. */
 export type ChargePayment = {
@@ -109,6 +122,7 @@ export type ChargePayment = {
   recordedAt: string
   simulated: true
   employeeId?: string
+  employeeNameSnapshot?: string
   /** Present only for a charge allocated through a demo checkout. */
   checkoutId?: string
   /** Optional for older individual payments which did not record a method. */
@@ -139,6 +153,7 @@ export type CheckoutRecord = {
   cashReceivedCentavos?: number
   changeCentavos?: number
   simulated: true
+  employeeId?: string; employeeNameSnapshot?: string
 }
 export type Operations = {
   /** Optional for backward compatibility with existing Restaurant Tables v1 records. */
@@ -179,6 +194,11 @@ const isValidPaymentSnapshot = (value: {methodId?:string; methodNameSnapshot?:st
   (value.methodBehaviorSnapshot === 'cash' || value.methodBehaviorSnapshot === 'noncash')
 const validTimestamp = (value: unknown): value is string => typeof value === 'string' && Number.isFinite(Date.parse(value))
 const validId = (value: unknown): value is string => typeof value === 'string' && value.length > 0 && value.length <= 128
+const validAttribution = (record:{employeeId?:string;employeeNameSnapshot?:string}) =>
+  (record.employeeId === undefined || validId(record.employeeId)) &&
+  (record.employeeNameSnapshot === undefined || (typeof record.employeeNameSnapshot==='string' &&
+    !!record.employeeNameSnapshot.trim() && record.employeeNameSnapshot.length <= 120 &&
+    !/[\p{C}<>]/u.test(record.employeeNameSnapshot)))
 const validDate = (value: unknown): value is string => {
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
   const d = new Date(`${value}T00:00:00Z`)
@@ -214,7 +234,7 @@ export function isValidOperations(value: unknown): value is Operations {
       !['active', 'checked-out'].includes(stay.status) ||
       (stay.checkedOutAt !== undefined && !validTimestamp(stay.checkedOutAt)) ||
       (stay.status === 'active' && stay.checkedOutAt !== undefined) ||
-      (stay.status === 'checked-out' && stay.checkedOutAt === undefined)) return false
+      (stay.status === 'checked-out' && stay.checkedOutAt === undefined) || !validAttribution(stay)) return false
     if (stay.status === 'active') {
       if (occupiedRooms.has(stay.roomId)) return false
       occupiedRooms.add(stay.roomId)
@@ -239,7 +259,7 @@ export function isValidOperations(value: unknown): value is Operations {
       !validTimestamp(o.createdAt) || !validTimestamp(o.updatedAt) ||
       (o.canceledAt !== undefined && !validTimestamp(o.canceledAt)) ||
       (o.discountReviewRequired !== undefined && typeof o.discountReviewRequired !== 'boolean') ||
-      !Array.isArray(o.lines) || o.lines.length > 5000) return false
+      !Array.isArray(o.lines) || o.lines.length > 5000 || !validAttribution(o)) return false
     if (o.displayNumber !== undefined) {
       if (!Number.isSafeInteger(o.displayNumber) || o.displayNumber < 1 || displayNumbers.has(o.displayNumber)) return false
       displayNumbers.add(o.displayNumber)
@@ -250,14 +270,14 @@ export function isValidOperations(value: unknown): value is Operations {
         !Number.isSafeInteger(line.priceCentavos) || line.priceCentavos < 0 || line.priceCentavos > MAX_PRICE_CENTAVOS ||
         !Number.isSafeInteger(line.quantity) || line.quantity < 1 || line.quantity > 999 ||
         typeof line.note !== 'string' || line.note.length > 280 || !validTimestamp(line.recordedAt) ||
-        (line.canceledAt !== undefined && !validTimestamp(line.canceledAt))) return false
+        (line.canceledAt !== undefined && !validTimestamp(line.canceledAt)) || !validAttribution(line)) return false
       if (line.removals !== undefined) {
         if (!Array.isArray(line.removals) || line.removals.length > 999) return false
         let removed = 0
         for (const event of line.removals) {
           if (!event || !validId(event.id) || removalIds.has(event.id) ||
             !Number.isSafeInteger(event.quantity) || event.quantity < 1 ||
-            !validTimestamp(event.removedAt)) return false
+            !validTimestamp(event.removedAt) || !validAttribution(event)) return false
           removalIds.add(event.id)
           removed += event.quantity
           if (removed > line.quantity) return false
@@ -293,10 +313,10 @@ export function isValidOperations(value: unknown): value is Operations {
   for (const payment of data.settlements ?? []) {
     if (!payment || !validId(payment.id) || settlementIds.has(payment.id) ||
       !orderIds.has(payment.orderId) || !sessionIds.has(payment.sessionId) ||
-      !['cash', 'room'].includes(payment.method) || payment.simulated !== true ||
+      !['cash', 'restaurant', 'room'].includes(payment.method) || payment.simulated !== true ||
       !Number.isSafeInteger(payment.amountCentavos) || payment.amountCentavos < 0 ||
-      (payment.amountCentavos === 0 && (!payment.calculation || payment.method !== 'cash')) ||
-      !validTimestamp(payment.recordedAt) || finalizedOrders.has(payment.orderId)) return false
+      (payment.amountCentavos === 0 && (!payment.calculation || payment.method === 'room')) ||
+      !validTimestamp(payment.recordedAt) || finalizedOrders.has(payment.orderId) || !validAttribution(payment)) return false
     const order = data.orders.find(o => o.id === payment.orderId)
     const session = data.sessions.find(s => s.id === payment.sessionId)
     if (!order || !session || order.sessionId !== payment.sessionId || order.canceledAt || !session.closedAt ||
@@ -305,6 +325,14 @@ export function isValidOperations(value: unknown): value is Operations {
         payment.calculation.calculatedAt !== payment.recordedAt)) ||
       (payment.calculation === undefined && (order.discountElections?.length ?? 0) > 0) ||
       session.closedAt !== payment.recordedAt) return false
+    if (payment.method === 'restaurant') {
+      if (!isValidPaymentSnapshot(payment) ||
+        (payment.methodBehaviorSnapshot === 'cash' ?
+          !Number.isSafeInteger(payment.cashReceivedCentavos) || payment.cashReceivedCentavos! < payment.amountCentavos ||
+          !Number.isSafeInteger(payment.changeCentavos) || payment.changeCentavos !== payment.cashReceivedCentavos! - payment.amountCentavos :
+          payment.cashReceivedCentavos !== undefined || payment.changeCentavos !== undefined)) return false
+    } else if (payment.methodId !== undefined || payment.methodNameSnapshot !== undefined ||
+      payment.methodBehaviorSnapshot !== undefined || payment.cashReceivedCentavos !== undefined || payment.changeCentavos !== undefined) return false
     if (payment.method === 'room') {
       if (!validId(payment.roomId) || typeof payment.roomNameSnapshot !== 'string' ||
         !payment.roomNameSnapshot.trim() || payment.roomNameSnapshot.length > 80 ||
@@ -327,7 +355,7 @@ export function isValidOperations(value: unknown): value is Operations {
       typeof charge.serviceCodeSnapshot !== 'string' || charge.serviceCodeSnapshot.length > 32 ||
       !['fixed','item','kg','hour','day','trip','service'].includes(charge.unit) || !Number.isSafeInteger(charge.priceCents) || !Number.isSafeInteger(charge.quantityMilli) ||
       !Number.isSafeInteger(charge.amountCentavos) || charge.amountCentavos <= 0 ||
-      !validTimestamp(charge.recordedAt) || charge.simulated !== true) return false
+      !validTimestamp(charge.recordedAt) || charge.simulated !== true || !validAttribution(charge)) return false
     const stay = (data.stays ?? []).find(s => s.id === charge.stayId && s.roomId === charge.roomId)
     if (!stay || Date.parse(charge.recordedAt) < Date.parse(stay.checkedInAt) ||
       (stay.checkedOutAt && Date.parse(charge.recordedAt) > Date.parse(stay.checkedOutAt))) return false
@@ -345,7 +373,7 @@ export function isValidOperations(value: unknown): value is Operations {
       !['restaurant','service'].includes(payment.source) || !validId(payment.sourceId) ||
       !validId(payment.stayId) || !Number.isSafeInteger(payment.amountCentavos) || payment.amountCentavos <= 0 ||
       !validTimestamp(payment.recordedAt) || payment.simulated !== true ||
-      (payment.employeeId !== undefined && !validId(payment.employeeId)) ||
+      !validAttribution(payment) ||
       (payment.checkoutId !== undefined && !validId(payment.checkoutId))) return false
     const hasMethodFields = payment.methodId !== undefined || payment.methodNameSnapshot !== undefined || payment.methodBehaviorSnapshot !== undefined
     if (hasMethodFields && (!isValidPaymentSnapshot(payment) || payment.checkoutId !== undefined)) return false
@@ -369,7 +397,7 @@ export function isValidOperations(value: unknown): value is Operations {
     if (!checkout || !validId(checkout.id) || checkoutIds.has(checkout.id) ||
       checkoutStays.has(checkout.stayId) || !validId(checkout.stayId) || !validId(checkout.roomId) ||
       typeof checkout.roomNameSnapshot !== 'string' || !checkout.roomNameSnapshot.trim() || checkout.roomNameSnapshot.length > 80 ||
-      !validTimestamp(checkout.recordedAt) || checkout.simulated !== true ||
+      !validTimestamp(checkout.recordedAt) || checkout.simulated !== true || !validAttribution(checkout) ||
       !Array.isArray(checkout.settledChargeKeys) || checkout.settledChargeKeys.length > 10000) return false
     const stay = (data.stays ?? []).find(stay => stay.id === checkout.stayId)
     if (!stay || stay.roomId !== checkout.roomId || stay.status !== 'checked-out' ||
@@ -482,6 +510,9 @@ export function reservationError(input: { id?: string; tableId: string; label: s
   if (!Number.isFinite(start) || start < now - 60_000) return 'Choose a future reservation time'
   const table = tables.find(t => t.id === input.tableId)
   if (!table || table.status !== 'active') return 'Choose an available configured table'
+  if (activeSession(operations, input.tableId) && start < now + 60 * 60_000) {
+    return 'This table is occupied. Choose a reservation at least 1 hour from now'
+  }
   if (operations.reservations.some(r => r.id !== input.id && r.tableId === input.tableId && r.status !== 'canceled' &&
       Math.abs(reservationAt(r) - start) < RESERVATION_CONFLICT_BUFFER_MINUTES * 60000)) {
     return 'A reservation already occupies this table’s protected booking window'
@@ -605,7 +636,7 @@ export type OrderHistoryStatus = 'recorded' | 'ready-to-pay' | 'cash-demo' | 'ro
 export function orderHistoryStatus(ops: Operations, order: RestaurantOrder): OrderHistoryStatus {
   if (order.canceledAt) return 'canceled'
   const payment = settlementForOrder(ops, order.id)
-  if (payment) return payment.method === 'cash' ? 'cash-demo' : 'room-demo'
+  if (payment) return payment.method === 'room' ? 'room-demo' : 'cash-demo'
   const session = ops.sessions.find(s => s.id === order.sessionId)
   if (!session || session.closedAt) return 'session-ended'
   return session.phase === 'ready-to-pay' ? 'ready-to-pay' : 'recorded'
@@ -614,16 +645,19 @@ export function isHistoricalOrder(ops: Operations, order: RestaurantOrder): bool
   return !['recorded', 'ready-to-pay'].includes(orderHistoryStatus(ops, order))
 }
 /** Validated demonstration-only transition: settlement + session closure in one snapshot. */
-export function recordDemoSettlement(ops: Operations, sessionId: string, method: 'cash' | 'room',
+export function recordDemoSettlement(ops: Operations, sessionId: string, method: 'cash' | 'restaurant' | 'room',
   room?: { id: string; name: string; code: string; active: boolean },
-  now = new Date().toISOString(), settlementId = crypto.randomUUID(), finance?: FinanceConfig): Operations {
+  now = new Date().toISOString(), settlementId: string = crypto.randomUUID(), finance?: FinanceConfig,
+  selectedPayment?: RestaurantPaymentInput): Operations {
   if (!validTimestamp(now)) throw Error('Invalid settlement time')
   const session = ops.sessions.find(s => s.id === sessionId && s.closedAt === null)
   const order = orderForSession(ops, sessionId)
   if (!session || session.phase !== 'ready-to-pay' || !order || order.canceledAt) throw Error('This order is no longer ready for payment')
   if (order.discountReviewRequired) throw Error('Review the removed discount selection before recording payment')
   if (settlementForOrder(ops, order.id)) throw Error('This order was already finalized')
-  if (method !== 'cash' && method !== 'room') throw Error('Choose a supported demonstration method')
+  if (method !== 'cash' && method !== 'restaurant' && method !== 'room') throw Error('Choose a supported payment method')
+  if (method === 'restaurant' && (!selectedPayment || !isValidPaymentSnapshot(selectedPayment))) throw Error('Choose an active payment method')
+  if (method !== 'restaurant' && selectedPayment) throw Error('Unexpected payment details')
   if (method === 'room' && (!room || !room.active || !room.id || !room.name.trim())) throw Error('Choose an active configured room')
   // New demo room postings must have a current stay, never only a matching room label.
   const stay = method === 'room' ? (ops.stays ?? []).find(s => s.roomId === room?.id && s.status === 'active') : undefined
@@ -637,14 +671,23 @@ export function recordDemoSettlement(ops: Operations, sessionId: string, method:
         throw Error('A selected discount changed or expired. Review and apply it again before payment')
     }
   }
-  const calculation = finance ? calculateOrder(order,order.discountElections ?? [],finance.service,now) : undefined
+  const calculation = finance ? calculateOrder(order,order.discountElections ?? [],finance.service,now,finance.taxMode) : undefined
   const amountCentavos = calculation?.payableCentavos ?? activeOrderTotal(order)
   if (!Number.isSafeInteger(amountCentavos) || amountCentavos < 0 || (amountCentavos === 0 && method === 'room'))
     throw Error('A zero-balance Restaurant order can only be completed without a room charge')
+  if (method === 'restaurant' && selectedPayment) {
+    if (selectedPayment.methodBehaviorSnapshot === 'cash') {
+      if (!Number.isSafeInteger(selectedPayment.cashReceivedCentavos) || selectedPayment.cashReceivedCentavos! < amountCentavos ||
+        selectedPayment.changeCentavos !== selectedPayment.cashReceivedCentavos! - amountCentavos)
+        throw Error('Cash received is less than the final total or the change is invalid')
+    } else if (selectedPayment.cashReceivedCentavos !== undefined || selectedPayment.changeCentavos !== undefined)
+      throw Error('Non-cash payments cannot contain cash amounts')
+  }
   const payment: DemoSettlement = {
     id: settlementId, orderId: order.id, sessionId, method, amountCentavos,
     recordedAt: now, simulated: true,
     ...(calculation ? {calculation} : {}),
+    ...(method === 'restaurant' && selectedPayment ? {...selectedPayment} : {}),
     ...(method === 'room' && room ? {roomId: room.id, stayId: stay!.id, roomNameSnapshot: room.name, roomCodeSnapshot: room.code} : {})
   }
   const next: Operations = { ...ops, settlements: [...(ops.settlements ?? []), payment],

@@ -64,6 +64,112 @@
   outline-offset: 2px;
 }
 
+.ros-kpi-range {
+  margin-left: auto;
+  flex: none;
+  position: relative;
+}
+
+.ros-dashboard-v2 .ros-kpi-has-period {
+  overflow: visible;
+  z-index: 2;
+}
+
+.ros-kpi-period-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  min-height: 32px;
+  border: 1px solid #d8e2d5;
+  border-radius: 11px;
+  background: #fff;
+  color: #314639;
+  font: 750 11px var(--ros-font,'Plus Jakarta Sans',sans-serif);
+  padding: 6px 9px 6px 11px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .16s ease,border-color .16s ease;
+}
+
+.ros-kpi-period-trigger:hover,.ros-kpi-range.is-open .ros-kpi-period-trigger {
+  background: #f6faee;
+  border-color: #bdcfab;
+}
+
+.ros-kpi-period-trigger svg {
+  transition: transform .16s ease;
+}
+
+.ros-kpi-range.is-open .ros-kpi-period-trigger svg {
+  transform: rotate(180deg);
+}
+
+.ros-kpi-period-trigger:focus-visible,.ros-kpi-period-menu [role="option"]:focus-visible {
+  outline: 2px solid #91bd43;
+  outline-offset: 2px;
+}
+
+.ros-kpi-period-menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 5px);
+  right: 0;
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  min-width: 137px;
+  margin: 0;
+  padding: 5px;
+  list-style: none;
+  border: 1px solid #dde6d8;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 9px 22px #1e321819;
+  animation: ros-kpi-pop .17s ease-out both;
+}
+
+.ros-kpi-period-menu [role="option"] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  color: #425749;
+  font: 700 11px var(--ros-font,'Plus Jakarta Sans',sans-serif);
+  cursor: pointer;
+}
+
+.ros-kpi-period-menu [role="option"]:hover,.ros-kpi-period-menu [role="option"]:focus-visible {
+  background: #f2f8e9;
+}
+
+.ros-kpi-period-menu .is-selected {
+  color: #315c30;
+  background: #f1f8e5;
+}
+
+@keyframes ros-kpi-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .ros-kpi-period-menu {
+    animation: none;
+  }
+  .ros-kpi-period-trigger,.ros-kpi-period-trigger svg {
+    transition: none;
+  }
+}
+
 .ros-dashboard-v2 .resort-art {
   min-height: 260px;
 }
@@ -103,6 +209,121 @@
   color: #758176;
   font-size: 10px;
   font-weight: 600;
+}
+
+/* Admin daily room postings: true continuous line, with keyboard-accessible data points. */
+
+.ros-postings-panel .ros-line-plot {
+  position: relative;
+  flex: 1;
+  min-height: 156px;
+  margin-top: 1px;
+}
+
+.ros-line-graphic {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ros-line-grid {
+  stroke: #e8eee4;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.ros-line-path {
+  fill: none;
+  stroke: #9acb49;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  animation: ros-postings-line-appear 280ms ease-out both;
+}
+
+.ros-line-point {
+  position: absolute;
+  display: block;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: #8fc943;
+  box-shadow: 0 0 0 1px #77b238;
+  transform: translate(-50%,-50%);
+  cursor: pointer;
+  transition: box-shadow 140ms ease,background-color 140ms ease;
+}
+
+.ros-line-point:hover, .ros-line-point.is-inspected {
+  background: #659e27;
+  box-shadow: 0 0 0 4px rgba(161,209,89,.23);
+}
+
+.ros-line-point:focus-visible {
+  outline: 2px solid #41691b;
+  outline-offset: 5px;
+}
+
+.ros-line-tooltip {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 138px;
+  padding: 9px 11px;
+  border: 1px solid #dce7d6;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(24,52,34,.10);
+  transform: translate(-50%,calc(-100% - 15px));
+  pointer-events: none;
+  color: #536558;
+  font-size: 10px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.ros-line-tooltip.is-below {
+  transform: translate(-50%,15px);
+}
+
+.ros-line-tooltip strong {
+  color: #1c3321;
+  font-size: 11px;
+}
+
+.ros-line-dates {
+  display: grid;
+  grid-template-columns: repeat(7,minmax(0,1fr));
+  gap: 0;
+  padding: 0 1.5%;
+  margin-top: -2px;
+  color: #677a6c;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 10px;
+  text-align: center;
+}
+
+.ros-line-zero-summary {
+  margin-top: 4px;
+  text-align: center;
+  color: #738273;
+  font-size: 10px;
+}
+
+@keyframes ros-postings-line-appear {
+  from {
+    opacity: .35;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .ros-chart-series {
@@ -208,6 +429,16 @@
 
 .ros-chart-bars .ros-chart-mark {
   height: 100%;
+}
+
+/* Only the Admin ticket-priority Urgent mark changes color; geometry and typography remain unchanged. */
+
+.ros-dashboard-v2[data-department='admin'] .ros-chart-bars li.ros-chart-urgent .ros-chart-mark {
+  background: #d86c66;
+}
+
+.ros-dashboard-v2[data-department='admin'] .ros-chart-bars li.ros-chart-urgent:hover .ros-chart-mark, .ros-dashboard-v2[data-department='admin'] .ros-chart-bars li.ros-chart-urgent:focus-visible .ros-chart-mark {
+  background: #bf514d;
 }
 
 .ros-chart-empty {
@@ -383,6 +614,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ros-dashboard-v2 .ros-chart-mark, .ros-dashboard-v2 .ros-kpi-open {
+    transition: none;
+    animation: none;
+  }
+  .ros-line-path, .ros-line-point {
     transition: none;
     animation: none;
   }

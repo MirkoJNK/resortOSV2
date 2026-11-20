@@ -2,6 +2,7 @@ import type { MenuItem } from './model'
 import type { MenuCategory } from '../menu-categories/model'
 import { validItems } from './model'
 import type { CategoryImage } from '../menu-categories/storage'
+import { recordCollection } from '../audit-log/storage'
 
 export const ITEM_DB_NAME = 'resortos:menu-items:v1'
 export type ItemImage = CategoryImage
@@ -75,6 +76,7 @@ export async function commitItemCatalog(next: ItemCatalog): Promise<void> {
       throw Error('Cannot save an item with a missing or invalid image')
     }
   }
+  const before = await loadItemCatalog()
   const db = await openItemDB()
   try {
     const tx = db.transaction([ITEMS, IMAGES, META], 'readwrite')
@@ -87,6 +89,9 @@ export async function commitItemCatalog(next: ItemCatalog): Promise<void> {
     for (const id of referenced) images.put(next.images.get(id)!)
     tx.objectStore(META).put(true, initialized)
     await done
+    recordCollection({category:'Restaurant',kind:'menu-item',name:'Menu item',operationId:`menu-items:${crypto.randomUUID()}`,
+      before:before.items.map(i=>({id:i.id,label:i.name,active:i.active,value:i.priceCentavos,state:`${i.categoryId}/${i.imageId??'none'}`})),
+      after:next.items.map(i=>({id:i.id,label:i.name,active:i.active,value:i.priceCentavos,state:`${i.categoryId}/${i.imageId??'none'}`}))})
   } finally { db.close() }
 }
 

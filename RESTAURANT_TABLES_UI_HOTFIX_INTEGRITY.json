@@ -1,0 +1,35 @@
+{
+  "status": "Restaurant Tables UI refinements hotfix \u2014 pending product-owner review",
+  "previousRelease": "RESTAURANT_TABLES_PRODUCTION_INTEGRITY.json",
+  "changes": {
+    "src/App.tsx": {
+      "before": "6bd70a5b2813a7f16215f3d63849061ab9dcdd7f2652a4d7ef34363b5d337065",
+      "after": "3292bfe72366858c9958515a63cb7ab5fdf7ff9b3c571cb58d39af13c5ab0c4b"
+    },
+    "src/features/restaurant/RestaurantDashboard.tsx": {
+      "before": "eaa7b72041123a9733f57dea8d70ef7c149dbbff4e2f64ecf4984b9bfce23f59",
+      "after": "13af0a726a0c5b172302cca432c11068c94f064acf812d3b90d688820fa5aed2"
+    },
+    "src/features/restaurant-tables/model.ts": {
+      "before": "e3b5bdb2fa4f15286131a25e582eb349a3d71386207e7770fee907649425cfa7",
+      "after": "9ff6eb408576f2494d588abb01d6b1053bbc9a16e1a260dd11793c0c9be781ab"
+    },
+    "src/features/restaurant-tables/OrderWorkspace.tsx": {
+      "before": "7f2af004e3a6b852975b81b01b35fbe013ad012db1f175f7fa4bead985ca2cab",
+      "after": "5d574954085757d93640782ca15e3a464084ef219d1b879343944a6bc86c4f88"
+    },
+    "src/features/restaurant-tables/TableOverviews.tsx": {
+      "before": "f4217224aafd54066385007e4e907a924bd1896f32d687b99b23fe32c6913d5d",
+      "after": "f4bbd9f6f72cd075d6664cafbf76daaf8549337c25932553e004168144fcd5cc"
+    },
+    "src/features/restaurant-tables/RestaurantTables.tsx": {
+      "before": "6af3fac1a82f9eb7afcd48d462035cefcb594a4254e5f3a5589f070639e2c1d0",
+      "after": "43bc88bbe17a1a824eb66a7d6557c4224f707ef458aafee6a78398227a4833ee"
+    },
+    "src/features/restaurant-tables/restaurant-tables.css": {
+      "before": "bc457c57cd91644a642fa04bd5995404c7b3f1025250b57422dc7645590f3be1",
+      "after": "5b1114802dafc155f91a2e6d6bc58ec1b88330f0731bbc3c6074408c0953d4e4"
+    }
+  },
+  "note": "Previous immutable approval manifests remain unchanged; only seven explicitly authorized source/CSS files are updated."
+}

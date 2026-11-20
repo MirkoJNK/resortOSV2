@@ -1,0 +1,52 @@
+{
+  "release": "Front Desk Checkout v5 candidate \u2014 room release and demo payment allocation",
+  "baseline_archive": "resortOS_FrontDesk_Charges_Integrated_Candidate.zip",
+  "modified": {
+    "scripts/front-desk-successor.cjs": {
+      "before": "5c3c727366367fb77e189ed584f362f7a41513ac10b2470902a9f4249e0ed0d8",
+      "after": "08e7abcedda6da0d0e7e5d9393cc9766b379bdcac92ace8ac86167a86248e109"
+    },
+    "scripts/verify-system-management-entrypoint.cjs": {
+      "before": "fc6bc79cf3a512a7e7905fadc033bf5d2110a95e7b5ef67f7d5dcbc38418fc46",
+      "after": "47072df0670ec0db69975daf01462a469f2b104fe2e429b05ccff48e961f0254"
+    },
+    "src/App.tsx": {
+      "before": "a5742e3b75f25931e5db402e1de76da4967e20d48d6cb17f6d22e230f841a4ae",
+      "after": "5cad4025639ffdc72485a473c9ae61564d6dddd474fd0f614fdeb3c42415d9e1"
+    },
+    "src/features/front-desk/FrontDeskCharges.tsx": {
+      "before": "6fa424de20664423e4ef8d33fa55ffa9ce7a8b94b3a6223b77fc414e24c11616",
+      "after": "121c911314ec64352f165b0f189d8f12a04df0015ada2b74e6def3f3e7c42813"
+    },
+    "src/features/front-desk/FrontDeskDashboard.tsx": {
+      "before": "344b74da4c059a7ff705c94c823c4eff5b35830fa1b778f3e7831043ff875e17",
+      "after": "aa2a8cca0c7decdfff410bdfc86f47c0fa7df435bf45fdee8a81404a20ef95ab"
+    },
+    "src/features/front-desk/charges.ts": {
+      "before": "8ff355b589a3b369a9fd08c7caef837e63cf4dea718d876da88d39a2d6cb3b0e",
+      "after": "1f7de6c3e29edeb4d6f88922e196071877f9f8a855020fcda98ab0ab0e4a7b83"
+    },
+    "src/features/restaurant-tables/model.ts": {
+      "before": "4ee2e151c62d0bb46ff5e4e8cad8a31682a21dda7f2f1b05180bba6ed4b285f3",
+      "after": "7bceda635c7bdec1b13ece95a73dd032e0ff660d8b7cbe4d51e77e62db07d02c"
+    },
+    "src/features/restaurant-tables/storage.ts": {
+      "before": "815515ec68c54660a65cf24ebc9c2c0e78366c1d8246a677859a37b1f4c6275c",
+      "after": "12205a2f3cf35e263fdaa1c33ded2f50bb2c60aac56d3f241868a8496c0c0cbe"
+    },
+    "src/main.tsx": {
+      "before": "c37c090c625b210a664ae544474c0f944bfd9d0ecdc7e13ca9a7e91ae0a69f82",
+      "after": "a23c6f5af6365d47dbcaf33c8af930076776559d0983f177555a160a9e544d1c"
+    },
+    "src/shell/navigation.ts": {
+      "before": "ba88dd73086fcdfef14e3a8bff7548b7d27e442820938c4f90d470ebdba9622b",
+      "after": "28fdf50eff6c875acb44fa5fbb9bb439a60a1c73f007d251f5fc72410a8ac9e9"
+    }
+  },
+  "added": {
+    "src/features/front-desk/FrontDeskCheckout.tsx": "42d7086c3bfd9e3ea67d2b37a827d217bcda2731c62eca7f48b4c0f1c9bccc1c",
+    "src/features/front-desk/checkout.ts": "188061eb1ff543fd88b39364d74ebde575047663f87160bc9a21a53e509cfd07",
+    "src/features/front-desk/dashboardMetrics.ts": "79b8c992166ed9e92a28d35dacf485c4fed0dc0616f27a518687a55a2d620ddf",
+    "src/features/front-desk/front-desk-checkout.css": "0fd5cef821298bc8f4ec46ba808597d882b295933772e145079d2d9fe46fff7b"
+  }
+}

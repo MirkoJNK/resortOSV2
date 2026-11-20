@@ -1,4 +1,5 @@
 /** Shared browser-local payment configuration for Front Desk demonstration workflows. */
+import { recordCollection } from '../audit-log/storage'
 export const PAYMENT_METHODS_KEY = 'resortos.payment-methods.v1'
 export const PAYMENT_METHODS_EVENT = 'resortos-payment-methods-changed'
 export type PaymentBehavior = 'cash' | 'noncash'
@@ -91,6 +92,9 @@ export function writePaymentMethods(next:PaymentDirectory,expectedRevision:numbe
   if(current.data.revision!==expectedRevision) throw Error('Payment methods changed in another tab. Refresh before saving')
   try{localStorage.setItem(PAYMENT_METHODS_KEY,JSON.stringify(next))}
   catch{throw Error('Payment method changes could not be saved')}
+  recordCollection({category:'Settings',kind:'payment-method',name:'Payment method',operationId:`payment-methods:${next.revision}`,
+    before:current.data.methods.map(m=>({id:m.id,label:m.name,active:m.active,state:m.behavior})),
+    after:next.methods.map(m=>({id:m.id,label:m.name,active:m.active,state:m.behavior}))})
   if(typeof window!=='undefined') window.dispatchEvent(new Event(PAYMENT_METHODS_EVENT))
 }
 

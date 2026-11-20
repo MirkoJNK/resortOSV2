@@ -52,48 +52,49 @@ function FrontDeskShortcuts({ go }: { go: (route: AppRoute) => void }) {
 }
 
 /** Shared dashboard family; money is display-only and derived from immutable demo records. */
-export function FrontDeskDashboard({ go }: { go: (route: AppRoute) => void }) {
+export function FrontDeskDashboard({ go, account,tutorialReadOnly=false }: { go: (route: AppRoute) => void;
+  account: import('../employees/model').Employee;tutorialReadOnly?:boolean }) {
   const [operations, setOperations] = useState<Operations | null>(null)
   const metrics = operations ? checkoutDashboardMetrics(operations) : null
   useEffect(() => {
     let live = true, generation = 0
     const refresh = () => {
       const ticket = ++generation
-      void loadOperations().then(value=>{if(live && ticket===generation)setOperations(value)})
+      void loadOperations(!tutorialReadOnly).then(value=>{if(live && ticket===generation)setOperations(value)})
         .catch(()=>{if(live && ticket===generation)setOperations(null)})
     }
     refresh()
     window.addEventListener('focus',refresh)
     window.addEventListener('restaurant-operations-changed',refresh)
     return ()=>{live=false;window.removeEventListener('focus',refresh);window.removeEventListener('restaurant-operations-changed',refresh)}
-  },[])
+  },[tutorialReadOnly])
   const dailyCollections = operations ? checkoutCollectionsByDay(operations) : null
   const chargeSources = operations ? openChargeAmountsBySource(operations) : null
-  return <div className="restaurant-dashboard front-desk-dashboard ros-dashboard-v2" data-department="front-desk">
-    <div className="overview-top">
+  return <div className="restaurant-dashboard front-desk-dashboard ros-dashboard-v2" data-department="front-desk" data-tour-target="front-desk-dashboard-overview">
+    <div className="overview-top" data-tour-target="front-desk-dashboard-metrics">
       <div className="overview-left">
-        <DashboardGreeting employee="Employee" />
+        <DashboardGreeting account={account} />
         <div className="top-stats">
           <DashboardKpi icon={ReceiptText} title="Outstanding room charges" value={metrics?.openChargeCount ?? '—'}
-            note={metrics ? `${formatPrice(metrics.outstandingCentavos)} outstanding (Demo)` : 'Charge records unavailable'} order={2}
+            note={metrics ? `${formatPrice(metrics.outstandingCentavos)} outstanding` : 'Charge records unavailable'} order={2}
             open={{label:'Open Front Desk Charges',action:()=>go('front-desk-charges')}} />
-          <DashboardKpi icon={CreditCard} title="Today's checkout collections (Demo)"
+          <DashboardKpi icon={CreditCard} title="Today's checkout collections"
             value={metrics ? formatPrice(metrics.todayCheckoutCollectionsCentavos) : '—'}
             note="Checkout settlements only" tone="blue" order={3} />
         </div>
       </div>
       <DashboardHero />
     </div>
-    <section className="ros-analytics" aria-label="Front Desk operational charts">
-      <DashboardChart title="Checkout collections (Demo)" context="Last 7 days, Manila time" series={dailyCollections} kind="columns" order={4}
+    <section className="ros-analytics" aria-label="Front Desk operational charts" data-tour-target="front-desk-dashboard-charts">
+      <DashboardChart title="Checkout collections" context="Last 7 days, Manila time" series={dailyCollections} kind="columns" order={4}
         formatValue={formatPrice} formatTick={shortPeso} footer="Settled at checkout only; cash change and previous payments excluded" />
-      <DashboardChart title="Outstanding charges by source (Demo)" context="Open current-stay balances" series={chargeSources} kind="bars" order={5}
+      <DashboardChart title="Outstanding charges by source" context="Open current-stay balances" series={chargeSources} kind="bars" order={5}
         formatValue={formatPrice} />
     </section>
     <div className="cards-row ros-metric-strip motion-reveal motion-order-6">
       <DashboardMiniMetric icon={BedDouble} label="Occupied rooms" value={metrics?.occupiedRoomCount ?? '—'} note="Current guest stays" />
       <DashboardMiniMetric icon={ClipboardList} label="Pending checkouts" value={metrics?.pendingCheckoutCount ?? '—'} note="Expected today or earlier" />
-      <DashboardMiniMetric icon={Wallet} label="Rooms with outstanding balances" value={metrics?.roomBalanceCount ?? '—'} note="Current stay balances (Demo)" />
+      <DashboardMiniMetric icon={Wallet} label="Rooms with outstanding balances" value={metrics?.roomBalanceCount ?? '—'} note="Current stay balances" />
     </div>
     <div className="bottom-row">
       <DashboardActivity title="Recent Front Desk activity">

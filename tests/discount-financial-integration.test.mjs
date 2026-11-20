@@ -96,11 +96,12 @@ const rule = (kind = 'senior', name = kind) => ({
 const elect = (order, kind = 'senior', portions = one(order), tax = 'vat-inclusive') =>
   finance.electDiscount(order, rule(kind), portions, tax, true, TIMESTAMP)
 
-test('defaults contain built-in statutory rates but no accidental service charge or tax assumption', () => {
+test('new defaults provide VAT Registered and enabled 10% service charge', () => {
   const c = finance.defaultFinanceConfig()
   assert.equal(finance.isValidFinanceConfig(c), true)
-  assert.equal(c.taxMode, 'unconfigured')
-  assert.equal(c.service.active, false)
+  assert.equal(c.taxMode, 'vat-inclusive')
+  assert.equal(c.service.active, true)
+  assert.equal(c.service.rateBasisPoints, 1000)
   assert.deepEqual(
     [...c.discounts].map((x) => x.rateBasisPoints),
     [2000, 2000],
@@ -110,6 +111,80 @@ test('defaults contain built-in statutory rates but no accidental service charge
       finance.electDiscount(makeOrder(), c.discounts[0], one(), 'unconfigured', true, TIMESTAMP),
     /Configure Restaurant VAT/,
   )
+})
+test('legacy untouched defaults migrate once without overwriting intentional Admin settings', () => {
+  const initial = finance.defaultFinanceConfig()
+  const old = { ...initial, revision: 1, taxMode: 'unconfigured',
+    service: { active: false, rateBasisPoints: 0, version: 1, history: [] } }
+  const migrated = finance.migrateLegacyFinanceConfig(old, TIMESTAMP)
+  assert.equal(migrated.taxMode, 'vat-inclusive')
+  assert.equal(migrated.service.active, true)
+  assert.equal(migrated.service.rateBasisPoints, 1000)
+  assert.equal(migrated.service.history.length, 1)
+  assert.equal(migrated.taxHistory.length, 1)
+  assert.equal(finance.isValidFinanceConfig(migrated), true)
+  assert.equal(finance.migrateLegacyFinanceConfig(migrated, LATER), migrated)
+  const intentional = finance.updateService(initial, false, 500, '', TIMESTAMP)
+  const preserved = finance.migrateLegacyFinanceConfig(intentional, LATER)
+  assert.equal(preserved, intentional)
+  const nonVat = finance.updateTax(initial, 'non-vat', '', TIMESTAMP)
+  assert.equal(finance.migrateLegacyFinanceConfig(nonVat, LATER), nonVat)
+})
+test('₱95 VAT-inclusive price shows ₱10.18 included VAT, adds 10% service once', () => {
+  const result = finance.calculateOrder(makeOrder([{price:9500,quantity:1}]), [],
+    finance.defaultFinanceConfig().service, TIMESTAMP, 'vat-inclusive')
+  assert.equal(result.version, 2)
+  assert.equal(result.vatRateBasisPoints, 1200)
+  assert.equal(result.vatIncludedCentavos, 1018)
+  assert.equal(result.vatReliefCentavos, 0)
+  assert.equal(result.serviceCentavos, 950)
+  assert.equal(result.payableCentavos, 10450)
+})
+test('eligible ₱95 Senior Citizen and PWD portions preserve VAT relief and centavo rounding', () => {
+  for (const kind of ['senior','pwd']) {
+    const order = makeOrder([{price:9500,quantity:1}])
+    const result = finance.calculateOrder(order, [elect(order,kind)],
+      finance.defaultFinanceConfig().service, TIMESTAMP, 'vat-inclusive')
+    assert.equal(result.vatIncludedCentavos, 0)
+    assert.equal(result.vatReliefCentavos, 1018)
+    assert.equal(result.discountCentavos, 1696)
+    assert.equal(result.serviceCentavos, 679)
+    assert.equal(result.payableCentavos, 7465)
+    assert.equal(finance.validCalculationSnapshot(order, result, [elect(order,kind)]), true)
+  }
+})
+test('Non-VAT never invents VAT and disabled or zero-rate service never adds a fee', () => {
+  const order = makeOrder([{price:9500,quantity:1}])
+  const savedZero = finance.updateService(finance.defaultFinanceConfig(), true, 0, '', TIMESTAMP)
+  assert.equal(savedZero.service.active, true)
+  assert.equal(savedZero.service.rateBasisPoints, 0)
+  for (const p of [policy(),policy(true,0)]) {
+    const result = finance.calculateOrder(order, [], p, TIMESTAMP, 'non-vat')
+    assert.equal(result.vatIncludedCentavos, 0)
+    assert.equal(result.vatRateBasisPoints, 0)
+    assert.equal(result.serviceCentavos, 0)
+    assert.equal(result.payableCentavos, 9500)
+  }
+  const discounted = finance.calculateOrder(order, [elect(order,'senior',one(order),'non-vat')],
+    policy(true,1000), TIMESTAMP, 'non-vat')
+  assert.equal(discounted.vatReliefCentavos, 0)
+  assert.equal(discounted.discountCentavos, 1900)
+  assert.equal(discounted.payableCentavos, 8360)
+})
+test('percentage promotions reduce embedded VAT; version 1 recorded snapshots remain valid', () => {
+  const order=makeOrder([{price:9500,quantity:1}])
+  const promo = {ruleId:'promo-1',ruleVersion:1,kind:'custom',name:'10% off',type:'percentage',
+    rateBasisPoints:1000,valueCentavos:0,taxMode:'vat-inclusive',eligibilityConfirmed:false,portions:one(order)}
+  const discounted = finance.calculateOrder(order,[promo],policy(),TIMESTAMP,'vat-inclusive')
+  assert.equal(discounted.discountCentavos,950)
+  assert.equal(discounted.vatIncludedCentavos,916)
+  assert.equal(discounted.payableCentavos,8550)
+  const v2 = finance.calculateOrder(order,[],policy(),TIMESTAMP,'unconfigured')
+  const { vatRateBasisPoints: ignoredRate, vatIncludedCentavos: ignoredVat, ...legacyFields } = v2
+  void ignoredRate; void ignoredVat
+  const legacy = { ...legacyFields, version:1 }
+  assert.equal(finance.validCalculationSnapshot(order,legacy,[]),true)
+  assert.equal(finance.validCalculationSnapshot(order,discounted,[promo]),true)
 })
 test('statutory changes require reason, effective date, min rate and preserve a previous version', () => {
   const c = finance.defaultFinanceConfig(),
@@ -333,7 +408,7 @@ test('invalidated fixed promotion prevents settlement until employee acknowledge
   const acknowledged=restaurant.setOrderDiscounts(after,'order-one',[],LATER)
   assert.equal(acknowledged.orders[0].discountReviewRequired,false)
   const paid=restaurant.recordDemoSettlement(acknowledged,'session-one','cash',undefined,LATER,'acknowledged',finance.defaultFinanceConfig())
-  assert.equal(paid.settlements[0].amountCentavos,10000)
+  assert.equal(paid.settlements[0].amountCentavos,11000)
 })
 test('settlement freezes rule and charge versions, pays final amount and is immune to later config edits', () => {
   const c = finance.updateTax(
@@ -474,9 +549,9 @@ test('room posting, Front Desk charge payment and checkout reconcile exactly wit
     'post-one',
     financeConfig,
   )
-  assert.equal(restaurantDone.settlements[0].amountCentavos, 18000)
-  assert.equal(charges.allCharges(restaurantDone)[0].amountCentavos, 18000)
-  assert.equal(checkout.checkoutSummary(restaurantDone, 'stay-one').balanceDueCentavos, 18000)
+  assert.equal(restaurantDone.settlements[0].amountCentavos, 19800)
+  assert.equal(charges.allCharges(restaurantDone)[0].amountCentavos, 19800)
+  assert.equal(checkout.checkoutSummary(restaurantDone, 'stay-one').balanceDueCentavos, 19800)
   const individual = charges.recordChargePayment(
     restaurantDone,
     'restaurant',
@@ -491,8 +566,8 @@ test('room posting, Front Desk charge payment and checkout reconcile exactly wit
     '2026-11-13T08:00:00Z',
     'checkout-one',
   )
-  assert.equal(finished.checkouts[0].totalCentavos, 18000)
-  assert.equal(finished.checkouts[0].alreadyPaidCentavos, 18000)
+  assert.equal(finished.checkouts[0].totalCentavos, 19800)
+  assert.equal(finished.checkouts[0].alreadyPaidCentavos, 19800)
   assert.equal(finished.checkouts[0].balanceDueCentavos, 0)
   assert.equal(restaurant.isValidOperations(finished), true)
   assert.throws(
@@ -572,10 +647,10 @@ test('checkout cash pays discounted posted amount with correct change and no sec
     'checkout-one',
     ['paid-one'],
   )
-  assert.equal(finished.checkouts[0].settledCentavos, 40000)
+  assert.equal(finished.checkouts[0].settledCentavos, 44000)
   assert.equal(finished.checkouts[0].cashReceivedCentavos, 50000)
-  assert.equal(finished.checkouts[0].changeCentavos, 10000)
-  assert.equal(finished.chargePayments[0].amountCentavos, 40000)
+  assert.equal(finished.checkouts[0].changeCentavos, 6000)
+  assert.equal(finished.chargePayments[0].amountCentavos, 44000)
   assert.equal(restaurant.isValidOperations(finished), true)
 })
 test('100% promotion supports a complimentary cash close but never creates a zero-value room posting', () => {

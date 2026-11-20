@@ -33,6 +33,111 @@
   text-overflow: ellipsis;
 }
 
+.ros-account {
+  position: relative;
+  z-index: 8;
+  flex: none;
+}
+
+.ros-account-trigger {
+  cursor: pointer;
+  max-width: 178px;
+}
+
+.ros-account-trigger .ros-account-label {
+  font: 700 11px var(--ros-font);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.ros-account-trigger:focus-visible,.ros-account-menu button:focus-visible {
+  outline: 2px solid #799e45;
+  outline-offset: 2px;
+}
+
+.ros-account-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 9px);
+  width: 260px;
+  max-width: calc(100vw - 24px);
+  max-height: min(480px, calc(100dvh - 100px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 9px;
+  border: 1px solid #dce5da;
+  background: white;
+  border-radius: 13px;
+  box-shadow: var(--ros-shadow-popover);
+}
+
+.ros-account-caption {
+  display: block;
+  padding: 8px 9px 4px;
+  font: 800 10px var(--ros-font);
+  color: #82917f;
+}
+
+.ros-account-current {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 3px 9px 11px;
+  border-bottom: 1px solid #edf0e9;
+}
+
+.ros-account-current strong {
+  font: 800 12px var(--ros-font);
+  color: #26352c;
+}
+
+.ros-account-current span {
+  font: 600 10px var(--ros-font);
+  color: #728073;
+}
+
+.ros-account-menu button {
+  width: 100%;
+  min-height: 49px;
+  border: 0;
+  border-radius: 9px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  text-align: left;
+  background: white;
+  color: #324638;
+}
+
+.ros-account-menu button:hover,.ros-account-menu button[aria-checked="true"] {
+  background: #f0f6e5;
+}
+
+.ros-account-menu .ros-profile-avatar {
+  width: 29px;
+  height: 29px;
+}
+
+.ros-account-option-name {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ros-account-option-name strong {
+  font: 800 11px var(--ros-font);
+}
+
+.ros-account-option-name small {
+  font: 600 10px var(--ros-font);
+  color: #748273;
+}
+
 .topbar .ros-workspace {
   position: relative;
   z-index: 5;
@@ -61,6 +166,12 @@
 .topbar .ros-workspace-trigger:hover {
   background: #f9fcf6;
   border-color: #b4cbb2;
+}
+
+.topbar .ros-workspace-static, .topbar .ros-workspace-static:hover {
+  cursor: default;
+  background: #fff;
+  border-color: #d8e3d6;
 }
 
 .topbar .ros-workspace-trigger:focus-visible, .topbar .ros-workspace-menu button:focus-visible {
@@ -155,6 +266,9 @@
     height: 32px;
   }
   .ros-profile-name {
+    display: none;
+  }
+  .ros-account-trigger .ros-account-label {
     display: none;
   }
 }

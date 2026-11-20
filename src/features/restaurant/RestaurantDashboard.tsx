@@ -49,7 +49,8 @@ function RestaurantShortcuts({ go }: { go: (area: AppRoute) => void }) {
   </article>
 }
 
-export function RestaurantDashboard({ go }: { go: (area: AppRoute) => void }) {
+export function RestaurantDashboard({ go, account,tutorialReadOnly=false }: { go: (area: AppRoute) => void;
+  account: import('../employees/model').Employee;tutorialReadOnly?:boolean }) {
   const [ops, setOps] = useState<Operations | null>(null)
   const [finance,setFinance] = useState<FinanceConfig|null>(null)
   const [tables, setTables] = useState<ReturnType<typeof readTables> | null>(null)
@@ -58,7 +59,7 @@ export function RestaurantDashboard({ go }: { go: (area: AppRoute) => void }) {
     const refresh = () => {
       const ticket = ++generation
       setTables(readTables())
-      void Promise.all([loadOperations(),loadFinanceConfig()]).then(([next,policy]) => {if(live && ticket===generation){setOps(next);setFinance(policy)}})
+      void Promise.all([loadOperations(!tutorialReadOnly),loadFinanceConfig(!tutorialReadOnly)]).then(([next,policy]) => {if(live && ticket===generation){setOps(next);setFinance(policy)}})
         .catch(()=>{if(live && ticket===generation)setOps(null)})
     }
     const storage = (event:StorageEvent) => {if(event.key===TABLES_STORAGE_KEY)refresh()}
@@ -68,19 +69,19 @@ export function RestaurantDashboard({ go }: { go: (area: AppRoute) => void }) {
     window.addEventListener(FINANCE_CHANGED_EVENT,refresh)
     window.addEventListener('storage',storage)
     return ()=>{live=false;window.removeEventListener('focus',refresh);window.removeEventListener('restaurant-operations-changed',refresh);window.removeEventListener(FINANCE_CHANGED_EVENT,refresh);window.removeEventListener('storage',storage)}
-  },[])
+  },[tutorialReadOnly])
   const metrics = ops && tables && !tables.error && finance ? restaurantDashboardMetrics(ops,tables.data.tables,new Date(),finance) : null
   const dailyOrders = ops ? recordedOrdersByDay(ops) : null
   const orderStatus = metrics ? currentRestaurantOrderBreakdown(metrics.ordersRequiringAction,metrics.readyToPay) : null
-  return <div className="restaurant-dashboard ros-dashboard-v2" data-department="restaurant">
-    <div className="overview-top">
+  return <div className="restaurant-dashboard ros-dashboard-v2" data-department="restaurant" data-tour-target="restaurant-dashboard-overview">
+    <div className="overview-top" data-tour-target="restaurant-dashboard-metrics">
       <div className="overview-left">
-        <DashboardGreeting employee="Employee" />
+        <DashboardGreeting account={account} />
         <div className="top-stats">
           <DashboardKpi icon={ClipboardList} title="Orders requiring action" value={metrics?.ordersRequiringAction ?? '—'}
             note={metrics ? `${metrics.readyToPay} ready to pay` : 'Order data unavailable'} order={2}
             open={{label:'Open Restaurant Orders',action:()=>go('restaurant-orders')}} />
-          <DashboardKpi icon={CreditCard} title="Room charges posted today (Demo)"
+          <DashboardKpi icon={CreditCard} title="Room charges posted today"
             value={metrics ? formatPrice(metrics.postedCentavos) : '—'}
             note={metrics ? `${metrics.roomPostingsToday} room postings today` : 'Room postings unavailable'} tone="blue" order={3} />
         </div>
@@ -92,7 +93,7 @@ export function RestaurantDashboard({ go }: { go: (area: AppRoute) => void }) {
         footer="Recorded orders count once, including those later canceled" />
       <DashboardChart title="Current order status" context="Active dining sessions" series={orderStatus} kind="bars" order={5} />
     </section>
-    <div className="cards-row ros-metric-strip motion-reveal motion-order-6">
+    <div className="cards-row ros-metric-strip motion-reveal motion-order-6" data-tour-target="restaurant-dashboard-extras">
       <DashboardMiniMetric icon={UtensilsCrossed} label="Tables in service" value={metrics?.tablesInService ?? '—'} note="Active dining sessions" />
       <DashboardMiniMetric icon={FileClock} label="Upcoming reservations" value={metrics?.upcomingReservations ?? '—'} note="Next 24 hours" />
       <DashboardMiniMetric icon={ClipboardList} label="Ready to Pay" value={metrics?.readyToPay ?? '—'} note="Awaiting staff action" />

@@ -8,6 +8,7 @@ import {
 import type {
   ServiceDirectory, ServiceDraft, ServiceErrors, ServiceRecord, ServiceUnit, SortMode, StatusFilter
 } from './model'
+import { useDiscardConfirmation } from '../../shared/useDiscardConfirmation'
 
 type Editor = { id: string | null; draft: ServiceDraft; quantity: string }
 const newDraft = (): ServiceDraft => ({ name: '', code: '', description: '', unit: 'day', price: '' })
@@ -144,6 +145,7 @@ function StatusDialog({ service, onCancel, onConfirm }: {
 
 /** Concept B list and inline editing; production shell and unrelated features are untouched. */
 export function ServiceCatalog({ onDirtyChange }: { onDirtyChange?: (value: boolean) => void }) {
+  const {requestDiscard,discardDialog} = useDiscardConfirmation()
   const [initial] = useState(readServices)
   const [directory, setDirectory] = useState<ServiceDirectory>(initial.data)
   const [storageError, setStorageError] = useState<string | null>(initial.error)
@@ -172,11 +174,13 @@ export function ServiceCatalog({ onDirtyChange }: { onDirtyChange?: (value: bool
   const visible = useMemo(() => selectServices(services, query, status, sort), [services, query, status, sort])
   const editingInvisible = editor?.id && !visible.some(s => s.id === editor.id)
   const closeEditor = () => { setEditor(null); setErrors({}); triggerRef.current?.focus() }
+  const requestCloseEditor = () => requestDiscard(dirty, closeEditor)
   const openEditor = (service?: ServiceRecord, button?: HTMLButtonElement) => {
-    if (dirty && !window.confirm('Discard unsaved service changes?')) return
-    triggerRef.current = button || null
-    setNotice(''); setErrors({}); setEditor({ id: service?.id ?? null, draft: service ? draftFrom(service) : newDraft(),
-      quantity: SERVICE_UNITS[service?.unit ?? 'day'].sample })
+    requestDiscard(dirty, () => {
+      triggerRef.current = button || null
+      setNotice(''); setErrors({}); setEditor({ id: service?.id ?? null, draft: service ? draftFrom(service) : newDraft(),
+        quantity: SERVICE_UNITS[service?.unit ?? 'day'].sample })
+    })
   }
   const changeDraft = (field: keyof ServiceDraft, value: string) => {
     setEditor(current => {
@@ -214,13 +218,14 @@ export function ServiceCatalog({ onDirtyChange }: { onDirtyChange?: (value: bool
     if (persist(next, editor.id ? 'Service configuration saved.' : 'Service added.')) closeEditor()
   }
   const requestStatus = (service: ServiceRecord) => {
-    if (dirty && !window.confirm('Changing status will discard unsaved service field edits. Continue?')) return
-    if (service.status === 'active') { setConfirmId(service.id); return }
-    const next = copyDirectory(directory)
-    const record = next.services.find(s => s.id === service.id)
-    if (!record) return
-    record.status = 'active'; record.updatedAt = new Date().toISOString()
-    if (persist(next, 'Service reactivated.')) closeEditor()
+    requestDiscard(dirty, () => {
+      if (service.status === 'active') { setConfirmId(service.id); return }
+      const next = copyDirectory(directory)
+      const record = next.services.find(s => s.id === service.id)
+      if (!record) return
+      record.status = 'active'; record.updatedAt = new Date().toISOString()
+      if (persist(next, 'Service reactivated.')) closeEditor()
+    })
   }
   const confirmService = services.find(s => s.id === confirmId)
   const deactivate = () => {
@@ -233,7 +238,7 @@ export function ServiceCatalog({ onDirtyChange }: { onDirtyChange?: (value: bool
   }
   const form = (service?: ServiceRecord) => editor && <ServiceForm editor={editor} errors={errors} onDraftChange={changeDraft}
     onQuantityChange={quantity => setEditor(old => old ? { ...old, quantity } : old)}
-    onCancel={closeEditor} onSave={saveEditor} service={service} onStatus={requestStatus}/>
+    onCancel={requestCloseEditor} onSave={saveEditor} service={service} onStatus={requestStatus}/>
   return <section className="sc-page" aria-labelledby="sc-page-heading">
     <header className="section-header sc-heading"><div><h1 id="sc-page-heading">Service Catalog</h1></div></header>
     <div className="rm-toolbar sc-shared-toolbar">
@@ -286,5 +291,6 @@ export function ServiceCatalog({ onDirtyChange }: { onDirtyChange?: (value: bool
       </div>
     </div>
     {confirmService && <StatusDialog service={confirmService} onCancel={() => { setConfirmId(null); triggerRef.current?.focus() }} onConfirm={deactivate}/>}
+    {discardDialog}
   </section>
 }

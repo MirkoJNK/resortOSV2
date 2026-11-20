@@ -3,6 +3,7 @@ const path = require('node:path')
 const crypto = require('node:crypto')
 const root = path.resolve(__dirname, '..')
 const approval = JSON.parse(fs.readFileSync(path.join(root, 'GLOBAL_UI_HOTFIX_APPROVED.json'), 'utf8'))
+const menuRelease = JSON.parse(fs.readFileSync(path.join(root, 'MENU_CATEGORIES_APPROVED.json'), 'utf8'))
 const digest = rel => {
   const file = path.join(root, rel)
   return fs.existsSync(file) ? crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') : null
@@ -10,11 +11,13 @@ const digest = rel => {
 let passed = 0
 const failures = []
 for (const [file, entry] of Object.entries(approval.approved_source)) {
-  if (digest(file) !== entry.after) failures.push(`Unauthorized change to hotfix source: ${file}`)
+  if (menuRelease.changed[file] && menuRelease.changed[file].before !== entry.after) failures.push(`Menu Categories does not acknowledge prior hotfix pin: ${file}`)
+  if (digest(file) !== (menuRelease.changed[file]?.after ?? entry.after)) failures.push(`Unauthorized change to hotfix source: ${file}`)
   else passed++
 }
 for (const [file, expected] of Object.entries(approval.protected_source)) {
-  if (digest(file) !== expected) failures.push(`Frozen source or asset changed: ${file}`)
+  if (menuRelease.changed[file] && menuRelease.changed[file].before !== expected) failures.push(`Previous source pin mismatch: ${file}`)
+  if (digest(file) !== (menuRelease.changed[file]?.after ?? expected)) failures.push(`Frozen source or asset changed: ${file}`)
   else passed++
 }
 if (failures.length) { console.error(failures.join('\n')); process.exitCode = 1 }

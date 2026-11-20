@@ -151,10 +151,6 @@
   line-height: 1.35;
 }
 
-/* This is artwork lettering, NOT a second font for application controls */
-
-/* .art-copy intentionally retains its previously approved illustrated serif style */
-
 @media (max-width: 1240px) {
   .panel-head h2 {
     font-size: 12px;

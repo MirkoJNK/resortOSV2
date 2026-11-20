@@ -1,0 +1,43 @@
+{
+  "release": "Front Desk Charges candidate / versioned service-charge and per-charge demo-payment storage",
+  "baseline_archive": "resortOS_FrontDesk_Rooms_Integrated_Candidate.zip",
+  "modified": {
+    "src/App.tsx": {
+      "before": "d76b467c78111ea46a7d05edcb2785ce586160277ea6d995e4f19eb93de4372a",
+      "after": "a5742e3b75f25931e5db402e1de76da4967e20d48d6cb17f6d22e230f841a4ae"
+    },
+    "src/main.tsx": {
+      "before": "dee96442dbf781c9a49470ced20285c5ee76bd800b8f24909ab558fbf4a991ee",
+      "after": "c37c090c625b210a664ae544474c0f944bfd9d0ecdc7e13ca9a7e91ae0a69f82"
+    },
+    "src/shell/navigation.ts": {
+      "before": "b50129c9d60f978ac501dfc1ef0e11b46506b753a11f20a9304d77e20b3d6a47",
+      "after": "ba88dd73086fcdfef14e3a8bff7548b7d27e442820938c4f90d470ebdba9622b"
+    },
+    "src/features/front-desk/FrontDeskDashboard.tsx": {
+      "before": "24173a2cf59149afb808807f705caf018131b58d3507f428c784b32a206ec480",
+      "after": "344b74da4c059a7ff705c94c823c4eff5b35830fa1b778f3e7831043ff875e17"
+    },
+    "src/features/front-desk/FrontDeskRooms.tsx": {
+      "before": "a282fd01ea7e93dbc00803884c06b254b451c65e5b4ec162ee9cc3bed0b02f83",
+      "after": "83b38e29220faf674329c8f55b912b2cf8c5ba93f4b4cf3a172a71642a06e22b"
+    },
+    "src/features/restaurant-tables/model.ts": {
+      "before": "4b53fee03c6fcc52308f4a61e71bb7a4ddf1f8ecac8b1e55dca7e5b5256ddeaa",
+      "after": "4ee2e151c62d0bb46ff5e4e8cad8a31682a21dda7f2f1b05180bba6ed4b285f3"
+    },
+    "src/features/restaurant-tables/storage.ts": {
+      "before": "d9c6366293373e69e7c1a8e9f45cc2ff5f79c7e6cc1a046e3d8d06266928278d",
+      "after": "815515ec68c54660a65cf24ebc9c2c0e78366c1d8246a677859a37b1f4c6275c"
+    },
+    "scripts/verify-system-management-entrypoint.cjs": {
+      "before": "2b89d3a396b5fe3a118f7ec0289619aed2978bf5231d8ac7325d767e22367d3d",
+      "after": "fc6bc79cf3a512a7e7905fadc033bf5d2110a95e7b5ef67f7d5dcbc38418fc46"
+    }
+  },
+  "added": {
+    "src/features/front-desk/charges.ts": "8ff355b589a3b369a9fd08c7caef837e63cf4dea718d876da88d39a2d6cb3b0e",
+    "src/features/front-desk/FrontDeskCharges.tsx": "6fa424de20664423e4ef8d33fa55ffa9ce7a8b94b3a6223b77fc414e24c11616",
+    "src/features/front-desk/front-desk-charges.css": "964d93395090c8afeab69f0fec3ebcffa5eb76811faee652ca22fb20a16c4fba"
+  }
+}

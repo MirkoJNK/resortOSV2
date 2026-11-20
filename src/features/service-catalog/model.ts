@@ -1,4 +1,5 @@
 /** Service Catalog v1: local demonstration configuration, not a financial ledger. */
+import { recordCollection } from '../audit-log/storage'
 export const STORAGE_KEY = 'resortos.service-catalog.v1'
 export const SERVICE_UNITS = {
   fixed: { label: 'Fixed price', suffix: '', singular: 'occurrence', stepMilli: 0, sample: '' },
@@ -152,6 +153,11 @@ export function readServices(storage: Pick<Storage, 'getItem'> = localStorage): 
 }
 export function writeServices(data: ServiceDirectory, storage: Pick<Storage, 'setItem'> = localStorage): Result<true> {
   if (!validateDirectory(data)) return { ok: false, error: 'Invalid service configuration. Nothing was saved.' }
-  try { storage.setItem(STORAGE_KEY, JSON.stringify(data)); return { ok: true, value: true } }
+  const prior=storage===localStorage?readServices():null
+  try { storage.setItem(STORAGE_KEY, JSON.stringify(data));
+    if(prior&&!prior.error)recordCollection({category:'Services',kind:'service',name:'Service',operationId:`services:${crypto.randomUUID()}`,
+      before:prior.data.services.map(s=>({id:s.id,label:s.name,active:s.status==='active',value:s.priceCents,state:s.unit})),
+      after:data.services.map(s=>({id:s.id,label:s.name,active:s.status==='active',value:s.priceCents,state:s.unit}))})
+    return { ok: true, value: true } }
   catch { return { ok: false, error: 'Unable to save services in this browser. Your changes were not committed.' } }
 }

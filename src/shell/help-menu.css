@@ -1,0 +1,8 @@
+.ros-help-control {position:relative;z-index:9;display:flex;flex:none}
+.ros-help-trigger {cursor:pointer}
+.ros-help-trigger:focus-visible,.ros-help-menu button:focus-visible {outline:2px solid #7b9f4a;outline-offset:2px}
+.ros-help-menu {position:absolute;right:-42px;top:calc(100% + 12px);width:218px;max-width:calc(100vw - 24px);padding:7px;background:#fff;border:1px solid #e1e7df;border-radius:13px;box-shadow:var(--ros-shadow-popover)}
+.ros-help-menu button {width:100%;display:flex;align-items:center;gap:11px;text-align:left;padding:12px 11px;border:0;border-radius:9px;color:#25382a;background:transparent;font:700 11px var(--ros-font);cursor:pointer}
+.ros-help-menu button svg {color:#718b70;flex:none}
+.ros-help-menu button:hover {background:#f1f8e6}
+@media (max-width:600px) {.ros-help-menu {right:-42px;width:min(218px,calc(100vw - 20px))}}

@@ -6,12 +6,10 @@ function mod(p){
  const abs=path.join(root,p); const text=fs.readFileSync(abs,'utf8');
  const output=ts.transpileModule(text,{fileName:abs,compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX},reportDiagnostics:true});
  if(output.diagnostics?.length)failed.push(...output.diagnostics.map(d=>ts.flattenDiagnosticMessageText(d.messageText,'\n')));
- // The source uses Vite's import.meta.env.BASE_URL. This CommonJS-only
- // legacy renderer substitutes the same configured base for its static preview.
- return output.outputText.replaceAll('import.meta.env.BASE_URL', JSON.stringify(process.env.GITHUB_PAGES_BASE || '/'));
+ return output.outputText;
 }
 const e=(type,props)=>({type,props:props||{}});
-const React={useState:(x)=>[typeof x==='function'?x():x,()=>{}],useEffect:()=>{},useRef:()=>({current:null}),useMemo:(fn)=>fn(),createElement:(t,p,...c)=>e(t,{...p,children:c}),Fragment:Symbol('fragment')};
+const React={useLayoutEffect:()=>{},useState:(x)=>[typeof x==='function'?x():x,()=>{}],useEffect:()=>{},useRef:()=>({current:null}),useMemo:(fn)=>fn(),createElement:(t,p,...c)=>e(t,{...p,children:c}),Fragment:Symbol('fragment')};
 const iconNames=['ArrowRight','ArrowUpRight','Bell','BookOpen','Building2','CalendarDays','Check','ChevronDown','ChevronRight','CircleHelp','Clock3','CreditCard','Download','FileClock','FileText','Headphones','Store','MessageCircle','ReceiptText','Settings','LayoutDashboard','LockKeyhole','Menu','Plus','Search','Settings2','ShieldCheck','SlidersHorizontal','Sun','Users','Wallet','X'];
 
 const pathD={
@@ -48,7 +46,7 @@ const cache={};function requireLocal(file){if(cache[file])return cache[file].exp
  const code=mod(file);const dirname=path.dirname(file);
  const localRequire=(name)=>{
   if(name==='react'||name==='react/jsx-runtime')return {...React,jsx:e,jsxs:e};
-  if(name==='lucide-react')return lucide;
+  if(name==='lucide-react')return lucide;if(name==='react-dom')return {createPortal:()=>null};
   if(name.startsWith('.'))return requireLocal(path.join(dirname,name)+'.ts'.replace('.ts.ts','.ts').replace('.tsx.ts','.tsx'));throw Error('Unknown dependency '+name)
  };
  vm.runInNewContext(`(function(require,module,exports){${code}\n})`,{React,Date,Math,console,localStorage:{getItem:()=>null},location:{hash:process.env.ROS_HASH||'#dashboard',search:process.env.ROS_QA?'?qa='+process.env.ROS_QA:''},window:{addEventListener:()=>{}},globalThis}, {filename:file})(localRequire,module,module.exports);
@@ -65,7 +63,7 @@ function style(obj){return Object.entries(obj||{}).map(([k,v])=>k.replace(/[A-Z]
 function render(v){if(v==null||typeof v==='boolean')return '';if(Array.isArray(v))return v.map(render).join('');if(typeof v==='string'||typeof v==='number')return escape(v);if(typeof v.type==='function')return render(v.type(v.props||{}));if(typeof v.type==='symbol')return render(v.props.children);const tag=v.type,p=v.props||{};if(['br','hr','img','input','meta','link'].includes(tag)){const attrs=[];for(let [k,val] of Object.entries(p)){if(k==='children'||k==='key'||k.startsWith('on')||val==null)continue;if(k==='className')k='class';if(k==='style')val=style(val);attrs.push(`${k}="${escape(val)}"`)}return `<${tag}${attrs.length?' '+attrs.join(' '):''}>`}const attrs=[];for(let [k,val] of Object.entries(p)){if(k==='children'||k==='key'||k==='ref'||k.startsWith('on')||val==null)continue;if(k==='className')k='class';if(k==='htmlFor')k='for';if(k==='strokeWidth')k='stroke-width';if(k==='strokeLinecap')k='stroke-linecap';if(k==='strokeLinejoin')k='stroke-linejoin';if(k==='viewBox')k='viewBox';if(k==='stopColor')k='stop-color';if(k==='stopOpacity')k='stop-opacity';if(k==='style'){val=style(val)}if(typeof val==='boolean'){if(val)attrs.push(k);continue;}attrs.push(`${k}="${escape(val)}"`)}return `<${tag}${attrs.length?' '+attrs.join(' '):''}>${render(p.children)}</${tag}>`}
 // Custom loader robustly resolves App -> ./domain/store -> ../data/demo
 function load(file){file=file.replace(/\\/g,'/');if(cache[file])return cache[file].exports;const module={exports:{}};cache[file]=module;const code=mod(file),dirname=path.posix.dirname(file);
- const req=(name)=>{if(name==='react'||name==='react/jsx-runtime')return {...React,jsx:e,jsxs:e};if(name==='lucide-react')return lucide;if(name.startsWith('.')){const p=path.posix.normalize(path.posix.join(dirname,name));for(const f of [p+'.ts',p+'.tsx',p])if(fs.existsSync(path.join(root,f)))return load(f);throw Error(`Could not find ${name} from ${file}`)}throw Error(name)};
+ const req=(name)=>{if(name==='react'||name==='react/jsx-runtime')return {...React,jsx:e,jsxs:e};if(name==='lucide-react')return lucide;if(name==='react-dom')return {createPortal:()=>null};if(name.startsWith('.')){const p=path.posix.normalize(path.posix.join(dirname,name));for(const f of [p+'.ts',p+'.tsx',p])if(fs.existsSync(path.join(root,f)))return load(f);throw Error(`Could not find ${name} from ${file}`)}throw Error(name)};
  const factory=vm.runInThisContext(`(function(require,module,exports){${code}\n})`,{filename:file});factory(req,module,module.exports);return module.exports;}
 let html='';try{const {App}=load('src/App.tsx');html=render(e(App,{}));}catch(err){console.error(err);process.exit(2)}
 if(failed.length){console.error(failed);process.exit(2)}

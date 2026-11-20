@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import type { LucideIcon } from 'lucide-react'
 import { BedDouble, ClipboardList, CreditCard, FileText, Headphones, ReceiptText, Settings2 } from 'lucide-react'
 import type { Area, Store } from '../../domain/types'
-import { getSupportCounts } from '../../components/SupportWorkspace'
 import type { SampleTicket } from '../../components/SupportWorkspace'
 import type { Operations } from '../restaurant-tables/model'
 import { loadOperations } from '../restaurant-tables/storage'
@@ -10,7 +9,10 @@ import { checkoutDashboardMetrics } from '../front-desk/dashboardMetrics'
 import { formatPrice } from '../menu-management/model'
 import { readServices, STORAGE_KEY as SERVICES_STORAGE_KEY } from '../service-catalog/model'
 import { DashboardHero, DashboardGreeting, DashboardKpi, DashboardChart, DashboardMiniMetric, DashboardActivity } from './DashboardVisuals'
-import { supportStatusBreakdown, supportPriorityBreakdown } from './chartSelectors'
+import { roomPostingsByDay, supportPriorityBreakdown } from './chartSelectors'
+import { RoomPostingsLineChart } from './RoomPostingsLineChart'
+import { COLLECTION_RANGES, collectedRoomPostingCentavos } from './roomCollections'
+import type { CollectionRange } from './roomCollections'
 
 /** No saved configuration is unavailable, never an invented active-service count. */
 function configuredActiveServices(): number | null {
@@ -59,16 +61,19 @@ function AdministrationShortcuts({ go }: { go: (area: Area) => void }) {
 }
 
 /** Shared dashboard layout; administrative metrics are current demo snapshots, not invented time series. */
-export function Dashboard({ tickets, go }: { store: Store; tickets: SampleTicket[]; go: (a: Area) => void }) {
-  const { unresolved: open, urgentOpen: urgent } = getSupportCounts(tickets)
+export function Dashboard({ tickets, go, account, tutorialReadOnly=false }: { store: Store; tickets: SampleTicket[]; go: (a: Area) => void;
+  account: import('../employees/model').Employee; tutorialReadOnly?:boolean }) {
   const [operations, setOperations] = useState<Operations | null>(null)
+  const [collectionRange,setCollectionRange]=useState<CollectionRange>('today')
+  const [now,setNow]=useState(()=>new Date())
   const [activeServices, setActiveServices] = useState<number | null>(configuredActiveServices)
   useEffect(() => {
     let live = true, generation = 0
     const refresh = () => {
       const ticket = ++generation
+      setNow(new Date())
       setActiveServices(configuredActiveServices())
-      void loadOperations().then(next => {if (live && ticket===generation) setOperations(next)})
+      void loadOperations(!tutorialReadOnly).then(next => {if (live && ticket===generation) setOperations(next)})
         .catch(() => {if (live && ticket===generation) setOperations(null)})
     }
     const storage = (event: StorageEvent) => {if (event.key === SERVICES_STORAGE_KEY) refresh()}
@@ -76,29 +81,35 @@ export function Dashboard({ tickets, go }: { store: Store; tickets: SampleTicket
     window.addEventListener('focus',refresh)
     window.addEventListener('storage',storage)
     window.addEventListener('restaurant-operations-changed',refresh)
-    return () => {live=false; window.removeEventListener('focus',refresh);window.removeEventListener('storage',storage);window.removeEventListener('restaurant-operations-changed',refresh)}
-  }, [])
+    const clock=setInterval(()=>setNow(new Date()),60_000)
+    return () => {live=false;clearInterval(clock);window.removeEventListener('focus',refresh);window.removeEventListener('storage',storage);window.removeEventListener('restaurant-operations-changed',refresh)}
+  }, [tutorialReadOnly])
   const metrics = operations ? checkoutDashboardMetrics(operations) : null
-  const statuses = supportStatusBreakdown(tickets)
+  const roomPostings = (() => {
+    if (!operations) return null
+    try { return roomPostingsByDay(operations, now) }
+    catch { return null }
+  })()
   const priorities = supportPriorityBreakdown(tickets)
-  return <div className="ros-dashboard-v2" data-department="admin">
-    <div className="overview-top">
+  return <div className="ros-dashboard-v2" data-department="admin" data-tour-target="admin-dashboard-overview">
+    <div className="overview-top" data-tour-target="admin-dashboard-metrics">
       <div className="overview-left">
-        <DashboardGreeting employee="Admin" />
+        <DashboardGreeting account={account} />
         <div className="top-stats">
-          <DashboardKpi icon={Headphones} title="Unresolved support tickets (Demo)" value={open}
-            note={urgent > 0 ? `${urgent} urgent tickets` : 'Current employee tickets'} order={2}
-            open={{label:'Open Support & Issues',action:()=>go('support')}} />
-          <DashboardKpi icon={CreditCard} title="Outstanding room balance (Demo)"
+          <DashboardKpi icon={ReceiptText} title="Collected from room postings"
+            value={operations?formatPrice(collectedRoomPostingCentavos(operations,collectionRange,now)):'—'}
+            note="Paid room charges" order={2}
+            period={{value:collectionRange,options:COLLECTION_RANGES,onChange:value=>setCollectionRange(value as CollectionRange)}} />
+          <DashboardKpi icon={CreditCard} title="Outstanding room balance"
             value={metrics ? formatPrice(metrics.outstandingCentavos) : '—'}
             note={metrics ? `${metrics.openChargeCount} open charges` : 'Charge records unavailable'} tone="blue" order={3} />
         </div>
       </div>
       <DashboardHero />
     </div>
-    <section className="ros-analytics" aria-label="Administration operational charts">
-      <DashboardChart title="Support ticket status" context="Current snapshot (Demo)" series={statuses} kind="bars" order={4} />
-      <DashboardChart title="Open tickets by priority" context="Excludes closed tickets (Demo)" series={priorities} kind="bars" order={5} />
+    <section className="ros-analytics" aria-label="Administration operational charts" data-tour-target="admin-dashboard-charts">
+      <RoomPostingsLineChart series={roomPostings} />
+      <DashboardChart title="Open tickets by priority" series={priorities} kind="bars" order={5} highlightUrgent />
     </section>
     <div className="cards-row ros-metric-strip motion-reveal motion-order-6">
       <DashboardMiniMetric icon={BedDouble} label="Occupied rooms" value={metrics?.occupiedRoomCount ?? '—'} note="Active guest stays" />
@@ -106,7 +117,7 @@ export function Dashboard({ tickets, go }: { store: Store; tickets: SampleTicket
       <DashboardMiniMetric icon={ReceiptText} label="Active services" value={activeServices ?? '—'} note={activeServices === null ? 'Saved catalog unavailable' : 'Saved Service Catalog'} />
     </div>
     <div className="bottom-row">
-      <DashboardActivity title="Recent operational activity (Demo)">
+      <DashboardActivity title="Recent operational activity">
         {metrics?.recentActivity.length ? metrics.recentActivity.map(event=><div key={event.id} className="ros-activity-line"><span>{event.label}</span><time>{new Intl.DateTimeFormat('en-PH',{timeZone:'Asia/Manila',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(event.recordedAt))}</time></div>)
           : <div className="dashboard-empty-message">{metrics ? 'No recorded operational activity' : 'Operational records unavailable'}</div>}
       </DashboardActivity>

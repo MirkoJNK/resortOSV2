@@ -18,18 +18,30 @@ export function FinancialBreakdown({
         <span>Original subtotal</span>
         <strong>{formatPrice(calculation.originalCentavos)}</strong>
       </div>
+      {calculation.version === 2 && calculation.taxMode === 'vat-inclusive' && (
+        <div>
+          <span title="Included in menu prices; not added to the total">VAT included (12%)</span>
+          <strong>{formatPrice(calculation.vatIncludedCentavos ?? 0)}</strong>
+        </div>
+      )}
+      {calculation.version === 2 && calculation.taxMode === 'non-vat' && (
+        <div><span>VAT (Non-VAT)</span><strong>{formatPrice(0)}</strong></div>
+      )}
+      {(calculation.version === 1 || calculation.taxMode === 'unconfigured') && (
+        <div><span>Historical VAT breakdown</span><strong>Unavailable</strong></div>
+      )}
+      {calculation.vatReliefCentavos > 0 && (
+        <div>
+          <span>VAT relief / exemption</span>
+          <strong>−{formatPrice(calculation.vatReliefCentavos)}</strong>
+        </div>
+      )}
       {calculation.discounts.map((d) => (
         <div key={d.ruleId}>
           <span>{d.name}</span>
           <strong>−{formatPrice(d.discountCentavos)}</strong>
         </div>
       ))}
-      {calculation.vatReliefCentavos > 0 && (
-        <div>
-          <span>VAT relief</span>
-          <strong>−{formatPrice(calculation.vatReliefCentavos)}</strong>
-        </div>
-      )}
       {calculation.serviceCentavos > 0 && (
         <div>
           <span>

@@ -80,7 +80,7 @@ test('Support header reuses the existing entrance motion without adding animatio
 })
 
 test('Ticket state handlers, independent scroll targets, and composer remain in Support React', () => {
-  for (const text of ['filterSupportTickets(tickets, filters)', 'getSupportCounts(', 'updateSupportTicket(current', 'addAdminReply(current', 'setRetainedTicketId', 'support-tab-content', 'support-ticket-list', 'support-composer', 'onSendMessage']) {
+  for (const text of ['filterSupportTickets(allowed, filters)', 'getSupportCounts(', 'updateSupportTicket(current', 'addAdminReply(current', 'setRetainedTicketId', 'support-tab-content', 'support-ticket-list', 'support-composer', 'onSendMessage']) {
     assert.ok(support.includes(text), `Lost required ticket behavior: ${text}`)
   }
 })

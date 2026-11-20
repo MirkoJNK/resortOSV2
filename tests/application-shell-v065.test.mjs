@@ -70,7 +70,9 @@ test('search dialog stays pages-only with accessible focus handling', () => {
 
 test('App retains responsibility for shared state, routing and keyboard handling', () => {
   assert.match(app, /createSupportTickets/)
-  assert.match(app, /onTicketsChange=\{setSupportTickets\}/)
+  assert.match(app, /const \[supportData,setSupportData\]/)
+  assert.match(app, /onCreateTicket=\{createEmployeeTicket\}/)
+  assert.match(app, /onReplyTicket=\{\(id,body,files\)=>sendTicketReply\(id,body,files,area==='support'\?'management':'employee'\)\}/)
   assert.match(app, /addEventListener\('hashchange'/)
   assert.match(app, /e\.key\.toLowerCase\(\) === 'k'/)
   assert.match(app, /if \(e\.key === 'Escape'\)/)

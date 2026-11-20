@@ -30,7 +30,7 @@ export function checkInError(input: {roomId: string; guestName: string; checkInD
 }
 export function createStay(ops: Operations, rooms: Room[],
   input: {roomId: string; guestName: string; checkInDate: string; expectedCheckoutDate: string},
-  now = new Date().toISOString(), id = crypto.randomUUID()): Operations {
+  now = new Date().toISOString(), id: string = crypto.randomUUID()): Operations {
   const issue = checkInError(input, rooms, ops, resortDate(new Date(now)))
   if (issue) throw Error(issue)
   if (!id || (ops.stays ?? []).some(stay => stay.id === id)) throw Error('A guest-stay identifier is already in use')
@@ -48,7 +48,7 @@ export function currentStayPostings(ops: Operations, stay: GuestStay) {
 export function currentStayDemoTotal(ops: Operations, stay: GuestStay): number {
   return currentStayPostings(ops, stay).reduce((total, payment) => {
     const next = total + payment.amountCentavos
-    if (!Number.isSafeInteger(next)) throw Error('The demo room charge total exceeds the supported limit')
+    if (!Number.isSafeInteger(next)) throw Error('The room charge total exceeds the supported limit')
     return next
   }, 0)
 }

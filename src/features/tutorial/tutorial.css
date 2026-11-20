@@ -1,0 +1,17 @@
+.tour-overlay{position:fixed;inset:0;z-index:2147483647;font-family:inherit;pointer-events:none;color:#203027}
+.tour-interaction-shield{position:absolute;inset:0;pointer-events:auto;background:transparent}
+.tour-full-scrim{position:absolute;inset:0;background:rgba(22,33,26,.49);pointer-events:none}
+.tour-spotlight{position:absolute;border:2px solid #c5eb64;border-radius:18px;box-shadow:0 0 0 9999px rgba(20,32,24,.5),0 0 0 5px rgba(205,237,124,.2);pointer-events:none;transition:top .36s ease,left .36s ease,width .36s ease,height .36s ease}
+.tour-skip{position:fixed;top:21px;right:24px;z-index:2;border:1px solid #d8e2d1;border-radius:14px;background:#fff;color:#253627;padding:12px 18px;font-family:inherit;font-size:13px;font-weight:700;min-height:45px;cursor:pointer;box-shadow:0 5px 24px rgba(21,35,25,.18);pointer-events:auto}
+.tour-skip:hover{background:#eef7d6}
+.tour-skip:focus-visible,.tour-audio-recovery button:focus-visible{outline:3px solid #bddf59;outline-offset:3px}
+.tour-caption{position:fixed;bottom:24px;left:28px;z-index:2;width:min(385px,calc(100vw - 56px));background:#fffdf8;border:1px solid #dce5d5;border-radius:20px;box-shadow:0 18px 54px rgba(9,28,14,.23);padding:21px 24px 20px;pointer-events:none}
+.tour-step-count{font-size:12px;color:#607454;font-weight:700}
+.tour-caption h2{font-size:20px;letter-spacing:-.02em;line-height:1.25;margin:9px 0 8px;font-weight:800}
+.tour-caption p{margin:0;color:#536454;font-size:14px;line-height:1.55}
+.tour-caption small{display:block;color:#758274;font-size:12px;margin-top:13px}
+.tour-caption .tour-error{margin-top:12px;color:#a43d36}
+.tour-audio-recovery{margin-top:12px}
+.tour-audio-recovery button{margin-top:12px;border:1px solid #99b865;border-radius:12px;background:#eaf8c3;padding:9px 13px;color:#274024;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;pointer-events:auto}
+@media(max-width:620px){.tour-skip{right:14px;top:12px;min-height:43px;padding:10px 14px}.tour-caption{left:12px;bottom:12px;width:calc(100vw - 24px);padding:15px 18px 16px;border-radius:17px}.tour-caption h2{font-size:17px;margin:6px 0}.tour-caption p{font-size:13px}.tour-spotlight{border-radius:13px}}
+@media(prefers-reduced-motion:reduce){.tour-spotlight{transition:none}}

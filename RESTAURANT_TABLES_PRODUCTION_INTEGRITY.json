@@ -1,0 +1,29 @@
+{
+  "status": "Restaurant Tables production review candidate; awaiting product owner acceptance",
+  "baseline": "resortOS_MenuManagement_Integrated_Candidate(1).zip",
+  "modified": {
+    "src/App.tsx": {
+      "before": "e3251624150be852543cb08b90f0f05ebc4e28c6428517a637d489e9ab8d84c7",
+      "after": "6bd70a5b2813a7f16215f3d63849061ab9dcdd7f2652a4d7ef34363b5d337065"
+    },
+    "src/shell/navigation.ts": {
+      "before": "e87a983b4d6a25f73467e07a36c1e833548ec2b39ad6f699101d189ba5a85e3a",
+      "after": "6c85ae2841d7123510f8506c53117c9b7a6defb12a7e759ed5e550451938eed3"
+    },
+    "src/main.tsx": {
+      "before": "0475bad1003047a0b60aac67263acf0f570484dd6fc34361ef6666e27d5e9452",
+      "after": "469565f5bb352feb6d921563bd2f19923b372d22864bb0b1a7a376dfcbc9b3c4"
+    }
+  },
+  "added": {
+    "src/features/restaurant-tables/DialogFrame.tsx": "8995bea6e47be5d38c2a0e09349dd55c2ad8efb47a2a47883751e46a18616bfa",
+    "src/features/restaurant-tables/OrderWorkspace.tsx": "7f2af004e3a6b852975b81b01b35fbe013ad012db1f175f7fa4bead985ca2cab",
+    "src/features/restaurant-tables/Reservations.tsx": "2152957aeb35df892ea147317f60f23766e635be0355610bc8c82605c4d52b6f",
+    "src/features/restaurant-tables/RestaurantTables.tsx": "6af3fac1a82f9eb7afcd48d462035cefcb594a4254e5f3a5589f070639e2c1d0",
+    "src/features/restaurant-tables/TableOverviews.tsx": "f4217224aafd54066385007e4e907a924bd1896f32d687b99b23fe32c6913d5d",
+    "src/features/restaurant-tables/model.ts": "e3b5bdb2fa4f15286131a25e582eb349a3d71386207e7770fee907649425cfa7",
+    "src/features/restaurant-tables/restaurant-tables.css": "bc457c57cd91644a642fa04bd5995404c7b3f1025250b57422dc7645590f3be1",
+    "src/features/restaurant-tables/storage.ts": "c7a24cf50163146e5612911ed2f3ff61da8d9fc91bc9ea4f92054421e160fe85"
+  },
+  "notes": "Exact successor checks retain all historic protected source and asset hashes; Admin and menu storage unchanged."
+}

@@ -9,6 +9,73 @@
   --ros-motion-stagger: 55ms;
 }
 
+/* Audit/permissions cold-load shell matches the real heading and reserves content height. */
+
+.ros-management-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.ros-management-loading-tabs {
+  display: flex;
+  align-self: flex-start;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid #e4eae2;
+  border-radius: 12px;
+  background: #eff3ed;
+  height: 47px;
+}
+
+.ros-management-loading-tabs span {
+  width: 96px;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.ros-management-loading-surface {
+  min-height: 540px;
+  border: 1px solid #e6ebe1;
+  border-radius: 18px;
+  background: #fff;
+  padding: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ros-management-loading.rp-page .ros-management-loading-surface {
+  min-height: 620px;
+}
+
+.ros-management-loading-line {
+  display: block;
+  width: min(100%,350px);
+  height: 15px;
+  border-radius: 6px;
+  background: #f0f3ed;
+}
+
+.ros-management-loading-line.short {
+  width: min(100%,215px);
+}
+
+@media (prefers-reduced-motion:no-preference) {
+  .ros-stable-page>.al-tabs,.ros-stable-page>.al-surface,.ros-stable-page>.al-trace-open, .ros-stable-page>.rp-tabs,.ros-stable-page>.rp-employee-layout,.ros-stable-page>.rp-subroles,.ros-stable-page>.rp-builder {
+    animation: ros-stable-appear 200ms ease-out both;
+  }
+  @keyframes ros-stable-appear {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   /* Entrance is applied only to the dashboard, once per mounted screen
      CSS animations do not rerun for ordinary React store updates */

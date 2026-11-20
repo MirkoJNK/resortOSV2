@@ -1,0 +1,28 @@
+{
+  "status": "unapproved review candidate; successor to Menu Categories integrated candidate",
+  "baseline": "MENU_CATEGORIES_APPROVED.json",
+  "modified": {
+    "src/App.tsx": {
+      "before": "f072f9a57688912864313d5d3a8afbfd70debca2f6f7a61c93a7ff720bb4a53c",
+      "after": "e3251624150be852543cb08b90f0f05ebc4e28c6428517a637d489e9ab8d84c7"
+    },
+    "src/main.tsx": {
+      "before": "b364a30020338810b5166f204525ad68aafca30c9f178c39009817b889295b2e",
+      "after": "0475bad1003047a0b60aac67263acf0f570484dd6fc34361ef6666e27d5e9452"
+    },
+    "src/shell/navigation.ts": {
+      "before": "15d3c923fc0b4d04e8e84ae072922c6df264063a7bbde0215031e566e26b9f50",
+      "after": "e87a983b4d6a25f73467e07a36c1e833548ec2b39ad6f699101d189ba5a85e3a"
+    },
+    "src/features/system-management/SystemManagement.tsx": {
+      "before": "96c76a0a9492e243ea0eb81fe09c4bef1a7666acce32d5778b7c1ae0f2b363ab",
+      "after": "cef50438178bd9b77cc8fb2f247cde0aadca6b8222b63e5067480d1fdb95abfe"
+    }
+  },
+  "added": {
+    "src/features/menu-management/model.ts": "ed4b313af176fd136e19bf12a8811afbcbd53bf53e7a4de8d44c74a717d73efa",
+    "src/features/menu-management/storage.ts": "63bdc99969a64b8e95b5af06f48f9d2e5a7f2ed6db92050265598af176b39290",
+    "src/features/menu-management/MenuManagement.tsx": "36a5a7ff8d725a03d9d8ab76aa3815fb7ff4845fbd27d6b56db22e6beb1c0ecf",
+    "src/features/menu-management/menu-management.css": "bb95d427016a020554ec74b2da5e536e17cc8a9ef7a6383584db77c91311cfeb"
+  }
+}

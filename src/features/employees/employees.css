@@ -1,0 +1,16 @@
+/* Employees reuses the approved Payment Methods management geometry and colors. */
+.em-page .pm-list-head,.em-page .pm-list-row{grid-template-columns:minmax(155px,1.5fr) minmax(145px,.9fr) minmax(90px,.7fr) minmax(175px,1.15fr)}
+.em-page .pm-list-row{min-height:70px}
+.em-page .em-role--super-admin{color:#506c25}
+.em-page .em-role--admin{color:#7c5aa8}
+.em-page .em-role--restaurant{color:#986021}
+.em-page .em-role--front-desk{color:#386980}
+.em-page .pm-manage:empty{min-height:1px}
+.em-page .em-empty{display:flex;flex-direction:column;gap:12px}
+.em-page .em-empty .rt-btn{min-height:36px}
+.em-editor-footer{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:6px}
+.em-editor-footer>.rt-btn{margin-top:22px}
+.em-editor-footer .rt-dialog-actions{margin-top:22px}
+@media(max-width:750px){.em-page .pm-list-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.em-page .pm-list-row>:first-child{grid-column:1}.em-page .pm-list-row>:nth-child(2){grid-column:2}.em-page .pm-list-row>:nth-child(3){grid-column:1}.em-page .pm-list-row>:last-child{grid-column:2}}
+@media(max-width:440px){.em-editor-footer{display:flex;flex-direction:column;align-items:stretch}.em-editor-footer>.rt-btn{align-self:flex-start;margin-top:2px}.em-editor-footer .rt-dialog-actions{margin-top:6px}.em-page .pm-manage .rt-btn{font-size:10px;padding:7px 8px}.em-page .pm-list-row{gap:9px;padding:13px}}
+@media(prefers-reduced-motion:reduce){.em-page *{animation:none!important;transition:none!important}}

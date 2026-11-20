@@ -29,10 +29,10 @@ export function restaurantDashboardMetrics(ops: Operations, tables: DiningTable[
       events.push({id:`remove:${removal.id}`,label:`${removal.quantity} ${line.nameSnapshot} removed`,date:removal.removedAt})
   }
   for (const posting of ops.settlements ?? []) events.push({id:`posting:${posting.id}`,
-    label: posting.method === 'room' ? 'Room posting recorded (Demo)' : 'Cash payment recorded (Demo)',date:posting.recordedAt})
+    label: posting.method === 'room' ? 'Room posting recorded' : 'Payment recorded',date:posting.recordedAt})
   let activeOrderAmountCentavos = 0
   for (const {order} of orderSessions) {
-    activeOrderAmountCentavos += finance ? calculateOrder(order,order.discountElections??[],finance.service).payableCentavos : activeOrderTotal(order)
+    activeOrderAmountCentavos += finance ? calculateOrder(order,order.discountElections??[],finance.service,new Date().toISOString(),finance.taxMode).payableCentavos : activeOrderTotal(order)
     if (!Number.isSafeInteger(activeOrderAmountCentavos)) throw Error('Active order total exceeds supported value')
   }
   return { ordersRequiringAction:orderSessions.length,readyToPay,tablesInService:sessions.length,

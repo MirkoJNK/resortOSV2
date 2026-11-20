@@ -52,11 +52,11 @@ test('all Dashboard shortcuts, search results and actionable arrows point to a r
 
 test('static routes show the correct four views; obsolete deep links fall back to Dashboard',()=>{
  const cases=[
-  ['#dashboard','Your resort'],
+  ['#dashboard','Good morning, Admin'],
   ['#support','Manage and resolve employee support requests'],
   ['#audit','Recent events'],
   ['#systems','Configure your resort&#39;s operations and settings'],
-  ['#employees','Your resort']
+  ['#employees','Good morning, Admin']
  ]
  for(const [hash,expected] of cases){
   execFileSync('node',['tools-render-preview.cjs'],{env:{...process.env,ROS_HASH:hash},stdio:'pipe'})

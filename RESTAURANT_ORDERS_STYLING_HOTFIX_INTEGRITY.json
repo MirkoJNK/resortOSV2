@@ -1,0 +1,10 @@
+{
+  "feature": "Restaurant Orders stylesheet loading hotfix",
+  "predecessor": "FRONT_DESK_DASHBOARD_CANDIDATE_INTEGRITY.json",
+  "modified": {
+    "src/main.tsx": {
+      "before": "469565f5bb352feb6d921563bd2f19923b372d22864bb0b1a7a376dfcbc9b3c4",
+      "after": "17cb99968d8b8a6058f9f20b33444c96341da264410d5ec731caba57335468cf"
+    }
+  }
+}

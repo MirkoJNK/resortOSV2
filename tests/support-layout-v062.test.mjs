@@ -23,7 +23,7 @@ test('Option A sidebar has a subtle, distinct edge and retains the full original
 test('Support uses approved standard header and adaptive Variant B workspace without overview cards',()=>{
  assert.doesNotMatch(support,/support-coastal-panorama-v0661.png|\.support-hero/)
  assert.match(support,/height:\s*clamp\(610px,\s*calc\(100dvh - 270px\),\s*740px\)/)
- assert.match(react,/className="section-header support-standard-header"/)
+ assert.match(react,/className="section-header support-standard-header ros-admin-heading"/)
  assert.match(react,/support-filter-tabs/)
  assert.doesNotMatch(react,/function SupportOverview\(/)
 })

@@ -120,7 +120,7 @@ function visibleMiniIndicators(tables: DiningTable[], ops: Operations, now: numb
 export function RestaurantFloorPlan({ tables, operations, now, onSelect, selectedId, area }: OverviewProps & { area: string }) {
   const activeTables = tables.filter(t => t.area === area)
   const visibleIndicators = visibleMiniIndicators(activeTables, operations, now, selectedId)
-  return <div className="rt-floor-panel">
+  return <div className="rt-floor-panel" data-tour-target="restaurant-floor-plan">
     <div className="rt-floor-scroll" tabIndex={0} aria-label={`${area} floor plan, scroll horizontally when needed`}>
       <svg className="rt-floor-svg" viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="group" aria-label={`${area} table positions`}>
         <defs><pattern id="rt-floor-grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M 32 0 L 0 0 0 32" stroke="#edf2e9" strokeWidth="1" fill="none" /></pattern></defs>
@@ -156,7 +156,7 @@ export function RestaurantFloorPlan({ tables, operations, now, onSelect, selecte
 }
 export function RestaurantTableCards({ tables, operations, now, onSelect, selectedId }: OverviewProps) {
   if (tables.length === 0) return <div className="rt-empty">No matching tables</div>
-  return <div className="rt-cards">
+  return <div className="rt-cards" data-tour-target="restaurant-table-cards">
     {tables.map(table => {
       const state = tableAvailability(table, operations, now)
       const session = activeSession(operations, table.id)

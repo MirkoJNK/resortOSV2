@@ -1,0 +1,38 @@
+{
+  "status": "Front Desk dashboard integration candidate pending product approval",
+  "baseline": "resortOS_Orders_Ready.zip",
+  "modified": {
+    "src/App.tsx": {
+      "before": "eadc897706c0cb4f9498863b1069bd1ca98d44b17fab26a630e8399f14ffae80",
+      "after": "2dfb5b581ae414c478b38244ed58690851b9f5bf7ac91c22d4d5b490df922d95"
+    },
+    "src/shell/navigation.ts": {
+      "before": "c3d7aeb10fcdfff5d6978f24d6afed1f352a75beec05cd6fb953d6501ea8da37",
+      "after": "2189329a5f605878e79016ff138435db930c9746b165a0ce02e1fda4d7db6a49"
+    },
+    "src/shell/Sidebar.tsx": {
+      "before": "d7711631eb657476fc6ce30fcbae415b46b932be9a5d42c7fac3f1aa91f14a46",
+      "after": "83258ef52f9f070ab95b255d63ae834713853deecd5d86ff0960be24a7dcab69"
+    },
+    "src/shell/Topbar.tsx": {
+      "before": "b473ba7293788559e7eadd53958be4da3c9715e1cfe462dd18a1ca0d041c6997",
+      "after": "c46659c96142de29e0c1a00f2fcf0c294c25be0693894bc781fe2af9dafe66d7"
+    },
+    "src/shell/WorkspaceSwitcher.tsx": {
+      "before": "4db06c7021d836419c504d2255873628c018414bf80c39cc6052a10b8b7ff128",
+      "after": "c51b963105625362fc788c8427f1e3a32b168e38d42d3a054426f4927223b7b2"
+    }
+  },
+  "added": {
+    "src/features/front-desk/FrontDeskDashboard.tsx": "90c376e9ed204e64a5d3603e677c25cd1207742b349cea537f0f0a38cd6073e6",
+    "src/features/front-desk/roomMetrics.ts": "e7d55c3e408c6ac66bb137487facb789cabdcac53f549f9326a2c3a6a2e4fb54"
+  },
+  "protected": [
+    "src/features/dashboard/Dashboard.tsx",
+    "src/features/restaurant/RestaurantDashboard.tsx",
+    "src/features/restaurant-orders/RestaurantOrders.tsx",
+    "src/features/restaurant-tables/RestaurantTables.tsx",
+    "src/features/rooms-manager/model.ts",
+    "public/assets/sidebar-coastal-approved-v058.png"
+  ]
+}

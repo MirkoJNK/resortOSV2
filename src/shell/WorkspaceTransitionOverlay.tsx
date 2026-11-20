@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import type { Department } from './navigation'
+import { publicAsset } from './assets'
 
 type Props = { destination: Department }
 
@@ -49,8 +50,8 @@ export function WorkspaceTransitionOverlay({ destination }: Props) {
       tabIndex={-1}
     >
       <div className="ros-workspace-loader-logo" aria-hidden="true">
-        <img className="ros-workspace-loader-faint" src={`${import.meta.env.BASE_URL}assets/resortos-brand-balanced.svg`} alt="" />
-        <img className="ros-workspace-loader-color" src={`${import.meta.env.BASE_URL}assets/resortos-brand-balanced.svg`} alt="" />
+        <img className="ros-workspace-loader-faint" src={publicAsset('resortos-brand-balanced.svg')} alt="" />
+        <img className="ros-workspace-loader-color" src={publicAsset('resortos-brand-balanced.svg')} alt="" />
       </div>
       <span className="ros-workspace-loader-sr">Opening {names[destination]}</span>
     </div>,

@@ -113,10 +113,29 @@
   align-items: center;
   padding-bottom: 9px;
 }
-.dm-check input {
-  accent-color: #709d4c;
+.dm-form .dm-check input[type='checkbox'],
+.dm-form .dm-choices input[type='checkbox'],
+.dm-setting-panel .dm-check input[type='checkbox'] {
+  appearance: auto;
+  display: inline-block;
+  box-sizing: border-box;
+  flex: 0 0 16px;
   width: 16px;
+  min-width: 16px;
   height: 16px;
+  min-height: 16px;
+  max-height: 16px;
+  padding: 0;
+  margin: 0;
+  border-radius: 3px;
+  accent-color: #709d4c;
+  cursor: pointer;
+}
+.dm-form .dm-check input[type='checkbox']:focus-visible,
+.dm-form .dm-choices input[type='checkbox']:focus-visible,
+.dm-setting-panel .dm-check input[type='checkbox']:focus-visible {
+  outline: 2px solid #719e4c;
+  outline-offset: 3px;
 }
 .dm-hint {
   margin: 0;
@@ -175,14 +194,14 @@
 }
 .dm-form .dm-choices label {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 9px;
   font-size: 12px;
   font-weight: 500;
+  cursor: pointer;
 }
-.dm-choices input {
-  accent-color: #749b4d;
-}
+.dm-form .dm-check { cursor: pointer; }
 .dm-page .rt-dialog-actions {
   margin-top: 8px;
 }
@@ -249,7 +268,6 @@
   display: grid;
   gap: 10px;
 }
-.dm-allocation > strong,
 .dm-elections > strong {
   font-size: 13px;
 }
@@ -261,6 +279,7 @@
   padding: 7px 0;
   border-top: 1px solid #eef2ed;
 }
+.dm-allocation-row:first-child { border-top: 0; padding-top: 0 }
 .dm-allocation-row > div {
   min-width: 0;
   display: grid;

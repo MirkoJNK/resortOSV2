@@ -28,22 +28,24 @@ function flatten(tree) {
 }
 function nodeList(tree,predicate){const out=[];function walk(n){if(Array.isArray(n))return n.forEach(walk);if(!n||typeof n!=='object')return;if(typeof n.type==='function')return walk(n.type(n.props));if(predicate(n))out.push(n);walk(n.props?.children)}walk(tree);return out}
 const restaurant=()=>load('src/features/restaurant/RestaurantDashboard.tsx',{
+ react:{useState:v=>[v,()=>{}],useRef:v=>({current:v}),useEffect:()=>{}},
  '../../components/Ui':{StatIcon:({icon:Icon})=>jsx('span',{children:jsx(Icon,{})})},
  './restaurant-dashboard.css':{}
-})
-const renderRestaurant=()=>{const {RestaurantDashboard}=restaurant();return RestaurantDashboard()}
+},{window:{matchMedia:()=>({matches:true})}})
+const renderRestaurant=()=>{const {RestaurantDashboard}=restaurant();return RestaurantDashboard({go:()=>{}})}
 
-test('Restaurant has exactly four entries; only Dashboard is available',()=>{
+test('Restaurant has four entries; Dashboard and authorized Tables are available',()=>{
  const {restaurantNav}=nav();assert.deepEqual([...restaurantNav.map(x=>x.label)],['Dashboard','Tables','Orders','Support & Issues']);
- assert.deepEqual([...restaurantNav.map(x=>x.enabled)],[true,false,false,false])
+ assert.deepEqual([...restaurantNav.map(x=>x.enabled)],[true,true,true,false])
 })
 test('The original four Admin navigation labels and order are unchanged',()=>{
  const {primaryNav}=nav();assert.deepEqual([...primaryNav.map(x=>x.label)],['Dashboard','Support & Issues','Audit Log','System Management'])
 })
 test('Restaurant URL selects Restaurant without changing Area or Admin URLs',()=>{
- for (const hash of ['#/restaurant/dashboard','#restaurant/dashboard','#/restaurant/orders','#/restaurant/unknown']) {
+ for (const hash of ['#/restaurant/dashboard','#restaurant/dashboard','#/restaurant/unknown']) {
   assert.equal(withHash(hash).routeFromHash(),'restaurant-dashboard',hash)
  }
+ assert.equal(withHash('#/restaurant/orders').routeFromHash(),'restaurant-orders')
  for (const [hash,area] of [['#dashboard','dashboard'],['#systems/tables','tables'],['#systems/rooms','rooms'],['#systems/services','services'],['#support','support'],['#audit','audit']]) assert.equal(withHash(hash).routeFromHash(),area)
 })
 test('Route generator preserves existing Admin paths',()=>{
@@ -75,10 +77,20 @@ test('No fabricated Restaurant counts, amounts, chart data or Admin records',()=
  for(const fragment of ['12 urgent','₱0.00','Active employees','Pending approvals','Recent audit events','Role distribution','No unresolved tickets']) assert.equal(text.includes(fragment),false,fragment)
  assert.equal(nodeList(tree,n=>n.props?.className==='restaurant-data-unavailable').length,6)
 })
-test('All three Restaurant shortcuts are real disabled controls, never Admin links',()=>{
+test('Tables shortcut is enabled with Admin-style navigation; unfinished shortcuts stay disabled',()=>{
  const tree=renderRestaurant(),buttons=nodeList(tree,n=>n.type==='button')
- assert.equal(buttons.filter(b=>b.props?.disabled).length,5)
- assert.ok(buttons.every(b=>b.props?.disabled && !b.props?.onClick))
+ const shortcuts=nodeList(tree,n=>n.props?.className==='system-actions navigation-shortcuts')[0]
+ const entries=nodeList(shortcuts,n=>n.type==='button')
+ assert.equal(entries.length,3)
+ assert.equal(entries[0].props.disabled,false)
+ assert.equal(typeof entries[0].props.onClick,'function')
+ const destinations=[]; const {RestaurantDashboard}=restaurant()
+ const live=RestaurantDashboard({go:area=>destinations.push(area)})
+ nodeList(nodeList(live,n=>n.props?.className==='system-actions navigation-shortcuts')[0],n=>n.type==='button')[0].props.onClick()
+ assert.deepEqual(destinations,['restaurant-tables'])
+ assert.equal(entries[1].props.disabled,false)
+ assert.equal(entries[2].props.disabled,true)
+ assert.equal(buttons.filter(b=>b.props?.disabled).length,3)
  const text=flatten(tree);for(const label of ['Tables','Orders','Support & Issues']) assert.ok(text.includes(label))
 })
 test('Restaurant Dashboard preserves eight established motion stages and no water animation',()=>{
@@ -92,7 +104,7 @@ test('Topbar preserves approved search/bell/help and presents a display-only ini
  const source=read('src/shell/Topbar.tsx')
  for(const text of ['className="global-search"','className="header-circle notification"','Help unavailable','ros-profile-identity','ros-profile-avatar','Demo Administrator','Demo Restaurant']) assert.ok(source.includes(text),text)
  assert.doesNotMatch(source,/onDepartmentChange|accountOpen|aria-haspopup="menu"/)
- const {Topbar}=load('src/shell/Topbar.tsx')
+ const {Topbar}=load('src/shell/Topbar.tsx', {'./WorkspaceSwitcher': {WorkspaceSwitcher: () => jsx('span')}})
  for(const [department,name,initials] of [['admin','Demo Administrator','DA'],['restaurant','Demo Restaurant','DR']]) {
   const tree=Topbar({department,onSearch(){},onMenu(){},menuOpen:false})
   assert.equal(flatten(nodeList(tree,n=>n.props?.className==='ros-profile-avatar')[0]),initials)
@@ -100,11 +112,11 @@ test('Topbar preserves approved search/bell/help and presents a display-only ini
  }
 })
 test('Restaurant global search contains only enabled Restaurant pages',()=>{
- const {restaurantNav}=nav();const names=restaurantNav.filter(x=>x.enabled).map(x=>x.label);assert.deepEqual([...names],['Dashboard']);assert.equal(read('src/App.tsx').includes('restaurantNav.filter(item => item.enabled)'),true)
+ const {restaurantNav}=nav();const names=restaurantNav.filter(x=>x.enabled).map(x=>x.label);assert.deepEqual([...names],['Dashboard','Tables','Orders']);assert.equal(read('src/App.tsx').includes('restaurantNav.filter(item => item.enabled)'),true)
 })
 test('App retains all three existing unsaved-edit guards and routes account switching through go',()=>{
  const src=read('src/App.tsx');for (const a of ['tablesDirty','roomsDirty','servicesDirty','Discard unsaved table changes?','Discard unsaved room changes?','Discard unsaved service changes?','const switchDepartment','hashForRoute(a)'])assert.ok(src.includes(a),a)
- assert.match(src,/case 'restaurant-dashboard':\s*return <RestaurantDashboard \/>/)
+ assert.match(src,/case 'restaurant-dashboard':\s*return <RestaurantDashboard go=\{go\} \/>/)
 })
 test('Frozen Admin Dashboard and existing feature folders have exact baseline bytes',()=>{
  const dir='src/features';for(const feature of ['dashboard','rooms-manager','tables-manager','service-catalog','system-management']){
@@ -115,7 +127,19 @@ test('Frozen Admin Dashboard and existing feature folders have exact baseline by
  const hotfix=JSON.parse(read('GLOBAL_UI_HOTFIX_APPROVED.json')).approved_source
  for(const [file,hash] of Object.entries(approved)) {
    const current=crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')
-   assert.equal(current,hotfix[file]?.after ?? hash,file)
+   const successor = JSON.parse(read('MENU_CATEGORIES_APPROVED.json')).changed[file]
+   if (successor) assert.equal(successor.before, hotfix[file]?.after ?? hash, `previous release pin: ${file}`)
+   const itemSuccessor = JSON.parse(read('MENU_MANAGEMENT_CANDIDATE_INTEGRITY.json')).modified[file]
+   const tablesSuccessor = JSON.parse(read('RESTAURANT_TABLES_PRODUCTION_INTEGRITY.json')).modified[file]
+   if (itemSuccessor) assert.equal(itemSuccessor.before,successor?.after ?? hotfix[file]?.after ?? hash,`Menu Management predecessor: ${file}`)
+   if (tablesSuccessor) assert.equal(tablesSuccessor.before,itemSuccessor?.after ?? successor?.after ?? hotfix[file]?.after ?? hash,`Restaurant Tables predecessor: ${file}`)
+   const approved=tablesSuccessor?.after ?? itemSuccessor?.after ?? successor?.after ?? hotfix[file]?.after ?? hash
+   const revision=JSON.parse(read('RESTAURANT_TABLES_UI_HOTFIX_INTEGRITY.json')).changes[file]
+   if (revision) assert.equal(revision.before,approved,`UI hotfix predecessor: ${file}`)
+   const previous = revision?.after ?? approved
+   const newRevision = JSON.parse(read('RESTAURANT_ORDERS_INTEGRATION_INTEGRITY.json')).changes[file]
+   if (newRevision) assert.equal(newRevision.before,previous,`Orders predecessor: ${file}`)
+   assert.equal(current,require('../scripts/front-desk-successor.cjs').successorHash(file,newRevision?.after ?? previous),file)
  }
 })
 
@@ -147,11 +171,12 @@ test('workspace selector starts on Administration and is distinct from profile i
  assert.ok(flatten(h.trigger()).includes('Administration'))
  assert.equal(h.trigger().props['aria-expanded'],false)
 })
-test('workspace dropdown opens with exactly two accessible choices and selected state',()=>{
+test('workspace dropdown opens with exactly three accessible choices and selected state',()=>{
  const h=workspaceHarness();h.trigger().props.onClick();h.render()
- assert.ok(h.menu());assert.equal(h.choices().length,2)
+ assert.ok(h.menu());assert.equal(h.choices().length,3)
  assert.equal(h.choices()[0].props['aria-checked'],true)
  assert.equal(h.choices()[1].props['aria-checked'],false)
+ assert.equal(h.choices()[2].props['aria-checked'],false)
 })
 test('selecting Restaurant emits one route-switch request and updates selected workspace from props',()=>{
  const h=workspaceHarness();h.trigger().props.onClick();h.render();h.choices()[1].props.onClick();h.render()

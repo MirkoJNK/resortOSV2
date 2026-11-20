@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Dispatch, KeyboardEvent, ReactNode, SetStateAction } from 'react'
 import {
   Paperclip,
@@ -17,18 +17,28 @@ import {
   ArrowRight
 } from 'lucide-react'
 import type { TicketPriority } from '../domain/types'
+import type { Employee } from '../features/employees/model'
+import {displayRecordedEmployeeName,SUPER_ADMIN_ID} from '../features/employees/model'
+import { DialogFrame } from '../features/restaurant-tables/DialogFrame'
+import { canSeeTicket, relativeAge } from '../features/support/tickets'
+import type { SupportScope } from '../features/support/tickets'
 import {
   filterSupportTickets,
   initialSupportFilters,
   visibleSupportTicket
 } from '../domain/supportNavigation'
 import type { SupportNavigationFilters } from '../domain/supportNavigation'
+import { useDiscardConfirmation } from '../shared/useDiscardConfirmation'
+import { recordSupportAction } from '../features/audit-log/storage'
+import { readSupportAttachment, validateAttachment } from '../features/support/attachments'
+import type { SupportAttachment } from '../features/support/attachments'
+import '../styles/support-employee.css'
 
 /** Stage 4.4: local demonstration of Admin conversations and structured ticket activity.
  * Sample tickets are fictional; new events reflect actual interactions in this page session.
  * Neither messages nor activities are persisted, authenticated or delivered externally.
  */
-type SampleMessage = {
+export type SampleMessage = {
   author: string
   initials: string
   time: string
@@ -37,12 +47,14 @@ type SampleMessage = {
   role?: 'Admin'
   sentAt?: string
   id?: string
+  authorId?: string | null
+  attachments?: SupportAttachment[]
 }
-type SupportTicketStatus = 'Open' | 'In progress' | 'Closed'
+export type SupportTicketStatus = 'Open' | 'In progress' | 'Closed'
 export type SupportOriginDepartment = 'Front Desk' | 'Restaurant'
 export const supportOriginDepartments = ['Front Desk', 'Restaurant'] as const
 export const isSupportOriginDepartment = (value: string): value is SupportOriginDepartment => supportOriginDepartments.some(department => department === value)
-type SampleActivityEvent = {
+export type SampleActivityEvent = {
   id: string
   kind: 'status' | 'assignment' | 'urgency' | 'created'
   title: string
@@ -53,7 +65,7 @@ type SampleActivityEvent = {
   recordedAt?: string
   ticketId: string
   source: 'sample-record' | 'session-action'
-  actor?: { id: string; name: string; role: 'Admin' }
+  actor?: { id: string; name: string; role: string }
 }
 export type SampleTicket = {
   id: string
@@ -70,8 +82,13 @@ export type SampleTicket = {
   description: string
   messages: SampleMessage[]
   activityChanges?: SampleActivityEvent[]
+  creatorId?: string | null
+  createdAt?: string
+  updatedAt?: string
+  articleId?: string
+  simulated?: boolean
 }
-type SupportChange =
+export type SupportChange =
   | { field: 'status'; value: SupportTicketStatus }
   | { field: 'priority'; value: TicketPriority }
   | { field: 'assignee'; value: string }
@@ -91,7 +108,7 @@ const assignedTeamOptions = [
   'Security',
   'Administration'
 ]
-const demoActor = 'Demo Administrator'
+const demoActor = 'Administrator'
 /** A local-only reply. Never send as an external team or an employee. */
 function addAdminReply(tickets: SampleTicket[], ticketId: string, draft: string, now: Date = new Date()): SampleTicket[] {
   const body = draft.trim()
@@ -103,7 +120,7 @@ function addAdminReply(tickets: SampleTicket[], ticketId: string, draft: string,
     const reply: SampleMessage = {
       id: `${ticket.id}-${sentAt}-${ticket.messages.length}`,
       author: demoActor,
-      initials: 'DA',
+      initials: 'AD',
       role: 'Admin',
       side: 'team',
       text: body,
@@ -144,7 +161,7 @@ export function updateSupportTicket(tickets: SampleTicket[], ticketId: string, c
       time,
       recordedAt: at,
       actor: { id: 'demo-administrator', name: demoActor, role: 'Admin' },
-      byline: `${verb} by ${demoActor} · Admin (local demo)`
+      byline: `${verb} by ${demoActor} · Admin`
     }
     return {
       ...ticket,
@@ -165,8 +182,8 @@ const firstConversation: SampleMessage[] = [
     text: "The key card reader for room 302 isn't responding. I tested two replacement cards but neither opened the door. Could maintenance check the reader?"
   },
   {
-    author: 'Demo Administrator',
-    initials: 'DA',
+    author: 'Administrator',
+    initials: 'AD',
     role: 'Admin',
     time: '10m ago',
     side: 'team',
@@ -538,26 +555,28 @@ function Priority({ value }: { value: TicketPriority }) {
   </span>
 }
 function SupportHeader() {
-  return <div className="section-header support-standard-header">
+  return <div className="section-header support-standard-header ros-admin-heading">
     <div>
       <h1>Support &amp; Issues</h1>
     </div>
   </div>
 }
-function SupportInbox({ activeId, onSelect, filters, onFiltersChange, filtered, tickets }: {
+function SupportInbox({ activeId, onSelect, filters, onFiltersChange, filtered, tickets, employee, onNewTicket }: {
   activeId: string
   onSelect: (v: string) => void
   filters: SupportNavigationFilters
   onFiltersChange: (filters: SupportNavigationFilters) => void
   filtered: SampleTicket[]
   tickets: SampleTicket[]
+  employee: boolean
+  onNewTicket?: () => void
 }) {
   const { status, query, department, priority } = filters
   const [showFilters, setShowFilters] = useState(true)
   const updateFilters = (patch: Partial<SupportNavigationFilters>) => onFiltersChange({ ...filters, ...patch })
   const resetFilters = () => onFiltersChange({ ...initialSupportFilters })
   const hasFilters = Boolean(query.trim() || department !== 'All departments' || priority !== 'All priorities')
-  return <section className="support-inbox" aria-label="Employee support ticket inbox">
+  return <section className="support-inbox" aria-label="Employee support ticket inbox" data-tour-target="support-ticket-inbox">
     <div className="support-search-row">
       <label className="support-ticket-search">
         <Search size={18} />
@@ -578,6 +597,7 @@ function SupportInbox({ activeId, onSelect, filters, onFiltersChange, filtered, 
         onClick={() => setShowFilters(x => !x)}>
         <SlidersHorizontal size={18} />
       </button>
+      {employee && <button type="button" className="support-new-ticket" onClick={onNewTicket}>New Ticket</button>}
     </div>
     <div className="support-filter-tabs" aria-label="Filter by ticket status">
       {statusOptions.map(s => <button
@@ -585,6 +605,7 @@ function SupportInbox({ activeId, onSelect, filters, onFiltersChange, filtered, 
         type="button"
         className={status === s ? 'selected' : ''}
         aria-pressed={status === s}
+        aria-label={`${s}, ${tickets.filter(t => t.status === s).length} tickets`}
         onClick={() => updateFilters({ status: s })}>
         {s}
         <span>
@@ -596,7 +617,7 @@ function SupportInbox({ activeId, onSelect, filters, onFiltersChange, filtered, 
       id="support-advanced-filters"
       className={`support-filter-row ${showFilters ? '' : 'filters-hidden'}`}
       hidden={!showFilters}>
-      <label>
+      {!employee && <label>
         <span className="sr-only">Department</span>
         <select
           value={department}
@@ -608,7 +629,7 @@ function SupportInbox({ activeId, onSelect, filters, onFiltersChange, filtered, 
           </option>)}
         </select>
         <ChevronDown size={15} />
-      </label>
+      </label>}
       <label>
         <span className="sr-only">Priority</span>
         <select
@@ -662,10 +683,44 @@ function SupportInbox({ activeId, onSelect, filters, onFiltersChange, filtered, 
     </div>
   </section>
 }
-function SupportConversation({ ticket, animateMessageId, onMessageEntranceEnd }: {
+function SupportAttachmentLink({ticketId,messageId,attachment,actorId}: {
+  ticketId:string;messageId:string;attachment:SupportAttachment;actorId?:string
+}) {
+  const [preview,setPreview]=useState('')
+  const [error,setError]=useState('')
+  useEffect(()=>{
+    let current=true,objectUrl=''
+    if(actorId&&attachment.mime.startsWith('image/')){
+      readSupportAttachment(ticketId,messageId,attachment.id,actorId).then(file=>{
+        if(current){objectUrl=URL.createObjectURL(file.blob);setPreview(objectUrl)}
+      }).catch(()=>{if(current)setError('Preview unavailable')})
+    }
+    return ()=>{current=false;if(objectUrl)URL.revokeObjectURL(objectUrl)}
+  },[ticketId,messageId,attachment.id,attachment.mime,actorId])
+  const download=async()=>{
+    if(!actorId){setError('Attachments require an active employee');return}
+    try{
+      const file=await readSupportAttachment(ticketId,messageId,attachment.id,actorId)
+      const href=URL.createObjectURL(file.blob)
+      const link=document.createElement('a');link.href=href;link.download=file.name
+      document.body.append(link);link.click();link.remove()
+      window.setTimeout(()=>URL.revokeObjectURL(href),1000)
+      setError('')
+    }catch(e){setError(e instanceof Error?e.message:'Attachment is unavailable')}
+  }
+  return <div className="support-file" key={attachment.id}>
+    {preview&&<img className="support-file-image" src={preview} alt={`Attached ${attachment.name}`} />}
+    <button type="button" onClick={download} aria-label={`Download ${attachment.name}`}>
+      <FileText size={16} aria-hidden="true"/>{attachment.name} <small>({Math.ceil(attachment.size/1024)} KB)</small>
+    </button>
+    {error&&<small role="alert">{error}</small>}
+  </div>
+}
+function SupportConversation({ ticket, animateMessageId, onMessageEntranceEnd, actorId }: {
   ticket: SampleTicket
   animateMessageId?: string
   onMessageEntranceEnd?: () => void
+  actorId?: string
 }) {
   return <div className="support-conversation">
     {ticket.messages.length === 0 ? <div className="support-no-messages">No conversation yet</div> : ticket.messages.map((m, i) => <div
@@ -675,12 +730,12 @@ function SupportConversation({ ticket, animateMessageId, onMessageEntranceEnd }:
         if (event.target === event.currentTarget) onMessageEntranceEnd?.()
       } : undefined}>
       <span className="support-message-avatar">
-        {m.initials}
+        {m.authorId===SUPER_ADMIN_ID?'A':m.initials}
       </span>
       <div className="support-message-body">
         <div className="support-message-meta">
           <strong>
-            {m.author}
+            {displayRecordedEmployeeName(m.authorId,m.author)}
           </strong>
           {m.role && <span className="support-message-role">
             {m.role}
@@ -691,9 +746,9 @@ function SupportConversation({ ticket, animateMessageId, onMessageEntranceEnd }:
             {m.time}
           </time>
         </div>
-        <p>
-          {m.text}
-        </p>
+        {m.text&&<p>{m.text}</p>}
+        {m.attachments?.map(a=><SupportAttachmentLink key={a.id} ticketId={ticket.id}
+          messageId={m.id??''} attachment={a} actorId={actorId}/>)}
       </div>
     </div>)}
   </div>
@@ -763,11 +818,12 @@ function SupportPicker({ id, label, value, options, openEditor, setOpenEditor, o
     </div>}
   </div>
 }
-function SupportTicketDetails({ ticket, onChange, openEditor, setOpenEditor }: {
+function SupportTicketDetails({ ticket, onChange, openEditor, setOpenEditor, canManage }: {
   ticket: SampleTicket
   onChange: (change: SupportChange) => void
   openEditor: SupportEditorKey | null
   setOpenEditor: (id: SupportEditorKey | null) => void
+  canManage: boolean
 }) {
   const initials = ticket.requester.split(/\s+/).slice(0, 2).map(part => part[0] ?? '').join('').toUpperCase()
   const assignmentEmpty = ticket.assignee === 'Unassigned'
@@ -796,7 +852,7 @@ function SupportTicketDetails({ ticket, onChange, openEditor, setOpenEditor }: {
         <div className="support-detail-info-row">
           <dt>Assigned to</dt>
           <dd>
-            <SupportPicker
+            {canManage ? <SupportPicker
               id="details-assignee"
               label="Change assigned team"
               value={ticket.assignee}
@@ -819,7 +875,7 @@ function SupportTicketDetails({ ticket, onChange, openEditor, setOpenEditor }: {
                   {assignmentEmpty ? 'Awaiting assignment' : 'Responsible team or employee'}
                 </small>
               </span>
-            </SupportPicker>
+            </SupportPicker> : <span className="support-readonly-control"><span className="support-detail-avatar support-detail-avatar-team" aria-hidden="true"><Users size={17}/></span><span className="support-detail-person"><strong>{ticket.assignee}</strong><small>{assignmentEmpty ? 'Awaiting assignment' : 'Responsible team or employee'}</small></span></span>}
           </dd>
         </div>
       </dl>
@@ -865,7 +921,7 @@ function SupportTicketDetails({ ticket, onChange, openEditor, setOpenEditor }: {
         <div className="support-detail-info-row">
           <dt>Urgency</dt>
           <dd className="support-detail-state">
-            <SupportPicker
+            {canManage ? <SupportPicker
               id="details-urgency"
               label="Change ticket urgency"
               value={ticket.priority}
@@ -875,7 +931,7 @@ function SupportTicketDetails({ ticket, onChange, openEditor, setOpenEditor }: {
               align="above"
               onChoose={value => onChange({ field: 'priority', value: value as TicketPriority })}>
               <Priority value={ticket.priority} />
-            </SupportPicker>
+            </SupportPicker> : <Priority value={ticket.priority} />}
             <small>
               {ticket.priority === 'Urgent' ? 'Requires immediate attention' : ticket.priority === 'High' ? 'High-priority request' : ticket.priority === 'Medium' ? 'Standard response priority' : 'Low-priority request'}
             </small>
@@ -884,7 +940,7 @@ function SupportTicketDetails({ ticket, onChange, openEditor, setOpenEditor }: {
         <div className="support-detail-info-row">
           <dt>Status</dt>
           <dd className="support-detail-state">
-            <SupportPicker
+            {canManage ? <SupportPicker
               id="details-status"
               label="Change ticket status in Details"
               value={ticket.status}
@@ -896,7 +952,7 @@ function SupportTicketDetails({ ticket, onChange, openEditor, setOpenEditor }: {
               <span className={`support-detail-status status-${ticket.status.toLowerCase().replace(/\s+/g, '-')}`}>
                 {ticket.status}
               </span>
-            </SupportPicker>
+            </SupportPicker> : <span className={`support-detail-status status-${ticket.status.toLowerCase().replace(/\s+/g, '-')}`}>{ticket.status}</span>}
             <small>
               {ticket.status === 'Open' ? 'Awaiting action' : ticket.status === 'In progress' ? 'Work is underway' : 'Ticket completed'}
             </small>
@@ -946,6 +1002,7 @@ function SupportTicketDetails({ ticket, onChange, openEditor, setOpenEditor }: {
  * assignment or urgency changes from the current field values.
  */
 function sampleActivityFor(ticket: SampleTicket): SampleActivityEvent[] {
+  if (ticket.activityChanges?.some(event => event.kind === 'created')) return []
   return [{
     id: `${ticket.id}-created`,
     ticketId: ticket.id,
@@ -953,7 +1010,7 @@ function sampleActivityFor(ticket: SampleTicket): SampleActivityEvent[] {
     kind: 'created',
     title: 'Ticket created',
     time: ticket.created,
-    byline: `Created by ${ticket.requester} · ${ticket.department} (sample data)`
+    byline: ticket.simulated ? `Demonstration ticket reported by ${ticket.requester}` : `Created by ${ticket.requester} · ${ticket.department}`
   }]
 }
 function SupportActivity({ ticket, animateEventId, onActivityEntranceEnd }: {
@@ -1000,31 +1057,44 @@ function SupportActivity({ ticket, animateEventId, onActivityEntranceEnd }: {
               {event.next}
             </span>
           </div>}
-          <p>{event.byline}</p>
+          <p>{event.actor?.id===SUPER_ADMIN_ID?
+            event.byline.replace(event.actor.name,'Admin'):event.byline}</p>
         </div>
       </li>
     })}
   </ol>
 }
 
-function SupportSelectedTicket({ ticket, onChange, onSendMessage, newMessageId, newActivityId, onMessageEntranceEnd, onActivityEntranceEnd }: {
+function SupportSelectedTicket({ ticket, onChange, onSendMessage, newMessageId, newActivityId, onMessageEntranceEnd, onActivityEntranceEnd, onDirtyChange, onBusyChange, discardActivation, canManage, saveError, actorId }: {
   ticket: SampleTicket
   onChange: (change: SupportChange) => void
-  onSendMessage: (body: string) => void
+  onSendMessage: (body: string,files:File[]) => Promise<boolean>
   newMessageId?: string
   newActivityId?: string
   onMessageEntranceEnd?: () => void
   onActivityEntranceEnd?: () => void
+  onDirtyChange?: (dirty: boolean) => void
+  onBusyChange?: (busy:boolean)=>void
+  discardActivation?: number
+  canManage: boolean
+  saveError?: string
+  actorId?: string
 }) {
   const [tab, setTab] = useState<DetailTab>('Conversation')
   const [message, setMessage] = useState('')
+  const [files,setFiles]=useState<File[]>([])
+  const [sending,setSending]=useState(false)
+  const fileInput=useRef<HTMLInputElement>(null)
+  const sendingRef = useRef(false)
+  useEffect(() => {onDirtyChange?.(Boolean(message.length||files.length)); return () => onDirtyChange?.(false)}, [message,files,onDirtyChange])
+  useEffect(()=>{onBusyChange?.(sending);return()=>onBusyChange?.(false)},[sending,onBusyChange])
   const [notice, setNotice] = useState('')
   const [openEditor, setOpenEditor] = useState<SupportEditorKey | null>(null)
   // Keep the chosen information tab when switching tickets, but never carry
   // an unsent reply or old notification over to another employee's ticket.
-  useEffect(() => { setMessage(''); setNotice(''); setOpenEditor(null) }, [ticket.id])
+  useEffect(() => { setMessage('');setFiles([]); setNotice(''); setOpenEditor(null) }, [ticket.id,discardActivation])
   // A Closed ticket is always read-only, including when it closes mid-draft.
-  useEffect(() => { if (ticket.status === 'Closed') { setMessage(''); setNotice('') } }, [ticket.status])
+  useEffect(() => { if (ticket.status === 'Closed') { setMessage('');setFiles([]); setNotice('') } }, [ticket.status])
   // Keep the newest reply in view inside the existing conversation panel.
   useEffect(() => {
     if (tab !== 'Conversation' || typeof document === 'undefined') return
@@ -1032,11 +1102,22 @@ function SupportSelectedTicket({ ticket, onChange, onSendMessage, newMessageId, 
     if (panel) panel.scrollTop = panel.scrollHeight
   }, [ticket.id, ticket.messages.length, tab])
   const closed = ticket.status === 'Closed'
-  const submitReply = () => {
-    if (closed || !message.trim()) return
-    onSendMessage(message.trim())
-    setMessage('')
-    setNotice('')
+  const submitReply = async () => {
+    if (closed || (!message.trim()&&!files.length) || sendingRef.current) return
+    sendingRef.current=true
+    setSending(true)
+    try{
+      if(await onSendMessage(message.trim(),files)){setMessage('');setFiles([]);setNotice('');if(fileInput.current)fileInput.current.value=''}
+    }finally{sendingRef.current=false;setSending(false)}
+  }
+  const pickFiles=async(event:React.ChangeEvent<HTMLInputElement>)=>{
+    const incoming=Array.from(event.target.files??[])
+    event.target.value=''
+    if(files.length+incoming.length>3){setNotice('Maximum three attachments per message');return}
+    try{
+      await Promise.all(incoming.map(validateAttachment))
+      setFiles(previous=>[...previous,...incoming]);setNotice('')
+    }catch(error){setNotice(error instanceof Error?error.message:'Invalid attachment')}
   }
   useEffect(() => {
     if (!openEditor || typeof document === 'undefined') return
@@ -1080,7 +1161,7 @@ function SupportSelectedTicket({ ticket, onChange, onSendMessage, newMessageId, 
         <Priority value={ticket.priority} />
       </div>
       <div className={`support-header-status status-${ticket.status.toLowerCase().replace(/\s+/g, '-')}`}>
-        <SupportPicker
+        {canManage ? <SupportPicker
           id="header-status"
           label="Change ticket status in header"
           value={ticket.status}
@@ -1091,7 +1172,7 @@ function SupportSelectedTicket({ ticket, onChange, onSendMessage, newMessageId, 
           <span>
             {ticket.status}
           </span>
-        </SupportPicker>
+        </SupportPicker> : <span className="support-readonly-status">{ticket.status}</span>}
       </div>
       <h2>
         {ticket.subject}
@@ -1133,29 +1214,39 @@ function SupportSelectedTicket({ ticket, onChange, onSendMessage, newMessageId, 
       className="support-tab-content">
       {tab === 'Conversation' ? <SupportConversation
         ticket={ticket}
+        actorId={actorId}
         animateMessageId={newMessageId}
         onMessageEntranceEnd={onMessageEntranceEnd} /> : tab === 'Details' ? <SupportTicketDetails
           ticket={ticket}
           onChange={onChange}
+          canManage={canManage}
           openEditor={openEditor}
           setOpenEditor={setOpenEditor} /> : <SupportActivity
         ticket={ticket}
         animateEventId={newActivityId}
         onActivityEntranceEnd={onActivityEntranceEnd} />}
     </div>
+    {tab === 'Conversation' && files.length>0&&<div className="support-draft-files" aria-label="Selected attachments">
+      {files.map((file,i)=><span key={`${file.name}-${i}`}><FileText size={14}/>{file.name}
+        <small>{Math.ceil(file.size/1024)} KB</small>
+        <button type="button" disabled={sending} aria-label={`Remove ${file.name}`} onClick={()=>setFiles(current=>current.filter((_,index)=>index!==i))}><X size={14}/></button>
+      </span>)}
+    </div>}
     {tab === 'Conversation' && <div className="support-composer">
+      <input ref={fileInput} type="file" hidden multiple accept=".jpg,.jpeg,.png,.webp,.pdf,.docx,.xlsx,.txt"
+        onChange={pickFiles} aria-label="Choose attachments" />
       <button
         type="button"
-        disabled={closed}
-        title={closed ? 'Reopen this ticket to reply' : 'Attachments will be enabled during workflow integration'}
+        disabled={closed||sending}
+        title={closed ? 'Reopen this ticket to reply' : 'Attach files (up to 3, 10 MB each)'}
         aria-label="Attach file"
-        onClick={() => setNotice('Attachments are part of a later workflow stage')}>
+        onClick={() => fileInput.current?.click()}>
         <Paperclip size={18} />
       </button>
       <input
-        aria-label="Message to employee"
+        aria-label={canManage?'Message to employee':'Message to support'}
         placeholder={closed ? 'Reopen ticket to reply' : 'Write a reply'}
-        disabled={closed}
+        disabled={closed||sending}
         value={message}
         onChange={e => setMessage(e.target.value)}
         onKeyDown={e => {
@@ -1167,8 +1258,8 @@ function SupportSelectedTicket({ ticket, onChange, onSendMessage, newMessageId, 
       <button
         type="button"
         className="support-send"
-        disabled={closed || !message.trim()}
-        onClick={submitReply}>Send</button>
+        disabled={closed||sending||(!message.trim()&&!files.length)}
+        onClick={submitReply}>{sending?'Sending…':'Send'}</button>
     </div>}
     {tab === 'Conversation' && notice && <div
       role="status"
@@ -1176,12 +1267,40 @@ function SupportSelectedTicket({ ticket, onChange, onSendMessage, newMessageId, 
       onClick={() => setNotice('')}>
       {notice}
     </div>}
+    {saveError && <p className="support-save-error" role="alert">{saveError}</p>}
   </section>
 }
-export function SupportWorkspace({ tickets: sharedTickets, onTicketsChange }: {
+export function SupportWorkspace({ tickets: sharedTickets, onTicketsChange, onDirtyChange, scope = {kind:'all'},
+  actor, canCreate = false, creationArticleId, openTicketId, onCreateTicket, onReplyTicket, onManageTicket,onBusyChange }: {
   tickets?: SampleTicket[]
   onTicketsChange?: Dispatch<SetStateAction<SampleTicket[]>>
+  onDirtyChange?: (dirty: boolean) => void
+  onBusyChange?: (busy:boolean)=>void
+  scope?: SupportScope
+  actor?: Employee
+  canCreate?: boolean
+  creationArticleId?: string | null
+  openTicketId?: string|null
+  onCreateTicket?: (input:{subject:string;description:string;priority:string;articleId?:string})=>string|null
+  onReplyTicket?: (id:string,body:string,files:File[])=>Promise<boolean>
+  onManageTicket?: (id:string,change:SupportChange)=>boolean
 } = {}) {
+  const {requestDiscard,discardDialog} = useDiscardConfirmation()
+  const [replyDirty, setReplyDirty] = useState(false)
+  const [replySending,setReplySending]=useState(false)
+  const [replyDiscardActivation, setReplyDiscardActivation] = useState(0)
+  const [newTicketOpen,setNewTicketOpen] = useState(Boolean(creationArticleId))
+  const [articleContext,setArticleContext] = useState(creationArticleId??null)
+  const [subject,setSubject] = useState('')
+  const [description,setDescription] = useState('')
+  const [priority,setPriority] = useState<TicketPriority>('Medium')
+  const [formError,setFormError] = useState('')
+  const [saveError,setSaveError] = useState('')
+  const [creating,setCreating] = useState(false)
+  useEffect(()=>{onBusyChange?.(creating||replySending);return()=>onBusyChange?.(false)},[creating,replySending,onBusyChange])
+  const creatingLock = useRef(false)
+  const ticketDirty = newTicketOpen && Boolean(subject.length || description.length || priority !== 'Medium')
+  useEffect(() => {onDirtyChange?.(replyDirty || ticketDirty);return () => onDirtyChange?.(false)}, [replyDirty,ticketDirty,onDirtyChange])
   // Standalone QA rendering uses the same fixtures; the actual app is controlled by App.
   const [localTickets, setLocalTickets] = useState<SampleTicket[]>(createSupportTickets)
   const tickets = sharedTickets ?? localTickets
@@ -1195,32 +1314,79 @@ export function SupportWorkspace({ tickets: sharedTickets, onTicketsChange }: {
   // demo messages and historical Activity entries never receive entrance motion.
   const [newMessage, setNewMessage] = useState<{ ticketId: string; id: string } | null>(null)
   const [newActivity, setNewActivity] = useState<{ ticketId: string; id: string } | null>(null)
-  const filtered = useMemo(() => filterSupportTickets(tickets, filters), [tickets, filters])
-  const ticket = (retainedTicketId ? tickets.find(t => t.id === retainedTicketId) : undefined) ?? visibleSupportTicket(filtered, activeId)
+  const allowed = useMemo(() => tickets.filter(t=>canSeeTicket(scope,t)).map(t=>({...t,
+    age:relativeAge(t.updatedAt,t.age),updated:relativeAge(t.updatedAt,t.updated),
+    created:relativeAge(t.createdAt,t.created)})), [tickets,scope.kind,scope.kind==='department'?scope.departments.join(','):''])
+  const filtered = useMemo(() => filterSupportTickets(allowed, filters), [allowed, filters])
+  useEffect(()=>{
+    if(openTicketId&&allowed.some(item=>item.id===openTicketId)){
+      setRetainedTicketId(openTicketId);setActiveId(openTicketId)
+    }
+  },[openTicketId])
+  const ticket = (retainedTicketId ? allowed.find(t => t.id === retainedTicketId) : undefined) ?? visibleSupportTicket(filtered, activeId)
+  const administrative = scope.kind==='all'
   const onChange = (change: SupportChange) => {
-    if (!ticket) return
+    if (!ticket || !administrative) return
     if (ticket[change.field] === change.value) return
+    setSaveError('')
+    if (onManageTicket && !onManageTicket(ticket.id,change)) {setSaveError('Ticket could not be updated. Review the latest ticket state');return}
     if (change.field === 'status') setRetainedTicketId(ticket.id)
-    setNewActivity({ ticketId: ticket.id, id: `${ticket.id}-action-${(ticket.activityChanges?.length ?? 0) + 1}` })
+    if (!onManageTicket) setNewActivity({ ticketId: ticket.id, id: `${ticket.id}-action-${(ticket.activityChanges?.length ?? 0) + 1}` })
     const now = new Date()
-    setTickets(current => updateSupportTicket(current, ticket.id, change, now))
+    if (!onManageTicket) setTickets(current => updateSupportTicket(current, ticket.id, change, now))
+    recordSupportAction({ticketId:ticket.id,action:change.field,title:`Ticket ${change.field} updated`,at:now.toISOString(),
+      before:String(ticket[change.field]),after:String(change.value)})
   }
-  const onSendMessage = (body: string) => {
-    if (!ticket || ticket.status === 'Closed' || !body.trim()) return
+  const onSendMessage = async (body: string,files:File[]):Promise<boolean> => {
+    if (!ticket || ticket.status === 'Closed' || (!body.trim()&&!files.length)) return false
     const currentId = ticket.id
+    setSaveError('')
+    if (onReplyTicket && !await onReplyTicket(currentId,body,files)) {setSaveError('Reply could not be saved. Review the latest ticket state');return false}
+    if(files.length&&!onReplyTicket){setSaveError('Attachment persistence is not configured');return false}
     const now = new Date()
-    setNewMessage({ ticketId: currentId, id: `${currentId}-${now.toISOString()}-${ticket.messages.length}` })
-    setTickets(current => addAdminReply(current, currentId, body, now))
+    if (!onReplyTicket) {
+      setNewMessage({ ticketId: currentId, id: `${currentId}-${now.toISOString()}-${ticket.messages.length}` })
+      setTickets(current => addAdminReply(current, currentId, body, now))
+    }
+    recordSupportAction({ticketId:currentId,action:'reply',title:'Ticket reply recorded',at:now.toISOString()})
+    return true
   }
   const onSelect = (id: string) => {
-    setNewMessage(null)
-    setNewActivity(null)
-    setRetainedTicketId(null)
-    setActiveId(id)
+    if (id === ticket?.id || !allowed.some(t=>t.id===id)) return
+    requestDiscard(replyDirty, () => {
+      setReplyDiscardActivation(n => n + 1)
+      setNewMessage(null)
+      setNewActivity(null)
+      setRetainedTicketId(null)
+      setActiveId(id)
+    })
   }
-  const onFiltersChange = (next: SupportNavigationFilters) => { setRetainedTicketId(null); setFilters(next) }
+  const onFiltersChange = (next: SupportNavigationFilters) => requestDiscard(replyDirty, () => {setReplyDiscardActivation(n=>n+1); setRetainedTicketId(null); setFilters(next)})
   useEffect(() => { if (!retainedTicketId && ticket && ticket.id !== activeId) setActiveId(ticket.id) }, [activeId, ticket?.id, retainedTicketId])
-  return <div className="support-page">
+  useEffect(() => {
+    const authorized=Boolean(openTicketId&&allowed.some(item=>item.id===openTicketId))
+    setSaveError('');setRetainedTicketId(authorized?openTicketId!:null);setActiveId(authorized?openTicketId!:'')
+  },[actor?.id])
+  const closeCreate = () => requestDiscard(ticketDirty,() => {
+    creatingLock.current=false;setNewTicketOpen(false);setSubject('');setDescription('');setPriority('Medium');setFormError('');setArticleContext(null)
+  },creating)
+  const submitTicket = () => {
+    if (!canCreate || creatingLock.current || !actor || scope.kind!=='department') return
+    creatingLock.current=true;setCreating(true);setFormError('')
+    let succeeded=false
+    try {
+      if (!subject.trim() || !description.trim()) throw Error('Enter a subject and describe the issue')
+      if (subject.trim().length>140 || description.trim().length>4000) throw Error('Ticket text is too long')
+      const data={subject,description,priority,...(articleContext?{articleId:articleContext}:{})}
+      const id=onCreateTicket?.(data)
+      if (!id) throw Error('Ticket could not be saved. Please try again')
+      succeeded=true
+      setNewTicketOpen(false);setSubject('');setDescription('');setPriority('Medium');setArticleContext(null)
+      setFilters({...initialSupportFilters,status:'Open'});setRetainedTicketId(null);setActiveId(id)
+    } catch(error) {setFormError(error instanceof Error?error.message:'Could not save ticket')}
+    finally {if(!succeeded)creatingLock.current=false;setCreating(false)}
+  }
+  return <div className="support-page" data-tour-target="support-ticket-detail">
     <SupportHeader />
     <div className="support-workspace">
       <SupportInbox
@@ -1229,10 +1395,17 @@ export function SupportWorkspace({ tickets: sharedTickets, onTicketsChange }: {
         filters={filters}
         onFiltersChange={onFiltersChange}
         filtered={filtered}
-        tickets={tickets} />
+        tickets={allowed} employee={scope.kind==='department' && canCreate}
+        onNewTicket={() => {creatingLock.current=false;setFormError('');setNewTicketOpen(true)}} />
       {ticket ? <SupportSelectedTicket
         ticket={ticket}
         onChange={onChange}
+        canManage={administrative}
+        saveError={saveError}
+        actorId={actor?.id}
+        onDirtyChange={setReplyDirty}
+        onBusyChange={setReplySending}
+        discardActivation={replyDiscardActivation}
         onSendMessage={onSendMessage}
         newMessageId={newMessage?.ticketId === ticket.id ? newMessage.id : undefined}
         newActivityId={newActivity?.ticketId === ticket.id ? newActivity.id : undefined}
@@ -1245,5 +1418,20 @@ export function SupportWorkspace({ tickets: sharedTickets, onTicketsChange }: {
           role="status">No tickets match your filters</div>
       </section>}
     </div>
+    {newTicketOpen && scope.kind==='department' && canCreate && <DialogFrame title="New Ticket" onClose={closeCreate}
+      closeDisabled={creating} className="support-create-dialog">
+      <form className="support-create-form" onSubmit={event=>{event.preventDefault();submitTicket()}} noValidate>
+        <label>Subject<input autoFocus maxLength={140} required value={subject} onChange={event=>setSubject(event.target.value)} placeholder="What's the issue?" /></label>
+        <label>Description<textarea rows={5} maxLength={4000} required value={description} onChange={event=>setDescription(event.target.value)} placeholder="Describe what happened" /></label>
+        <label>Priority<select value={priority} onChange={event=>setPriority(event.target.value as TicketPriority)}>
+          {(['Low','Medium','High','Urgent'] as TicketPriority[]).map(value=><option key={value} value={value}>{value}</option>)}
+        </select></label>
+        <p className="support-create-context">Reporting from {scope.department}{articleContext ? ' with a Help article reference' : ''}</p>
+        {formError && <p className="support-save-error" role="alert">{formError}</p>}
+        <div className="rt-dialog-actions"><button type="button" className="rt-btn" disabled={creating} onClick={closeCreate}>Cancel</button>
+          <button type="submit" className="rt-btn rt-btn-primary" disabled={creating}>{creating?'Creating…':'Create Ticket'}</button></div>
+      </form>
+    </DialogFrame>}
+    {discardDialog}
   </div>
 }

@@ -13,7 +13,7 @@ export function checkoutDashboardMetrics(ops: Operations, now: Date = new Date()
   const todaysCheckouts = (ops.checkouts ?? []).filter(c => resortDate(new Date(c.recordedAt)) === today)
   const collections = todaysCheckouts.reduce((sum,c) => {
     const next = sum + c.settledCentavos
-    if (!Number.isSafeInteger(next)) throw Error('Checkout demo collections exceed the supported amount')
+    if (!Number.isSafeInteger(next)) throw Error('Checkout collections exceed the supported amount')
     return next
   },0)
   const outstandingCentavos = outstandingTotal(openCharges)
@@ -22,9 +22,9 @@ export function checkoutDashboardMetrics(ops: Operations, now: Date = new Date()
     .reduce((sum,p) => {const next = sum + p.amountCentavos; if(!Number.isSafeInteger(next)) throw Error('Payment total exceeds supported amount'); return next},0)
   const activity = [
     ...((ops.stays ?? []).map(stay=>({ id:`stay:${stay.id}`, label:'Guest checked in', recordedAt:stay.checkedInAt }))),
-    ...((ops.serviceCharges ?? []).map(charge=>({id:`service:${charge.id}`,label:`${charge.serviceNameSnapshot} posted (Demo)`, recordedAt:charge.recordedAt}))),
-    ...((ops.chargePayments ?? []).filter(p=>!p.checkoutId).map(payment=>({id:`payment:${payment.id}`,label:'Individual payment recorded (Demo)',recordedAt:payment.recordedAt}))),
-    ...((ops.checkouts ?? []).map(checkout=>({id:`checkout:${checkout.id}`,label:'Checkout completed (Demo)', recordedAt:checkout.recordedAt})))
+    ...((ops.serviceCharges ?? []).map(charge=>({id:`service:${charge.id}`,label:`${charge.serviceNameSnapshot} posted`, recordedAt:charge.recordedAt}))),
+    ...((ops.chargePayments ?? []).filter(p=>!p.checkoutId).map(payment=>({id:`payment:${payment.id}`,label:'Individual payment recorded',recordedAt:payment.recordedAt}))),
+    ...((ops.checkouts ?? []).map(checkout=>({id:`checkout:${checkout.id}`,label:'Checkout completed', recordedAt:checkout.recordedAt})))
   ].sort((a,b)=>b.recordedAt.localeCompare(a.recordedAt)).slice(0,4)
   return { occupiedRoomCount:activeStays.length, outstandingCentavos, todayIndividualPaymentsCentavos,
     recentActivity:activity, openChargeCount:openCharges.length, pendingCheckoutCount:pending,
